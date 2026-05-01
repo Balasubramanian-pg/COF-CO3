@@ -1,3 +1,5 @@
+# Snowflake CLI
+
 ```mermaid
 graph TD
   CLI[Snowflake CLI] --> SQL[Execute Queries]
