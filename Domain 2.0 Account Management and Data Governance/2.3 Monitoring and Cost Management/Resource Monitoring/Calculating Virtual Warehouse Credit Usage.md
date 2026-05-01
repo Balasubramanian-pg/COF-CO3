@@ -1,0 +1,1 @@
+# Calculating Virtual Warehouse Credit Usage
