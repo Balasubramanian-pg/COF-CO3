@@ -1,6 +1,6 @@
 # Auto Suspend and Workloads
 
-# Auto Suspend and Workloads Best Practices
+## Auto Suspend and Workloads Best Practices
 
 ```mermaid
 graph TD
