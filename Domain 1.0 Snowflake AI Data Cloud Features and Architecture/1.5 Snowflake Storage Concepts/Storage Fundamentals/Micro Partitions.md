@@ -1,3 +1,5 @@
+# Micro Partitions
+
 ```mermaid
 graph TD
   Raw[Raw Data] --> Load[Ingest into Snowflake]
