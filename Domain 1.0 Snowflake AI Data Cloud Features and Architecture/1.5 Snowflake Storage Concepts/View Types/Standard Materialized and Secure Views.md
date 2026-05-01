@@ -1,3 +1,5 @@
+# Standard Materialized and Secure Views
+
 ```mermaid
 graph TD
   Query[User asks for data] --> Standard[Standard View]
