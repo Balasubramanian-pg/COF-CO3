@@ -26,7 +26,6 @@ graph TD
   Govern --> Audit[Access History & Lineage]
 ```
 
----
 
 ## 1. Data Collaboration Architecture & Fundamentals
 
@@ -97,7 +96,6 @@ GRANT SELECT ON sales_db.analytics.customer_metrics TO SHARE partner_analytics_s
 ALTER SHARE partner_analytics_share ADD ACCOUNTS = ('ABC12345', 'XYZ98765');
 ```
 
----
 
 ## 2. Direct Account-to-Account Sharing
 
