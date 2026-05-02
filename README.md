@@ -28,3 +28,16 @@ Day 3	Charts & Visualization (Bar, Line, Pie)	Charts
 Day 3	Error Handling (IFERROR, ISERROR)	Error Handling
 Day 3	Basic What-If Analysis (Goal Seek)	What-if Analysis
 Day 3	Introduction to Macros (Recording Macros)	Macros Basic
+
+
+Day 2	Important SQL Clauses for Analytics (GROUP BY, ORDER BY)	SQL Clauses
+Day 2	Joins	Joins
+Day 2	Wildcards / Pattern Matching	Wildcards
+Day 2	Bridge Table	BridgeTable
+Day 2	Logical Order of Query Execution	Execution order
+Day 2	Set Operators	Set Operators
+Day 2	Set Operators Subquery	Set operators subquery
+Day 3	Single Row, Aggregate, Table Functions	Table Functions
+Day 3	Window Functions (ANSI SQL)	Window Functions
+Day 3	Derived Table	Derived table
+Day 3	Views and Materialized Views	Views
