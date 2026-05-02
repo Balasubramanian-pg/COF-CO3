@@ -438,7 +438,6 @@ DROP TABLE IF EXISTS test.sales_policy_test;
 | Policy updated after binding | New logic applies to subsequent queries immediately | Update policy definition, re-query, verify row set changes |
 | Policy bound to wrong column | Policy evaluates but returns unexpected results | Confirm policy parameter order matches binding column order |
 
----
 
 ## Column-Level Security Approaches
 
@@ -542,7 +541,6 @@ FROM customers
 GROUP BY email_hash_analytics(email);  -- Can group on consistent hash
 ```
 
----
 
 ## Secure Views: Hiding Logic and Data
 
@@ -703,7 +701,6 @@ DELETE FROM raw.customers WHERE customer_id = 99999;
 | Row filtering in view | Only authorized rows returned | Insert test row with known attributes; query with different roles |
 | View updated after deployment | New logic applies to subsequent queries | Modify view definition; re-query; verify output changes |
 
----
 
 ## Integrating Masking, Row Security, and Classification
 
@@ -920,7 +917,6 @@ CREATE OR REPLACE ALERT governance.alert_unprotected_row_data
   );
 ```
 
----
 
 ## Testing and Validation Framework
 
@@ -1096,7 +1092,6 @@ ALTER TABLE raw.large_sales_table MODIFY COLUMN customer_id UNSET MASKING POLICY
 | Secure view abstraction | < 5% increase vs direct table query | Ensure view logic is optimized; avoid unnecessary subqueries |
 | Credits per query | No significant increase post-policy | If credits spike, review policy complexity and data volume |
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -1142,7 +1137,6 @@ flowchart TD
   I --> J
 ```
 
----
 
 ## Decision Framework: Choosing Privacy Controls
 
@@ -1178,7 +1172,6 @@ flowchart TD
 | Is analytics use case important | Use hash-based masking to enable grouping without raw exposure | Full masking or column grants may be appropriate |
 | Do protection rules change frequently | Use tag-driven policy automation for scalable management | Manual policy updates may be acceptable for stable requirements |
 
----
 
 ## Key Principles to Remember
 
