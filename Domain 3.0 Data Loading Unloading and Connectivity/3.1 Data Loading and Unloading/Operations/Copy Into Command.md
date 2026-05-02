@@ -90,7 +90,6 @@ ON_ERROR = 'SKIP_FILE_3';
 - Heavy transformations (`PARSE_JSON`, complex `CASE`, regex) increase CPU utilization and memory pressure.
 - Use `MATCH_BY_COLUMN_NAME` instead of positional mapping when source schema drifts.
 
----
 
 ## 3.1.3 File Format Integration & Type Coercion
 
@@ -122,7 +121,6 @@ Snowflake's parser decodes files according to `FILE_FORMAT` definitions. Misconf
 | String | `TIMESTAMP_NTZ` | Strict format match | Invalid TZ specifiers or malformed strings fail |
 | JSON/Parquet | `VARIANT` | Self-describing binary encoding with type tags | Exceeds 16MB per-row limit (configurable up to 2GB) |
 
----
 
 ## 3.1.4 Parallelism, Concurrency & Resource Allocation
 
@@ -160,7 +158,6 @@ SIZE_LIMIT = 50000000000;
 - **Spill impact:** 3–10x latency increase, I/O wait dominates CPU, potential OOM if disk fills.
 - **Mitigation:** Reduce `MAX_CONCURRENCY`, increase warehouse size, consolidate tiny files upstream.
 
----
 
 ## 3.1.5 Error Handling, Validation & Data Quality Controls
 
@@ -194,7 +191,6 @@ VALIDATION_MODE = 'RETURN_ALL_ERRORS';
 - Parseable via `COPY INTO error_table FROM @stage PATTERN='.*_error.csv'`
 - **Compliance Note:** Silent truncation via `TRUNCATECOLUMNS=TRUE` breaks auditability. Always log truncation events.
 
----
 
 ## 3.1.6 Performance Tuning & Operational Optimization
 
@@ -223,7 +219,6 @@ VALIDATION_MODE = 'RETURN_ALL_ERRORS';
 | Oversized warehouse for small loads | Wasted credits, no performance gain | Right-size based on `COPY_HISTORY` file count |
 | Ignoring `ENFORCE_LENGTH` | Silent truncation, data integrity loss | Enable for production, log violations |
 
----
 
 ## 3.1.7 Monitoring, Troubleshooting & Runbooks
 
@@ -291,7 +286,6 @@ ALTER PIPE raw_events_pipe REFRESH;
 ALTER PIPE raw_events_pipe SET PIPE_EXECUTION_PAUSED = FALSE;
 ```
 
----
 
 ## 3.1.8 Security, Compliance & Audit Integration
 
@@ -310,7 +304,6 @@ ALTER PIPE raw_events_pipe SET PIPE_EXECUTION_PAUSED = FALSE;
 - Error files inherit stage permissions. Secure error stages for compliance pipelines.
 - Cross-account stage access requires `STORAGE_INTEGRATION` with explicit IAM trust.
 
----
 
 ## 3.1.9 Cost Management & Attribution
 
@@ -341,7 +334,6 @@ GROUP BY
   qh.warehouse_name;
 ```
 
----
 
 ## 3.1.10 Decision Matrix & Quick Reference
 
@@ -387,7 +379,6 @@ SIZE_LIMIT = 100000000000;  -- 100GB
 | `300004` | `Warehouse suspended` | Enable `AUTO_RESUME=TRUE` or increase timeout |
 | `400001` | `Insufficient privileges` | Grant `USAGE` on stage/integration, verify IAM trust |
 
----
 
 ## Key Engineering Principles
 
