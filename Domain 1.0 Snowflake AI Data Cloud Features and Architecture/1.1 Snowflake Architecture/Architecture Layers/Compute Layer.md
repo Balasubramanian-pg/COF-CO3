@@ -1,5 +1,7 @@
 # Compute Layer
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/395ffe55-795d-4ed2-a548-8bd13fa1c88f" />
+
 ## Definition and Purpose
   - The Compute Layer consists of one or more Virtual Warehouses that provide the computational resources to execute queries, data loading, and DML operations
   - Virtual Warehouses are essentially clusters of compute nodes assigned to an individual Snowflake account isolated from all other accounts
