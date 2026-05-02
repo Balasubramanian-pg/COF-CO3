@@ -76,7 +76,10 @@ We Will narrow down on Database storage layer in this section
   Time Travel is user-accessible for the configured retention (e.g., 10 days). Fail-safe extends 7 more days, inaccessible to users. Past that, data is gone.
 
 ## Zero-Copy Cloning
-  - Creates a new database, schema, or table that shares the same underlying micro-partitions as the source
+
+>[!Note]
+> Zero-Copy Cloning creates a new database, schema, or table that shares the **same underlying micro-partitions** as the source
+
   - Clone operations are purely metadata-only; no data is physically copied at creation time
   - New data (inserts/updates) to the cloned or source object results in new micro-partitions, while the shared micro-partitions remain intact for the unchanged portion
   - Enables instant, storage-efficient environment creation for development, testing, and data science
