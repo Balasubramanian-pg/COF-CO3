@@ -315,7 +315,6 @@ FROM (
 FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 ```
 
----
 
 ## Alerting and Notifications for Cost and Usage
 
@@ -518,7 +517,6 @@ CREATE OR REPLACE ALERT cost.critical_budget_alert
   );
 ```
 
----
 
 ## Usage Attribution and Chargeback
 
@@ -631,7 +629,6 @@ FROM governance.storage_cost_by_tag
 FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 ```
 
----
 
 ## Optimization Strategies for Cost Reduction
 
@@ -824,7 +821,6 @@ WHERE utilization_flag IN ('IDLE_HIGH_COST', 'LOW_UTILIZATION')
 ORDER BY estimated_weekly_savings_usd DESC;
 ```
 
----
 
 ## Best Practices for Monitoring and Cost Management
 
@@ -880,7 +876,6 @@ flowchart TD
   Measure --> Review[Review quarterly; adjust as needed]
 ```
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -922,7 +917,6 @@ flowchart TD
   H --> I
 ```
 
----
 
 ## Decision Framework: Monitoring and Cost Strategy
 
@@ -959,7 +953,6 @@ flowchart TD
 | Reduce storage costs | Adjust Time Travel retention + archive cold data | Measure storage cost reduction post-optimization |
 | Minimize idle compute | Configure auto-suspend based on workload pattern | Monitor warehouse utilization post-change |
 
----
 
 ## Key Principles to Remember
 
