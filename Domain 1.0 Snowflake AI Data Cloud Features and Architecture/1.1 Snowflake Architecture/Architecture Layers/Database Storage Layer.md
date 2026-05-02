@@ -31,6 +31,8 @@ We Will narrow down on Database storage layer in this section
   - Storage is billed based on compressed size per month (average monthly storage used); users do not pre-provision capacity
 
 ## Separation of Storage and Compute
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/25ebcb1f-af30-42b7-9895-977fa34aa5d8" />
+
   - Compute (virtual warehouses) and storage are independent and communicate only via network; compute nodes fetch micro-partitions directly from cloud object storage
   - Multiple virtual warehouses can operate on the same data simultaneously without contention, each with its own cache
   - Storage persists indefinitely even when all warehouses are suspended; dropping a table or database is the only way to remove data (subject to time travel and fail-safe)
