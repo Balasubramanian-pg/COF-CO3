@@ -74,7 +74,6 @@ flowchart TD
     class T,U,V monitoring;
 ```
 
----
 
 ### **Optimization Services Comparison Matrix**
 
@@ -88,7 +87,6 @@ flowchart TD
 | **Metadata Caching** | Cache table metadata | Stores metadata (statistics, schema) in memory | All queries | N/A | Included in compute | ⭐⭐ (1.1-2x faster) | No configuration needed | Not directly visible |
 | **Warehouse Optimization** | Optimize warehouse usage | Auto-suspend, auto-resume, multi-cluster scaling | All workloads | Serverless workloads | Included in compute | ⭐⭐⭐ (2-10x cost savings) | Configure per warehouse | `WAREHOUSE_LOAD_HISTORY` |
 
----
 ### **When to Use Optimization Services**
 
 | **Use Case** | **Recommended Services** | **Example** |
@@ -103,11 +101,8 @@ flowchart TD
 | **All Queries** | Metadata Caching | No configuration needed (automatic) |
 | **Variable Workloads** | Warehouse Optimization | `CREATE WAREHOUSE my_wh MAX_CLUSTER_COUNT = 4` |
 
----
----
 ## **2. Search Optimization Service (SOS)**
 
----
 ### **A. Definition and Architecture**
 
 The **Search Optimization Service** is a **paid add-on service** that **accelerates full-text search and pattern matching queries** by creating and maintaining **search indexes** on your tables. It is designed to **dramatically improve the performance** of queries that use:
@@ -206,7 +201,6 @@ flowchart TD
 - **Aggregation queries**: Use **materialized views** instead.
 - **Small datasets**: The overhead of index maintenance may not be worth it.
 
----
 ### **B. Search Optimization Service Configuration**
 
 #### **1. Enable Search Optimization on a Table**
@@ -291,7 +285,6 @@ ORDER BY
     start_time DESC;
 ```
 
----
 ### **C. Search Optimization Service Performance**
 
 #### **1. Performance Impact**
@@ -320,7 +313,6 @@ WHERE description LIKE '%snowflake%';
 | **Credit Usage** | 50 credits | 0.5 credits | 100x reduction |
 | **Partitions Scanned** | 1000 | 10 | 100x reduction |
 
----
 ### **D. Search Optimization Service Cost**
 
 #### **1. Cost Model**
@@ -367,7 +359,6 @@ ORDER BY
     total_credits_used DESC;
 ```
 
----
 ### **E. Search Optimization Service Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -385,7 +376,6 @@ ORDER BY
 | **Disable When Not Needed** | Disable SOS when no longer needed to save costs | `ALTER TABLE my_table SET SEARCH_OPTIMIZATION = FALSE` |
 | **Use INDEX_TYPE for Specific Needs** | Use INVERTED for full-text, NGRAM for prefix/suffix | `ALTER TABLE my_table SET SEARCH_OPTIMIZATION = TRUE WITH (INDEX_TYPE = 'INVERTED')` |
 
----
 ### **F. Search Optimization Service Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -402,7 +392,6 @@ ORDER BY
 | **No Phrase Search** | Limited phrase search support | Use exact match or REGEXP |
 | **No Wildcard at Start** | LIKE '%term' is slower than LIKE 'term%' | Use NGRAM index type for prefix/suffix searches |
 
----
 ### **G. Search Optimization Service Examples**
 
 #### **Example 1: Full-Text Search on Product Descriptions**
@@ -526,11 +515,8 @@ ORDER BY
     start_time DESC;
 ```
 
----
----
 ## **3. Materialized View Optimization**
 
----
 ### **A. Definition and Architecture**
 
 **Materialized Views (MVs)** in Snowflake are **pre-computed query results** that are **stored as tables** and **automatically refreshed** when the underlying data changes. The **Materialized View Optimization** service automatically:
@@ -631,7 +617,6 @@ flowchart TD
 ❌ **Queries with highly variable filters** (MV may not cover all filter combinations).
 ❌ **Storage-constrained environments** (MVs consume storage space).
 
----
 ### **B. Materialized View Configuration**
 
 #### **1. Create a Materialized View**
@@ -733,7 +718,6 @@ WHERE
     AND object_type = 'MATERIALIZED VIEW';
 ```
 
----
 ### **C. Materialized View Refresh Modes**
 
 | **Refresh Mode** | **Description** | **When to Use** | **Performance Impact** | **Cost Impact** | **Example** |
@@ -744,7 +728,6 @@ WHERE
 
 **Note**: `AUTO` is the default refresh mode.
 
----
 ### **D. Materialized View Optimization Performance**
 
 #### **1. Performance Impact**
@@ -781,7 +764,6 @@ GROUP BY
 | **Credit Usage** | 25 credits | 0.25 credits | 100x reduction |
 | **Warehouse Load** | High | Low | Significant improvement |
 
----
 ### **E. Materialized View Optimization Cost**
 
 #### **1. Cost Model**
@@ -844,7 +826,6 @@ ORDER BY
     credits_used DESC;
 ```
 
----
 ### **F. Materialized View Optimization Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -864,7 +845,6 @@ ORDER BY
 | **Test Before Enabling** | Test MVs on a subset of data before enabling on production | Create a test MV and monitor performance |
 | **Monitor Storage Usage** | Check MATERIALIZED_VIEW_STORAGE for storage costs | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.MATERIALIZED_VIEW_STORAGE` |
 
----
 ### **G. Materialized View Optimization Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -881,7 +861,6 @@ ORDER BY
 | **No MV on External Tables** | Cannot create MVs on external tables | Use internal tables or materialized views on internal tables |
 | **No MV on Views** | Cannot create MVs on views | Create MVs on source tables |
 
----
 ### **H. Materialized View Optimization Examples**
 
 #### **Example 1: Daily Sales Aggregation**
@@ -1039,11 +1018,8 @@ ORDER BY
     credits_used DESC;
 ```
 
----
----
 ## **4. Automatic Clustering Service**
 
----
 ### **A. Definition and Architecture**
 
 The **Automatic Clustering Service** in Snowflake **automatically reorganizes data** within **micro-partitions** to **optimize query performance**. Unlike traditional databases that require manual index creation, Snowflake's clustering is **automatically managed** and **transparent to users**.
@@ -1133,7 +1109,6 @@ flowchart TD
 ❌ **Columns not used in filters** (clustering has no effect).
 ❌ **Frequently updated tables** (reclustering overhead may impact performance).
 
----
 ### **B. Automatic Clustering Configuration**
 
 #### **1. Set Clustering Keys**
@@ -1215,7 +1190,6 @@ ORDER BY
     last_reclustered DESC;
 ```
 
----
 ### **C. Automatic Clustering Performance**
 
 #### **1. Performance Impact**
@@ -1244,7 +1218,6 @@ SELECT * FROM sales WHERE date = '2023-01-15';
 | **Partitions Scanned** | 1000 | 100 | 10 | 100x reduction |
 | **Credit Usage** | 5 credits | 1.5 credits | 0.5 credits | 10x reduction |
 
----
 ### **D. Automatic Clustering Cost**
 
 #### **1. Cost Model**
@@ -1288,7 +1261,6 @@ ORDER BY
     total_credits_used DESC;
 ```
 
----
 ### **E. Automatic Clustering Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1306,7 +1278,6 @@ ORDER BY
 | **Test Clustering Before and After** | Compare performance with and without clustering | Run EXPLAIN before and after clustering |
 | **Document Clustering Strategies** | Document clustering keys and rationale | Internal wiki or Confluence page |
 
----
 ### **F. Automatic Clustering Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1322,7 +1293,6 @@ ORDER BY
 | **No Clustering on VARIANT/OBJECT/ARRAY** | Cannot cluster on semi-structured columns | Cluster on structured columns |
 | **No Clustering on GEOGRAPHY/GEOMETRY** | Cannot cluster on geographic columns | Use spatial indexes or application-level clustering |
 
----
 ### **G. Automatic Clustering Examples**
 
 #### **Example 1: Time-Series Data**
@@ -1431,11 +1401,8 @@ ORDER BY
     execution_time;
 ```
 
----
----
 ## **5. Automatic Query Rewriting**
 
----
 ### **A. Definition and Architecture**
 
 **Automatic Query Rewriting** is Snowflake's **built-in optimization feature** that **automatically transforms queries** into **more efficient forms** without requiring manual intervention. This happens **during query compilation** and is **transparent to users**.
@@ -1518,7 +1485,6 @@ flowchart TD
 | **Constant Folding** | Evaluates constant expressions at compile time | `SELECT * FROM my_table WHERE col1 > 1 + 2` | `SELECT * FROM my_table WHERE col1 > 3` | ⬆️ Simplifies query |
 | **Query Folding** | Combines nested views or subqueries into a single query | `SELECT * FROM (SELECT * FROM my_view) WHERE col1 > 1` | `SELECT * FROM my_table WHERE col1 > 1` (if my_view is a simple view) | ⬆️ Reduces complexity |
 
----
 ### **B. Automatic Query Rewriting Configuration**
 
 **Note**: Automatic query rewriting is **enabled by default** and **requires no configuration**. However, you can **influence** the rewriting process by:
@@ -1535,7 +1501,6 @@ EXPLAIN SELECT * FROM my_table WHERE date > '2023-01-01';
 -- Look for "filters" in TableScan operators
 ```
 
----
 ### **C. Automatic Query Rewriting Performance**
 
 #### **1. Performance Impact**
@@ -1592,7 +1557,6 @@ GROUP BY
 | **Partitions Scanned** | 500 | 50 | 10x reduction |
 | **Credit Usage** | 5 credits | 0.5 credits | 10x reduction |
 
----
 ### **D. Automatic Query Rewriting Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1608,7 +1572,6 @@ GROUP BY
 | **Document Query Patterns** | Document repetitive query patterns for optimization | Internal wiki or Confluence page |
 | **Use Views for Complex Queries** | Views can be folded into the main query | `CREATE VIEW my_view AS SELECT * FROM my_table WHERE ...` |
 
----
 ### **E. Automatic Query Rewriting Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1624,7 +1587,6 @@ GROUP BY
 | **No Rewriting for Dynamic SQL** | Dynamic SQL cannot be rewritten | Use parameterized queries |
 | **No Rewriting for Some Data Types** | Some data types (e.g., VARIANT) have limited rewriting | Use structured data types |
 
----
 ### **F. Automatic Query Rewriting Examples**
 
 #### **Example 1: Predicate Pushdown**
@@ -1692,11 +1654,8 @@ SELECT * FROM my_view WHERE col1 > 1;
 SELECT * FROM my_table WHERE date > '2023-01-01' AND col1 > 1;
 ```
 
----
----
 ## **6. Result Caching Service**
 
----
 ### **A. Definition and Architecture**
 
 The **Result Caching Service** in Snowflake **automatically caches query results** to **improve performance** for **repetitive queries**. When a query is executed, Snowflake:
@@ -1792,7 +1751,6 @@ flowchart TD
 ❌ **Real-time data** (cache TTL is too long).
 ❌ **Queries with dynamic parameters** (different query text each time).
 
----
 ### **B. Result Caching Configuration**
 
 #### **1. Enable/Disable Result Caching**
@@ -1827,7 +1785,6 @@ ORDER BY
     start_time DESC;
 ```
 
----
 ### **C. Result Caching Performance**
 
 #### **1. Performance Impact**
@@ -1862,12 +1819,10 @@ GROUP BY
 | **Credit Usage** | 2.5 credits | 0 | Infinite reduction |
 | **Warehouse Load** | High | None | Significant improvement |
 
----
 ### **D. Result Caching Cost**
 
 **Note**: Result caching is **included in Snowflake's regular pricing** (no additional cost). However, cached results **consume storage** in Snowflake's **local disk cache** (SSD).
 
----
 ### **E. Result Caching Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1883,7 +1838,6 @@ GROUP BY
 | **Test Cache Performance** | Compare performance with and without caching | Run queries and check used_cached_result |
 | **Document Cacheable Queries** | Document which queries benefit from caching | Internal wiki or Confluence page |
 
----
 ### **F. Result Caching Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1899,7 +1853,6 @@ GROUP BY
 | **No Caching for Some Queries** | Some complex queries cannot be cached | Use materialized views |
 | **Storage Overhead** | Cached results consume storage | Monitor storage usage |
 
----
 ### **G. Result Caching Examples**
 
 #### **Example 1: Dashboard Queries**
@@ -2010,11 +1963,8 @@ ORDER BY
     query_id;
 ```
 
----
----
 ## **7. Metadata Caching Service**
 
----
 ### **A. Definition and Architecture**
 
 The **Metadata Caching Service** in Snowflake **caches table metadata** (e.g., statistics, schema, partition information) to **improve query performance**. Metadata caching is **automatic** and **transparent to users**.
@@ -2082,7 +2032,6 @@ flowchart TD
 | **Clustering Information** | Clustering keys, clustering depth | Partition pruning | Session |
 | **Storage Information** | Storage usage, file formats | Query optimization | Session |
 
----
 ### **B. Metadata Caching Configuration**
 
 **Note**: Metadata caching is **automatic** and **requires no configuration**. However, you can **influence** the metadata cache by:
@@ -2107,7 +2056,6 @@ SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.TABLE_STATISTICS('MY_TABLE'));
 SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.COLUMN_STATISTICS('MY_TABLE', 'COL1'));
 ```
 
----
 ### **C. Metadata Caching Performance**
 
 #### **1. Performance Impact**
@@ -2136,12 +2084,10 @@ SELECT * FROM my_table WHERE date > '2023-01-01';
 | **Bytes Scanned** | 10 GB | 1 GB | 10x reduction (due to partition pruning) |
 | **Credit Usage** | 2.5 credits | 0.5 credits | 5x reduction |
 
----
 ### **D. Metadata Caching Cost**
 
 **Note**: Metadata caching is **included in Snowflake's regular pricing** (no additional cost).
 
----
 ### **E. Metadata Caching Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -2155,7 +2101,6 @@ SELECT * FROM my_table WHERE date > '2023-01-01';
 | **Test Query Performance** | Compare performance with and without metadata caching | Run queries and compare compilation times |
 | **Document Metadata Strategies** | Document metadata management strategies | Internal wiki or Confluence page |
 
----
 ### **F. Metadata Caching Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -2167,7 +2112,6 @@ SELECT * FROM my_table WHERE date > '2023-01-01';
 | **No Custom Metadata** | Cannot customize metadata | Use Snowflake's built-in metadata |
 | **No Metadata for External Tables** | Limited metadata for external tables | Use internal tables or materialized views |
 
----
 ### **G. Metadata Caching Examples**
 
 #### **Example 1: Update Statistics for Large Table**
@@ -2210,11 +2154,8 @@ ADD COLUMN col2 INT,
 ADD COLUMN col3 INT;
 ```
 
----
----
 ## **8. Warehouse Optimization Services**
 
----
 ### **A. Definition and Architecture**
 
 Snowflake provides several **warehouse optimization services** to **improve performance and reduce costs** for query execution. These services include:
@@ -2271,7 +2212,6 @@ flowchart TD
     class M,N monitoring;
 ```
 
----
 ### **B. Auto-Suspend and Auto-Resume**
 
 #### **1. Auto-Suspend**
@@ -2319,7 +2259,6 @@ ALTER WAREHOUSE my_wh SET AUTO_RESUME = TRUE;
 ALTER WAREHOUSE batch_wh SET AUTO_RESUME = FALSE;
 ```
 
----
 ### **C. Multi-Cluster Warehouses**
 
 #### **1. Multi-Cluster Warehouse Overview**
@@ -2368,7 +2307,6 @@ CREATE WAREHOUSE my_cost_effective_wh
   AUTO_RESUME = TRUE;
 ```
 
----
 ### **D. Query Prioritization**
 
 #### **1. Query Prioritization Overview**
@@ -2407,7 +2345,6 @@ ALTER ROLE high_priority_role SET QUERY_PRIORITY = 'HIGH';
 GRANT ROLE high_priority_role TO USER my_user;
 ```
 
----
 ### **E. Query Queues**
 
 #### **1. Query Queue Overview**
@@ -2435,11 +2372,8 @@ ALTER WAREHOUSE my_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 60;  -- 1 minute
 ALTER WAREHOUSE my_wh SET STATEMENT_TIMEOUT_IN_SECONDS = 300;  -- 5 minutes
 ```
 
----
----
 ## **9. Optimization Services Decision Matrix**
 
----
 ### **Mermaid: Optimization Services Selection**
 ```mermaid
 %% Optimization Services Selection
@@ -2495,7 +2429,6 @@ flowchart TD
     class K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z caching;
 ```
 
----
 ### **Optimization Services Selection Matrix**
 
 | **Service** | **Best For** | **When to Use** | **Performance Impact** | **Cost** | **Configuration Effort** | **Monitoring** |
@@ -2509,7 +2442,6 @@ flowchart TD
 | **Multi-Cluster Warehouses** | High concurrency workloads | Workloads with >8 concurrent queries | ⭐⭐⭐⭐ (2-10x cost savings) | Included | Medium | `WAREHOUSE_LOAD_HISTORY` |
 | **Query Prioritization** | Mixed workloads | Workloads with different priority levels | ⭐⭐⭐ (2-10x better resource utilization) | Included | Low | `WAREHOUSE_MONITOR` |
 
----
 ### **Service Selection Workflow**
 
 1. **Identify the Query Type**:
@@ -2538,11 +2470,8 @@ flowchart TD
    - Enable the service and **monitor performance** using the appropriate views.
    - **Adjust configurations** based on usage patterns.
 
----
----
 ## **10. Optimization Services Best Practices**
 
----
 ### **A. General Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -2558,7 +2487,6 @@ flowchart TD
 | **Use Multi-Cluster for High Concurrency** | Use multi-cluster warehouses for high concurrency workloads | `CREATE WAREHOUSE my_wh MAX_CLUSTER_COUNT = 4` |
 | **Implement Query Prioritization** | Prioritize critical queries in mixed workloads | `ALTER WAREHOUSE my_wh SET QUERY_PRIORITY = 'HIGH'` |
 
----
 ### **B. Service-Specific Best Practices**
 
 #### **Search Optimization Service**
@@ -2632,7 +2560,6 @@ flowchart TD
 - **Monitor Warehouse Utilization**: Check WAREHOUSE_LOAD_HISTORY for utilization.
 - **Right-Size Warehouses**: Use the smallest warehouse that meets performance requirements.
 
----
 ### **C. Optimization Services Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -2650,11 +2577,8 @@ flowchart TD
 | **Not Using Query Prioritization** | Not prioritizing queries in mixed workloads | ❌ Resource contention, ❌ Poor performance | Use query prioritization |
 | **Not Combining Services** | Using only one optimization service | ❌ Suboptimal performance | Combine services for maximum impact |
 
----
----
 ## **11. Optimization Services Troubleshooting**
 
----
 ### **A. Search Optimization Service Troubleshooting**
 
 #### **Symptom: SOS Not Improving Performance**
@@ -2722,7 +2646,6 @@ flowchart TD
 5. **Check for data changes**:
    - SOS may not be used if the underlying data has changed recently.
 
----
 #### **B. Materialized View Optimization Troubleshooting**
 
 #### **Symptom: MV Not Being Used**
@@ -2791,7 +2714,6 @@ flowchart TD
 5. **Check for underlying data changes**:
    - MV may not be used if the underlying data has changed since the last refresh.
 
----
 #### **C. Automatic Clustering Troubleshooting**
 
 #### **Symptom: Clustering Not Improving Performance**
@@ -2856,7 +2778,6 @@ flowchart TD
 5. **Combine with filtering**:
    - Ensure queries use **filters on clustered columns**.
 
----
 #### **D. Result Caching Troubleshooting**
 
 #### **Symptom: Result Caching Not Working**
@@ -2908,7 +2829,6 @@ flowchart TD
    ALTER SESSION SET RESULT_CACHE_TTL = 3600;  -- 1 hour
    ```
 
----
 #### **E. Warehouse Optimization Troubleshooting**
 
 #### **Symptom: High Queue Times**
@@ -2969,11 +2889,8 @@ flowchart TD
    CREATE WAREHOUSE reporting_wh;
    ```
 
----
----
 ## **12. Production Checklist for Optimization Services**
 
----
 ### **A. Search Optimization Service Checklist**
 - [ ] **Identify Tables for SOS**: Tables with frequent LIKE/REGEXP queries
 - [ ] **Enable SOS on Tables**:
@@ -3011,7 +2928,6 @@ flowchart TD
   ```
 - [ ] **Document SOS Configurations**: Maintain a record of SOS-enabled tables and columns
 
----
 ### **B. Materialized View Optimization Checklist**
 - [ ] **Identify Queries for MVs**: Repetitive, expensive queries
 - [ ] **Create MVs**:
