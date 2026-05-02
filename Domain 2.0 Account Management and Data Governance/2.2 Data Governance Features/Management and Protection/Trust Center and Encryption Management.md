@@ -184,7 +184,6 @@ LIMIT 100;
 | Time Travel & Fail-Safe | Same as source data | Inherits source data key hierarchy |
 | Backup & disaster recovery | Same as source data | Inherits source data key hierarchy |
 
----
 
 ## Key Management Models
 
@@ -286,7 +285,6 @@ SHOW DATABASES LIKE 'highly_sensitive_data';
 -- Check ENCRYPTION column shows TRI_SECRET_SECURE
 ```
 
----
 
 ## Key Rotation & Lifecycle Management
 
@@ -376,7 +374,6 @@ WHERE event_source = 'kms.amazonaws.com'
 ORDER BY event_time DESC;
 ```
 
----
 
 ## Compliance Frameworks & Audit Evidence
 
@@ -480,7 +477,6 @@ AS
   FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 ```
 
----
 
 ## Best Practices & Common Pitfalls
 
@@ -557,7 +553,6 @@ flowchart TD
   I --> J
 ```
 
----
 
 ## Decision Framework: Encryption & Trust Strategy
 
@@ -598,7 +593,6 @@ flowchart TD
 | Emergency revocation capability | CMK with documented grace period | Quarterly revocation drill; recovery runbook |
 | Audit evidence automation | Automated Trust Center export + governance views | Scheduled compliance report generation |
 
----
 
 ## Key Principles to Remember
 
