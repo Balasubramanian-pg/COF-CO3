@@ -274,13 +274,13 @@ flowchart TD
 - Data lives in databases and schemas. Organize them to match how your team thinks about the business
 - Automation lives in tasks and pipes. Use them to reduce manual work, but monitor them closely
 
-Think of account objects like tools in a workshop:
-- Users are the people who use the tools
-- Roles are the permissions that say which tools each person can touch
-- Warehouses are the power sources that run the tools
-- Databases and schemas are the shelves where you store your materials
-- Integrations are the doors that connect your workshop to the outside
-- Shares are the windows that let others see your work without entering
-- Tasks and pipes are the timers and conveyors that keep things moving
-
-Pick the right tool for the job. Use each one for what it does best.
+>[!Info]
+>Think of account objects like tools in a workshop:
+>- Users are the people who use the tools
+>- Roles are the permissions that say which tools each person can touch
+>- Warehouses are the power sources that run the tools
+>- Databases and schemas are the shelves where you store your materials
+>- Integrations are the doors that connect your workshop to the outside
+>- Shares are the windows that let others see your work without entering
+>- Tasks and pipes are the timers and conveyors that keep things moving
+>Pick the right tool for the job. Use each one for what it does best.
