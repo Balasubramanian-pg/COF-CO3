@@ -2,7 +2,6 @@
 
 ## Domain 5.0 Data Collaboration / 5.2 Snowflake Data Sharing Capabilities / Account Roles
 
----
 
 ## 1. ROLE ARCHITECTURE IN DATA SHARING CONTEXT
 
@@ -103,7 +102,6 @@ flowchart TB
     style PAA fill:#ccffcc
 ```
 
----
 
 ## 2. SYSTEM ROLE PRIVILEGES FOR DATA SHARING
 
