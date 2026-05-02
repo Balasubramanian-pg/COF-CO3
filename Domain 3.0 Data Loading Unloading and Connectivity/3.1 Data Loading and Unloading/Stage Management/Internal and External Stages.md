@@ -80,7 +80,6 @@ flowchart TD
     class V,W,X,Y,Z observability;
 ```
 
----
 
 ### **Execution Path Comparison**
 | **Operation**               | **Internal Stage**                          | **External Stage**                          | **Named Stage**                     |
@@ -97,13 +96,10 @@ flowchart TD
 | **Storage Billing**         | Snowflake storage costs (0.1 credits/GB/month) | Customer cloud storage costs (no Snowflake storage fees) | No storage costs |
 | **Compute Billing**         | Snowflake compute costs (PUT/GET/UNLOAD) | Snowflake compute costs (URL generation, metadata sync) | Snowflake compute costs (metadata ops) |
 
----
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **A. Internal Stages**
 #### **1. PUT Operation**
@@ -169,7 +165,6 @@ flowchart TD
 - **Spill Behavior**:
   - If temp stage exceeds **10% of warehouse memory**, spills to SSD.
 
----
 
 ### **B. External Stages**
 #### **1. PUT Operation**
@@ -216,7 +211,6 @@ flowchart TD
 - **Performance**:
   - **Throughput**: Limited by external cloud storage (e.g., S3: **1.5GB/s per prefix**).
 
----
 ### **C. Named Stages**
 - **Metadata-Only**:
   - No storage; references an external stage or cloud location.
@@ -227,11 +221,8 @@ flowchart TD
   - `PUT/GET/REMOVE` redirect to the referenced external stage.
   - No additional storage or compute costs.
 
----
----
 ## **3. Parameter/Configuration Deep Dive**
 
----
 ### **A. Stage-Level Parameters**
 | **Parameter**                     | **Applicability**       | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------------|-------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -245,7 +236,6 @@ flowchart TD
 | `PUT_FILE_CHUNK_SIZE`             | Internal               | Chunk size for parallel uploads (5MB–16MB).                                           | Smaller chunks: **higher parallelism** but **more overhead** (10% credit increase).   | Max 16MB (Snowflake hard limit).                                                          | 16MB                    |
 | `DIRECTORY`                       | Internal               | Enables directory tables for stage files.                                            | Adds **5-10ms latency** per query (metadata sync).                                    | Required for `INFORMATION_SCHEMA.EXTERNAL_STAGE_FILES`.                                | `FALSE`                 |
 
----
 ### **B. File Format Parameters**
 | **Parameter**                     | **Applicability** | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------------|-------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -260,7 +250,6 @@ flowchart TD
 | `AUTO_DETECT`                     | CSV/JSON          | Infers schema from first 100 rows.                                                    | **Adds 5-10s latency** per file.                                                     | Fails if files > 100MB or schema ambiguous.                                              | `FALSE`                 |
 | `FORCE`                           | All               | Overwrites existing files in stage.                                                  | **No atomicity** (partial overwrites possible).                                      | Use with `VALIDATION_MODE = RETURN_ROWS` to audit.                                       | `FALSE`                 |
 
----
 ### **C. COPY INTO Parameters**
 | **Parameter**                     | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -270,7 +259,6 @@ flowchart TD
 | `IGNORE_UTF8_ERRORS`              | Ignores UTF-8 encoding errors.                                                       | **5% faster** for malformed files.                                                     | May corrupt data.                                                                       | `FALSE`                 |
 | `SIZE_LIMIT`                      | Maximum file size to load (bytes).                                                    | Skips files > limit (faster but incomplete).                                          | Default: **10GB**.                                                                       | None (10GB)             |
 
----
 ### **D. UNLOAD Parameters**
 | **Parameter**                     | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -280,11 +268,8 @@ flowchart TD
 | `PARTITION BY`                     | Partitions output files by column.                                                   | Improves query performance for partitioned data.                                    | Requires column to be in `SELECT` or table.                                              | None                    |
 | `HEADER`                          | Includes column headers in output.                                                   | Adds **1 row per file** (minimal overhead).                                          | Only for CSV/TSV.                                                                         | `FALSE`                 |
 
----
----
 ## **4. Performance & Resource Implications**
 
----
 ### **A. Memory & Spill Behavior**
 #### **Internal Stages**
 | **Operation**       | **In-Memory Buffer** | **Spill Threshold** | **Spill Impact**                          | **Disk I/O**               |
@@ -300,7 +285,6 @@ flowchart TD
 | COPY INTO           | 100MB per thread     | 200MB per thread    | >1GB spills: **5-10% latency**            | Sequential reads (SSD)     |
 | UNLOAD              | Warehouse memory     | 10% of warehouse    | >1GB spills: **10-15% latency**          | Sequential writes (SSD)    |
 
----
 ### **B. Concurrency & Scaling**
 #### **Internal Stages**
 | **Warehouse Size** | **Max PUT Threads** | **Max COPY INTO Threads** | **Max UNLOAD Threads** | **Throughput (PUT)** | **Throughput (COPY INTO)** |
@@ -322,7 +306,6 @@ flowchart TD
 | Large              | 800                    | 32                        | 32                      | 800 URLs/sec             | 1.6GB/s                    |
 | X-Large            | 1600                   | 64                        | 64                      | 1600 URLs/sec            | 3.2GB/s                    |
 
----
 ### **C. Credit Math**
 #### **Storage Costs (Internal Stages Only)**
 | **Storage Tier**       | **Cost (Credits/GB/Month)** | **Latency**       | **Use Case**                     |
@@ -341,7 +324,6 @@ flowchart TD
 | LIST (per 1K files)         | 0.001                      | 0.001                      | Metadata-only.                              |
 | REMOVE (per file)           | 0.001                      | 0.0001                     | External: metadata-only.                   |
 
----
 ### **D. Network & Latency**
 | **Operation**               | **Latency (Internal)** | **Latency (External)** | **Network Overhead**               | **Bottlenecks**                          |
 |-----------------------------|------------------------|------------------------|------------------------------------|------------------------------------------|
@@ -351,11 +333,8 @@ flowchart TD
 | UNLOAD (1GB)                | 20–40s                 | 20–40s                 | 15% (compression + partitioning)   | External storage throughput              |
 | LIST (1K files)             | 1–2s                   | 1–2s                   | 0% (metadata only)                 | Metadata DB latency                      |
 
----
----
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 ### **A. Key Monitoring Views**
 | **View**                                      | **Purpose**                                                                 | **Example Query**                                                                                     | **Retention**               |
 |-----------------------------------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|----------------------------|
@@ -368,7 +347,6 @@ flowchart TD
 | `SNOWFLAKE.ACCOUNT_USAGE.STAGE_ACCESS_HISTORY`| Audit logs for stage operations (who accessed what and when).            | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.STAGE_ACCESS_HISTORY WHERE STAGE_NAME = 'MY_STAGE' AND ACCESS_TIME > DATEADD('day', -1, CURRENT_TIMESTAMP());` | 365 days |
 | `INFORMATION_SCHEMA.TABLE_STORAGE_METRICS`  | Storage metrics for tables loaded from stages.                            | `SELECT * FROM INFORMATION_SCHEMA.TABLE_STORAGE_METRICS WHERE TABLE_NAME = 'MY_TABLE';` | Session lifetime |
 
----
 ### **B. Error Categorization & Runbooks**
 #### **1. Common Errors & Fixes**
 | **Error Code**               | **Root Cause**                          | **Impact**                          | **Severity** | **Runbook**                                                                                     | **Monitoring View**                     |
@@ -383,7 +361,6 @@ flowchart TD
 | `MAX_FILE_SIZE_EXCEEDED`      | File exceeds `MAX_FILE_SIZE` in UNLOAD.  | `UNLOAD` fails.                     | Medium       | 1. Reduce `MAX_FILE_SIZE`. 2. Split data into smaller batches.                              | `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 | `PERMISSION_DENIED`           | Insufficient RBAC permissions.            | All stage operations fail.         | Critical     | 1. Grant `USAGE` on stage: `GRANT USAGE ON STAGE MY_STAGE TO ROLE MY_ROLE;`                | `SNOWFLAKE.ACCOUNT_USAGE.GRANTS_TO_STAGE_ROLES` |
 
----
 #### **2. Incident Runbooks**
 ##### **Runbook: Stage Corruption Recovery**
 ```sql
@@ -532,7 +509,6 @@ ALTER FILE FORMAT MY_FORMAT
 SET TYPE = 'PARQUET', COMPRESSION = 'SNAPPY';
 ```
 
----
 ### **C. Proactive Alerts**
 #### **Alert: Stage Storage > 90% Capacity**
 ```sql
@@ -603,11 +579,8 @@ AS
     count(*) > 5;
 ```
 
----
----
 ## **6. Advanced Production Patterns**
 
----
 ### **A. Idempotency Strategies**
 #### **1. PUT Idempotency**
 - **Use Case**: Avoid duplicate uploads in retry scenarios.
@@ -668,7 +641,6 @@ AS
     WHEN NOT MATCHED THEN INSERT (id, name) VALUES (source.id, source.name);
     ```
 
----
 ### **B. Dead Letter Queue (DLQ) Routing**
 #### **1. DLQ Table Schema**
 ```sql
@@ -742,7 +714,6 @@ AS
     COUNT(*) > 100;
 ```
 
----
 ### **C. CI/CD Validation**
 #### **1. Stage Schema Validation**
 ```sql
@@ -792,7 +763,6 @@ CREATE OR REPLACE STAGE PROD_MY_STAGE
   COMMENT = 'Production stage for batch loads';
 ```
 
----
 ### **D. Retry & Backpressure Logic**
 #### **1. Exponential Backoff (Python)**
 ```python
@@ -895,7 +865,6 @@ END;
 $$;
 ```
 
----
 ### **E. Security & Compliance Controls**
 #### **1. Encryption**
 - **CMK (Customer-Managed Keys)**:
@@ -988,11 +957,8 @@ GRANT USAGE ON STAGE MY_STAGE TO ROLE DATA_LOAD_ROLE;
 REVOKE USAGE ON STAGE MY_STAGE FROM ROLE PUBLIC;
 ```
 
----
----
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 ### **Mermaid: Stage Selection Decision Tree**
 ```mermaid
 %% Stage Selection Decision Matrix
@@ -1034,7 +1000,6 @@ flowchart TD
     class E,N named;
 ```
 
----
 ### **Quick Reference Table**
 | **Use Case**                          | **Stage Type**       | **File Format**       | **Warehouse Size** | **Error Handling**          | **Monitoring Focus**                     | **Security**               | **Cost**                     |
 |---------------------------------------|----------------------|-----------------------|--------------------|-----------------------------|------------------------------------------|----------------------------|------------------------------|
@@ -1047,11 +1012,8 @@ flowchart TD
 | High-throughput ETL                   | Internal             | Parquet               | 4X-Large           | DLQ + Circuit Breaker       | `COPY_HISTORY` + `QUERY_HISTORY`         | CMK + Network Policy        | Storage + Compute           |
 | Low-latency queries on stage data     | Internal             | Parquet               | Large              | `ON_ERROR = 'ABORT'`        | `TABLE_STORAGE_METRICS`                  | CMK + RLS                  | Storage + Compute           |
 
----
----
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 ### **A. Core Principles**
 1. **Atomicity Over Performance**:
    - Internal stages guarantee **ACID compliance** (metadata + data).
@@ -1084,7 +1046,6 @@ flowchart TD
    - Use `OVERWRITE = TRUE` + checksums for **PUT**.
    - Use `FORCE = FALSE` + merge logic for **COPY INTO**.
 
----
 ### **B. Production Checklist**
 #### **Stage Design**
 - [ ] **Internal Stages**:
@@ -1147,7 +1108,6 @@ flowchart TD
   - Use **S3 Intelligent-Tiering** or **Azure Cool Blob Storage**.
   - Monitor **cloud storage costs** (not billed by Snowflake).
 
----
 ### **C. Bottom Line**
 | **Metric**               | **Internal Stage**                          | **External Stage**                          | **Named Stage**                     |
 |--------------------------|--------------------------------------------|--------------------------------------------|-------------------------------------|
@@ -1161,11 +1121,8 @@ flowchart TD
 | **Latency**              | ⚡ 5–15ms (cached), 50–100ms (cold)          | ⏳ 5–15ms (URL gen) + client time           | ⚡ 1–2ms (redirect)                  |
 | **Failure Recovery**     | ✅ Automatic (atomic rollback)             | ⚠️ Manual (client-side)                    | ❌ N/A                                |
 
----
----
 ## **Appendix: Production-Ready Snippets**
 
----
 ### **A. Stage Creation Templates**
 #### **Internal Stage (Encrypted, Partitioned, CMK)**
 ```sql
@@ -1262,7 +1219,6 @@ CREATE STAGE PROD_NAMED_STAGE
   COMMENT = 'Named stage for historical data (references PROD_EXTERNAL_STAGE)';
 ```
 
----
 ### **B. High-Performance COPY INTO**
 #### **Parquet + Snappy (Optimized for Analytics)**
 ```sql
@@ -1313,7 +1269,6 @@ VALIDATION_MODE = RETURN_ROWS
 FORCE = FALSE;
 ```
 
----
 ### **C. High-Performance UNLOAD**
 #### **Partitioned UNLOAD (Daily)**
 ```sql
@@ -1341,7 +1296,6 @@ SINGLE = TRUE
 OVERWRITE = TRUE;
 ```
 
----
 ### **D. Stage Cleanup Automation**
 #### **Retention-Based Cleanup**
 ```sql
@@ -1415,7 +1369,6 @@ $$;
 CALL CLEANUP_LARGE_FILES('PROD_INTERNAL_STAGE', 1073741824);
 ```
 
----
 ### **E. Stage Migration Scripts**
 #### **Migrate Internal to External Stage**
 ```sql
@@ -1463,8 +1416,6 @@ FILE_FORMAT = (TYPE = 'PARQUET');
 -- (Same as above)
 ```
 
----
----
 ### **Final Notes**
 - **For Further Reading**:
   - [Snowflake Stage Documentation](https://docs.snowflake.com/en/user-guide/data-load-stage)
