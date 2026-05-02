@@ -76,6 +76,7 @@ We Will narrow down on Database storage layer in this section
   Time Travel is user-accessible for the configured retention (e.g., 10 days). Fail-safe extends 7 more days, inaccessible to users. Past that, data is gone.
 
 ## Zero-Copy Cloning
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/88ed45ed-fef7-40ee-b670-e888a8a3d309" />
 
 >[!Note]
 > Zero-Copy Cloning creates a new database, schema, or table that shares the **same underlying micro-partitions** as the source
