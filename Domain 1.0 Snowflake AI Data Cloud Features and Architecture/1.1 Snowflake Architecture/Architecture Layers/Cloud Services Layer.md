@@ -11,7 +11,7 @@ The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinat
 
 ## Core Functions
 
-![Uploading image.png…]()
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/c26eebd4-e15e-4730-b403-1a1145a3ce23" />
 
 ### Authentication and Access Control
 
