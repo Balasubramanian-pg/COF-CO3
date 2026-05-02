@@ -78,7 +78,6 @@ GROUP BY DATE_TRUNC('day', start_time)
 ORDER BY usage_date DESC;
 ```
 
----
 
 ## Access Requirements and Privileges
 
@@ -133,7 +132,6 @@ GRANT ROLE USAGE_ANALYTICS_ROLE TO USER platform_engineer;
 | Security/Compliance | `LOGIN_HISTORY`, `ACCESS_HISTORY`, `GRANTS_TO_USERS`, `QUERY_HISTORY` | Audit trails, access reviews, compliance reporting |
 | Data Governance | `TAG_REFERENCES`, `OBJECT_DEPENDENCIES`, `ACCESS_HISTORY` | Lineage tracking, policy enforcement, data discovery |
 
----
 
 ## Key Views by Category
 
