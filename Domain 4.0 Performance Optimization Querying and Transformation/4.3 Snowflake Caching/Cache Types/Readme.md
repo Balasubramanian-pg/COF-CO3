@@ -84,7 +84,6 @@ flowchart TD
     class T,U,V monitoring;
 ```
 
----
 
 ### **Cache Types Comparison Matrix**
 
@@ -97,7 +96,6 @@ flowchart TD
 | **File Metadata Cache** | Cache external table metadata | Per-session | Session | Memory | External stage definitions, file formats, partition metadata, file listings | ⭐⭐ (1.1-2x faster compilation) | Included | Automatic | DDL changes, external file changes, stage changes, session end |
 | **Warehouse Cache** | Cache warehouse-specific data | Per-warehouse | Session | SSD | Temporary tables, CTE results, intermediate query results, spill data | ⭐⭐⭐ (2-10x faster I/O) | Included | Automatic | Warehouse restart, session end, LRU eviction |
 
----
 
 ### **Cache Type Selection Decision Tree**
 
@@ -159,9 +157,7 @@ flowchart TD
     class N,T metadata;
 ```
 
----
 
----
 ## **2. Result Cache**
 
 ### **A. Definition and Purpose**
@@ -174,7 +170,6 @@ flowchart TD
 - Ad-hoc queries that are re-run
 - Reporting queries with static parameters
 
----
 
 ### **B. Architecture and Workflow**
 
@@ -209,7 +204,6 @@ flowchart TD
     class I,J,K,L,M default;
 ```
 
----
 
 ### **C. Technical Deep Dive**
 
@@ -255,7 +249,6 @@ The result cache is **automatically invalidated** when:
 | SHOW commands | ❌ No | Metadata queries are not cached |
 | DESCRIBE commands | ❌ No | Metadata queries are not cached |
 
----
 
 ### **D. Configuration**
 
@@ -325,7 +318,6 @@ WHERE
     role_name = 'MY_ROLE';
 ```
 
----
 
 ### **E. Monitoring and Metrics**
 
@@ -434,7 +426,6 @@ ORDER BY
     total_credits_saved DESC;
 ```
 
----
 ### **F. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -473,7 +464,6 @@ ORDER BY
 
 **Improvement**: **1000x faster** with cache hit
 
----
 
 **Example 2: Complex Join Query**
 ```sql
@@ -505,7 +495,6 @@ ORDER BY
 
 **Improvement**: **1000x faster** with cache hit
 
----
 ### **G. Best Practices**
 
 #### **1. When to Use Result Cache**
@@ -549,7 +538,6 @@ ORDER BY
 | **Cache TTL Too Long for Volatile Data** | Stale results | TTL longer than data freshness | Reduce TTL or disable caching |
 | **Cache TTL Too Short for Static Data** | Unnecessary re-executions | TTL shorter than data freshness | Increase TTL |
 
----
 ### **H. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -568,7 +556,6 @@ ORDER BY
 | **No Direct Cache Management** | Cannot manually manage cache contents | Use TTL and query patterns to influence cache |
 | **No Cache for External Tables** | Limited caching for external tables | Use internal tables or materialized views for hot external data |
 
----
 ### **I. Practical Examples**
 
 #### **Example 1: Dashboard Optimization**
@@ -720,8 +707,6 @@ AS
     AND SUM(CASE WHEN used_cached_result = TRUE THEN 1 ELSE 0 END) = 0;  -- No cache hits
 ```
 
----
----
 ## **3. Metadata Cache**
 
 ### **A. Definition and Purpose**
@@ -734,7 +719,6 @@ AS
 - Supporting predicate pushdown
 - Improving join optimization
 
----
 
 ### **B. Architecture and Workflow**
 
@@ -771,7 +755,6 @@ flowchart TD
     class K,L,M,N,O,P default;
 ```
 
----
 
 ### **C. Technical Deep Dive**
 
@@ -812,7 +795,6 @@ Snowflake **automatically maintains statistics** for:
 
 However, for **large tables** or **complex workloads**, you may need to **manually update statistics** to ensure optimal performance.
 
----
 ### **D. Configuration**
 
 #### **1. Update Statistics Manually**
@@ -889,7 +871,6 @@ WHERE
     table_name = 'MY_TABLE';
 ```
 
----
 ### **E. Monitoring and Metrics**
 
 #### **1. Monitor Compilation Time**
@@ -987,7 +968,6 @@ ORDER BY
     days_since_update DESC;
 ```
 
----
 ### **F. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -1021,7 +1001,6 @@ SELECT * FROM large_sales WHERE sale_date = '2023-01-15';
 - **Partitions Scanned**: 200x reduction
 - **Bytes Scanned**: 20x reduction
 
----
 
 **Example 2: Complex Join Query**
 ```sql
@@ -1058,7 +1037,6 @@ ORDER BY
 - **Execution Time**: 6x faster
 - **Join Efficiency**: Better join algorithm selection
 
----
 ### **G. Best Practices**
 
 #### **1. When Metadata Cache is Most Effective**
@@ -1098,7 +1076,6 @@ ORDER BY
 | **Statistics Not Updated After Bulk Load** | Poor performance after load | Statistics not refreshed | Update statistics after bulk load |
 | **Statistics Not Updated for Large Tables** | Poor performance on large tables | Automatic statistics not sufficient | Update statistics manually for large tables |
 
----
 ### **H. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1114,7 +1091,6 @@ ORDER BY
 | **Automatic Statistics Limitations** | Automatic statistics may not be sufficient for complex queries | Update statistics manually for performance-critical tables |
 | **Statistics Update Overhead** | Updating statistics consumes credits | Update statistics selectively and during off-peak hours |
 
----
 ### **I. Practical Examples**
 
 #### **Example 1: Large Table Optimization**
@@ -1355,8 +1331,6 @@ ORDER BY
     query_id;
 ```
 
----
----
 ## **4. Local Disk Cache**
 
 ### **A. Definition and Purpose**
@@ -1369,7 +1343,6 @@ ORDER BY
 - BI tools and dashboards
 - Analytical workloads with data locality
 
----
 
 ### **B. Architecture and Workflow**
 
@@ -1413,7 +1386,6 @@ flowchart TD
     class N storage;
 ```
 
----
 
 ### **C. Technical Deep Dive**
 
@@ -1470,7 +1442,6 @@ Local disk cache is **automatically invalidated** when:
 | Materialized Views | ✅ Yes | Cached like regular tables |
 | Stage Files | ❌ No | Files in stages are not cached (but external table data is) |
 
----
 ### **D. Configuration**
 
 **Note**: Local disk cache is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -1511,7 +1482,6 @@ CREATE WAREHOUSE mc_wh
 -- Data accessed by one cluster is not automatically cached in other clusters
 ```
 
----
 ### **E. Monitoring and Metrics**
 
 #### **1. Monitor Cache Usage via Query Profile**
@@ -1649,7 +1619,6 @@ ORDER BY
     bytes_scanned DESC;
 ```
 
----
 ### **F. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -1688,7 +1657,6 @@ SELECT * FROM large_table WHERE category = 'A' LIMIT 1000;
 - **I/O Latency**: 60x faster with cache
 - **Credit Usage**: 10x reduction with cache
 
----
 
 **Example 2: Dashboard with Multiple Queries**
 ```sql
@@ -1713,7 +1681,6 @@ SELECT * FROM products WHERE category = 'Electronics'; -- 200ms
 
 **Improvement**: **10x faster** with local disk cache
 
----
 ### **G. Best Practices**
 
 #### **1. When to Use Local Disk Cache**
@@ -1757,7 +1724,6 @@ SELECT * FROM products WHERE category = 'Electronics'; -- 200ms
 | **Cache Not Effective for External Tables** | No improvement for external tables | External table data may not be cached effectively | Use internal tables or materialized views for hot external data |
 | **High Memory Usage** | Warehouse memory pressure | Large cached data | Use filtering to reduce data volume, use smaller warehouses |
 
----
 ### **H. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1773,7 +1739,6 @@ SELECT * FROM products WHERE category = 'Electronics'; -- 200ms
 | **Not Invalidated by DML** | Cache may contain stale data after DML | Snowflake uses MVCC, so queries see latest data (cache is eventually consistent) |
 | **No Cache for Views** | Views themselves are not cached | Query the underlying tables directly |
 
----
 ### **I. Practical Examples**
 
 #### **Example 1: Hot Table Caching**
@@ -2061,8 +2026,6 @@ AS
     execution_time / bytes_scanned DESC;
 ```
 
----
----
 ## **5. Query Cache**
 
 ### **A. Definition and Purpose**
@@ -2075,7 +2038,6 @@ AS
 - Stored procedures and parameterized queries
 - Applications with consistent query patterns
 
----
 
 ### **B. Architecture and Workflow**
 
@@ -2121,7 +2083,6 @@ flowchart TD
     class P,Q,R cache;
 ```
 
----
 
 ### **C. Technical Deep Dive**
 
@@ -2203,7 +2164,6 @@ SELECT * FROM customers WHERE region = ? AND signup_date > ?;
 -- Both can reuse the same cached query plan
 ```
 
----
 ### **D. Configuration**
 
 **Note**: Query caching is **automatic** and **requires no configuration**. However, you can **influence** the query cache by:
@@ -2259,7 +2219,6 @@ SELECT col1, col2 FROM table1 WHERE col3 = 1;
 SELECT col1, col2 FROM table1 WHERE col3 = 2;
 ```
 
----
 ### **E. Monitoring and Metrics**
 
 #### **1. Monitor Compilation Time**
@@ -2341,7 +2300,6 @@ ORDER BY
     compilation_time;
 ```
 
----
 ### **F. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -2388,7 +2346,6 @@ ORDER BY
 
 **Improvement**: **24x faster compilation** with cache hit
 
----
 
 **Example 2: Parameterized Query in Application**
 ```sql
@@ -2420,7 +2377,6 @@ rs = stmt.executeQuery();  // Compilation time: 5ms
 
 **Improvement**: **60x faster compilation** with cache hit
 
----
 ### **G. Best Practices**
 
 #### **1. When to Use Query Cache**
@@ -2462,7 +2418,6 @@ rs = stmt.executeQuery();  // Compilation time: 5ms
 | **Session Parameter Changes** | Cache misses due to parameter changes | Different session parameters | Set session parameters explicitly |
 | **Frequent Schema Changes** | Cache frequently invalidated | Schema changes invalidate cache | Batch schema changes |
 
----
 ### **H. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -2478,7 +2433,6 @@ rs = stmt.executeQuery();  // Compilation time: 5ms
 | **No Cache for Views** | Views themselves are not cached (but underlying queries may be) | Query the underlying tables directly |
 | **No Cache for External Tables** | Limited caching for external tables | Use internal tables or materialized views |
 
----
 ### **I. Practical Examples**
 
 #### **Example 1: Parameterized Query Optimization**
@@ -2723,8 +2677,6 @@ try (Connection connection = dataSource.getConnection();
 }
 ```
 
----
----
 ## **6. File Metadata Cache**
 
 ### **A. Definition and Purpose**
@@ -2737,7 +2689,6 @@ try (Connection connection = dataSource.getConnection();
 - Queries with predicate pushdown on external tables
 - Frequent access to external data
 
----
 
 ### **B. Architecture and Workflow**
 
@@ -2790,7 +2741,6 @@ flowchart TD
     class R monitoring;
 ```
 
----
 
 ### **C. Technical Deep Dive**
 
@@ -2849,7 +2799,6 @@ flowchart TD
 - **External Stages**: File metadata cache stores information about **stages** (URL, credentials, file formats).
 - **File Formats**: File metadata cache stores **file format definitions** (type, compression, delimiters, etc.).
 
----
 ### **D. Configuration**
 
 **Note**: File metadata cache is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -2908,7 +2857,6 @@ WITH LOCATION = @my_stage
 FILE_FORMAT = (TYPE = 'PARQUET');
 ```
 
----
 ### **E. Monitoring and Metrics**
 
 #### **1. Monitor Compilation Time for External Tables**
@@ -3007,7 +2955,6 @@ ORDER BY
     last_refreshed DESC;
 ```
 
----
 ### **F. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -3050,7 +2997,6 @@ WHERE YEAR(sale_date) = 2023 AND MONTH(sale_date) = 1;
 - **Partitions Scanned**: 12x reduction
 - **Bytes Scanned**: 12.5x reduction
 
----
 
 **Example 2: Non-Partitioned External Table Query**
 ```sql
@@ -3080,7 +3026,6 @@ WHERE timestamp > CURRENT_DATE() - 7 AND log_level = 'ERROR';
 
 **Note**: For non-partitioned external tables, the **files scanned** remains the same, but **compilation time** and **optimization** improve.
 
----
 ### **G. Best Practices**
 
 #### **1. When to Use File Metadata Cache**
@@ -3121,7 +3066,6 @@ WHERE timestamp > CURRENT_DATE() - 7 AND log_level = 'ERROR';
 | **External File Changes Not Reflected** | Queries return stale data | File metadata cache not refreshed | Use `ALTER EXTERNAL TABLE ... REFRESH` |
 | **High Cloud Storage Costs** | Expensive metadata lookups | Frequent cache misses for external tables | Use internal tables for hot data, refresh metadata selectively |
 
----
 ### **H. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -3137,7 +3081,6 @@ WHERE timestamp > CURRENT_DATE() - 7 AND log_level = 'ERROR';
 | **No Cache for All External Table Configurations** | Some configurations may not be cached effectively | Use standard configurations |
 | **Partitioning Required for Best Performance** | Partition pruning requires partitioned external tables | Use `PARTITION BY` for external tables |
 
----
 ### **I. Practical Examples**
 
 #### **Example 1: Partitioned External Table with File Metadata Cache**
@@ -3351,8 +3294,6 @@ ORDER BY
     query_id;
 ```
 
----
----
 ## **7. Warehouse Cache**
 
 ### **A. Definition and Purpose**
@@ -3365,7 +3306,6 @@ ORDER BY
 - Spill data from large operations
 - Session-specific data
 
----
 
 ### **B. Architecture and Workflow**
 
@@ -3424,7 +3364,6 @@ flowchart TD
     class T monitoring;
 ```
 
----
 
 ### **C. Technical Deep Dive**
 
@@ -3481,7 +3420,6 @@ flowchart TD
 | DDL on Temporary Tables | ❌ No | DDL operations are not cached |
 | Session End | ❌ No | Session-scoped data is invalidated |
 
----
 ### **D. Configuration**
 
 **Note**: Warehouse cache is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -3549,7 +3487,6 @@ ALTER WAREHOUSE always_on_wh SET AUTO_SUSPEND = NULL;
 
 **Note**: Auto-suspend **does not invalidate** the warehouse cache. The cache is **retained** while the warehouse is suspended and **available immediately** when the warehouse resumes.
 
----
 ### **E. Monitoring and Metrics**
 
 #### **1. Monitor Temporary Table Performance**
@@ -3687,7 +3624,6 @@ ORDER BY
     execution_time;
 ```
 
----
 ### **F. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -3737,7 +3673,6 @@ SELECT * FROM temp_customer_orders;
 
 **Note**: The first access to each temporary table is not cached, but subsequent accesses benefit from the warehouse cache.
 
----
 
 **Example 2: Complex Query with CTEs**
 ```sql
@@ -3780,7 +3715,6 @@ JOIN
 
 **Improvement**: **10x faster** with warehouse cache
 
----
 ### **G. Best Practices**
 
 #### **1. When to Use Warehouse Cache**
@@ -3823,7 +3757,6 @@ JOIN
 | **High Memory Usage** | Warehouse memory pressure | Large cached data | Use filtering to reduce data volume, use smaller warehouses |
 | **Temporary Tables Not Reused** | Temporary tables not providing benefit | Temporary tables not queried multiple times | Reuse temporary tables in subsequent queries |
 
----
 ### **H. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -3838,7 +3771,6 @@ JOIN
 | **Storage Overhead** | Cache consumes SSD storage | Monitor warehouse storage usage |
 | **Not Invalidated by DML** | Cache may contain stale data after DML on temporary tables | Snowflake uses MVCC, so queries see latest data (cache is eventually consistent) |
 
----
 ### **I. Practical Examples**
 
 #### **Example 1: ETL Pipeline with Temporary Tables**
@@ -4187,11 +4119,8 @@ ORDER BY
     query_id;
 ```
 
----
----
 ## **8. Cache Type Comparison and Selection Guide**
 
----
 
 ### **A. Comprehensive Cache Type Comparison**
 
@@ -4216,7 +4145,6 @@ ORDER BY
 | **Works with External Tables** | ⚠️ Limited | ❌ No | ⚠️ Limited | ❌ No | ✅ Yes | ❌ No |
 | **Works with Temporary Tables** | ⚠️ Limited | ✅ Yes | ✅ Yes | ✅ Yes | ❌ No | ✅ Yes |
 
----
 
 ### **B. Cache Type Selection Matrix**
 
@@ -4244,7 +4172,6 @@ ORDER BY
 - ⚠️ = Limited benefit
 - ❌ = Not applicable or not recommended
 
----
 ### **C. Cache Type Decision Tree**
 
 ```mermaid
@@ -4306,7 +4233,6 @@ flowchart TD
     class U,V,W,X,Y,Z default;
 ```
 
----
 ### **D. Cache Type Implementation Patterns**
 
 #### **Pattern 1: Dashboard Optimization (Result Cache + Local Disk Cache + Warehouse Cache)**
@@ -4634,7 +4560,6 @@ ORDER BY
     warehouse_name, execution_time;
 ```
 
----
 ### **E. Cache Type Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -4652,11 +4577,8 @@ ORDER BY
 | **Using Result Cache for Real-Time Data** | Caching data that needs to be real-time | ❌ Stale results | Disable result cache or use shorter TTL |
 | **Not Combining Cache Types** | Using only one cache type | ❌ Suboptimal performance | Combine cache types for maximum benefit |
 
----
----
 ## **9. Production Checklists**
 
----
 ### **A. Result Cache Checklist**
 
 #### **1. Configuration**
@@ -4713,7 +4635,6 @@ ORDER BY
 - [ ] Document cacheable queries
 - [ ] Combine with other optimizations (clustering, materialized views)
 
----
 ### **B. Metadata Cache Checklist**
 
 #### **1. Configuration**
@@ -4760,7 +4681,6 @@ ORDER BY
 - [ ] Use consistent table schemas
 - [ ] Document metadata management strategies
 
----
 ### **C. Local Disk Cache Checklist**
 
 #### **1. Configuration**
@@ -4805,7 +4725,6 @@ ORDER BY
 - [ ] Monitor cache performance
 - [ ] Document cacheable data
 
----
 ### **D. Query Cache Checklist**
 
 #### **1. Configuration**
@@ -4841,7 +4760,6 @@ ORDER BY
 - [ ] Use consistent session parameters
 - [ ] Document query patterns
 
----
 ### **E. File Metadata Cache Checklist**
 
 #### **1. Configuration**
@@ -4889,7 +4807,6 @@ ORDER BY
 - [ ] Combine with other optimizations
 - [ ] Document external table configurations
 
----
 ### **F. Warehouse Cache Checklist**
 
 #### **1. Configuration**
@@ -4931,11 +4848,8 @@ ORDER BY
 - [ ] Combine with other optimizations
 - [ ] Document cacheable data
 
----
----
 ## **10. Troubleshooting Guide**
 
----
 ### **A. Result Cache Troubleshooting**
 
 #### **Symptom 1: Result Cache Not Working**
@@ -4996,7 +4910,6 @@ ORDER BY
    ALTER SESSION SET RESULT_CACHE_TTL = 3600;  -- 1 hour
    ```
 
----
 
 #### **Symptom 2: Low Cache Hit Rate**
 **Diagnosis**:
@@ -5055,7 +4968,6 @@ ORDER BY
    ALTER SESSION SET RESULT_CACHE_TTL = 7200;  -- 2 hours
    ```
 
----
 
 #### **Symptom 3: Cache Invalidation Due to Data Changes**
 **Diagnosis**:
@@ -5106,7 +5018,6 @@ ORDER BY
    ALTER SESSION SET RESULT_CACHE_TTL = 300;  -- 5 minutes
    ```
 
----
 ### **B. Metadata Cache Troubleshooting**
 
 #### **Symptom 1: High Compilation Time**
@@ -5157,7 +5068,6 @@ ORDER BY
    ADD COLUMN col2 INT;
    ```
 
----
 #### **Symptom 2: No Partition Pruning**
 **Diagnosis**:
 1. Check if partition pruning is working:
@@ -5195,7 +5105,6 @@ ORDER BY
    SELECT * FROM my_table WHERE date > '2023-01-01';
    ```
 
----
 ### **C. Local Disk Cache Troubleshooting**
 
 #### **Symptom 1: Local Disk Cache Not Improving Performance**
@@ -5242,7 +5151,6 @@ ORDER BY
    ALTER WAREHOUSE my_wh SET AUTO_SUSPEND = 1800;
    ```
 
----
 #### **Symptom 2: High I/O Latency**
 **Diagnosis**:
 1. Check query profile for I/O latency:
@@ -5281,7 +5189,6 @@ ORDER BY
    SELECT * FROM my_table WHERE date > CURRENT_DATE() - 7;
    ```
 
----
 ### **D. Query Cache Troubleshooting**
 
 #### **Symptom 1: High Compilation Time for Parameterized Queries**
@@ -5340,7 +5247,6 @@ ORDER BY
    ADD COLUMN col2 INT;
    ```
 
----
 #### **Symptom 2: Query Cache Not Reusing Plans**
 **Diagnosis**:
 1. Check for schema changes:
@@ -5381,7 +5287,6 @@ ORDER BY
    CREATE PROCEDURE my_proc() AS SELECT * FROM my_table;
    ```
 
----
 ### **E. File Metadata Cache Troubleshooting**
 
 #### **Symptom 1: High Compilation Time for External Tables**
