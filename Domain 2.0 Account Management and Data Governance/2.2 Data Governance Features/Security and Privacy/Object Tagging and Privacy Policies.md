@@ -533,7 +533,6 @@ END;
 $$;
 ```
 
----
 
 ## Tag Lifecycle Management
 
@@ -698,7 +697,6 @@ CREATE OR REPLACE ALERT governance.tag_review_due
   );
 ```
 
----
 
 ## Privacy Policy Automation and Monitoring
 
@@ -865,7 +863,6 @@ GROUP BY tr.tag_value
 ORDER BY tables_tagged DESC;
 ```
 
----
 
 ## Best Practices and Common Pitfalls
 
@@ -933,7 +930,6 @@ flowchart TD
   I --> J
 ```
 
----
 
 ## Decision Framework: Tag-Driven Privacy Design
 
@@ -969,7 +965,6 @@ flowchart TD
 | Is analytics use case important | Use hash-based masking to enable grouping without raw exposure | Full masking or column grants may be appropriate |
 | Do protection rules change frequently | Use tag-driven policy automation for scalable management | Manual policy updates may be acceptable for stable requirements |
 
----
 
 ## Key Principles to Remember
 
