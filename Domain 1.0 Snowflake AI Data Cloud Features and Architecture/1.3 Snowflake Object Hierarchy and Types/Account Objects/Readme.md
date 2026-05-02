@@ -102,6 +102,9 @@ flowchart TD
 >[!Tip]
 >In the Snowflake architecture, a database is the top level logical container within an account. It functions as the primary namespace and administrative boundary used to manage and organize one or more schemas. The database level establishes the broadest domain for role based access control, data sharing capabilities, and replication policies across the Snowflake environment.
 
+>[!Tip]
+>In Snowflake, a schema is a secondary logical container nested directly within a parent database. It serves as a specialized directory that groups and organizes specific data objects such as tables, views, stored procedures, and external stages. Schemas provide a mechanism for granular data categorization and precise security management, ensuring that users and roles only interact with the exact data objects they are authorized to access.
+
 - Database: Top level logical container for related data
 - Schema: Sub container inside a database for organizing tables and views
 - Both support Time Travel and failover configuration
