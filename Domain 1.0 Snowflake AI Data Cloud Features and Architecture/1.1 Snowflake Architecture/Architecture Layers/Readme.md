@@ -68,7 +68,7 @@ graph TD
     VW --> |Read/write data in micro-partitions| ST[(Database Storage Layer: Cloud Object Storage)]
     CS -.-> |Background maintenance, data loading orchestration| ST
     VW -.-> |Local SSD cache of hot data| VW
-    User -.-> |Direct connection (e.g., JDBC)| CS
+    User -.-> |"Direct connection (e.g., JDBC)"| CS
 ```
 
 - Diagram: Micro-Partition Data Flow During Query
