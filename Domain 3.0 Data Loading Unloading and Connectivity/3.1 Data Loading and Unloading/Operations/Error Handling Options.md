@@ -23,7 +23,6 @@ graph TD
   Hist --> Monitor[Observability & Alerting]
 ```
 
----
 
 ## 3.1.1 Execution Semantics & Transactional Boundaries
 
@@ -42,7 +41,6 @@ Snowflake's error handling operates at **two distinct granularities**: row-level
 - Error file generation is **asynchronous**. Threads write to temporary buffers, flush to stage after commit, and update `COPY_HISTORY`.
 - `ON_ERROR` does **not** affect `PURGE`. Only successfully loaded files are purged. Failed files remain in stage for manual triage.
 
----
 
 ## 3.1.2 Core `ON_ERROR` Options: Technical Deep Dive
 
