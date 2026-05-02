@@ -28,6 +28,8 @@ SHOW PIPES;
 
 ### ML models
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/18a06766-8ca8-42f4-a8e9-436723ac44be" />
+
 Snowflake ML models are versioned schema objects. `CREATE MODEL` creates a model in the current or specified schema, but Snowflake is explicit that SQL can only create models from other models, while creation from scratch is done through the Snowflake Model Registry Python API. Every model must have at least one version, and one version must be designated as the default. ([Snowflake Docs][3])
 
 The operational consequence is that model promotion is version-centric. `ALTER MODEL … ADD VERSION` adds a new version, and `ALTER MODEL` can set the default version. 
