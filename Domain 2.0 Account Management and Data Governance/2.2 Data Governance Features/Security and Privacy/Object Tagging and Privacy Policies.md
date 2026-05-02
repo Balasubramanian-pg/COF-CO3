@@ -47,7 +47,6 @@ flowchart LR
   Q6 --> Q7[Review and adjust quarterly]
 ```
 
----
 
 ## Object Tagging Framework
 
@@ -248,7 +247,6 @@ WHERE c.table_name = 'customers'
   AND c.column_name IN ('ssn', 'email');
 ```
 
----
 
 ## Privacy Policy Engine: Tags Driving Protection
 
