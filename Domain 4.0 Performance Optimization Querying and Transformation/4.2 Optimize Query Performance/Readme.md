@@ -111,7 +111,6 @@ Snowflake's **multi-cluster, shared-data architecture** provides several inheren
    - **Vectorized Execution**: Processes data in batches using SIMD
    - **Multi-Cluster Warehouses**: Scales out for high concurrency
 
----
 ### **Key Query Performance Metrics**
 
 | **Metric** | **Definition** | **Target Value** | **Measurement Method** | **Optimization Impact** |
@@ -130,7 +129,6 @@ Snowflake's **multi-cluster, shared-data architecture** provides several inheren
 | **Spill to Disk** | Data spilled to disk due to memory limits | 0 | QUERY_PROFILE.SPILL_TO_DISK | Increase warehouse size, reduce data volume |
 | **Spill to Remote** | Data spilled to remote storage | 0 | QUERY_PROFILE.SPILL_TO_REMOTE | Increase warehouse size, reduce data volume |
 
----
 ### **Query Optimization Principles**
 
 1. **Minimize Data Scanned**:
@@ -172,7 +170,6 @@ Snowflake's **multi-cluster, shared-data architecture** provides several inheren
    - **Tune queries** based on performance data
    - **Set up alerts** for performance issues
 
----
 ### **Common Query Performance Bottlenecks**
 
 | **Bottleneck** | **Symptoms** | **Root Causes** | **Diagnosis** | **Solutions** |
@@ -185,11 +182,8 @@ Snowflake's **multi-cluster, shared-data architecture** provides several inheren
 | **Compilation Bottleneck** | High compilation_time, low execution_time | Complex queries, many subqueries, dynamic SQL | QUERY_HISTORY.compilation_time | Simplify queries, use cached plans, avoid dynamic SQL |
 | **Storage Bottleneck** | High bytes_scanned for external tables | Slow cloud storage, large external tables | QUERY_HISTORY.bytes_scanned, TABLE_STORAGE_METRICS.storage_bytes | Use internal tables, use materialized views, use caching, use PrivateLink |
 
----
----
 ## **2. Query Design Optimization**
 
----
 ### **A. SELECT Statement Optimization**
 
 #### **1. Basic SELECT Optimization**
@@ -296,7 +290,6 @@ JOIN
     table2 t2 ON t1.id = t2.id;
 ```
 
----
 ### **B. JOIN Optimization**
 
 #### **1. Join Types and When to Use**
@@ -369,7 +362,6 @@ SELECT * FROM table1 WHERE id IN (SELECT id FROM table2);
 SELECT * FROM large_table JOIN small_table ON large_table.id = small_table.id;
 ```
 
----
 ### **C. GROUP BY Optimization**
 
 #### **1. GROUP BY Best Practices**
@@ -422,7 +414,6 @@ FROM sales
 GROUP BY GROUPING SETS ((region), ());
 ```
 
----
 ### **D. ORDER BY Optimization**
 
 #### **1. ORDER BY Best Practices**
@@ -455,7 +446,6 @@ SELECT * FROM my_table WHERE id > 1000000 ORDER BY id LIMIT 100;
 SELECT * FROM my_table CLUSTER BY (date) ORDER BY date;
 ```
 
----
 ### **E. Subquery Optimization**
 
 #### **1. Subquery Types and Optimization**
@@ -515,7 +505,6 @@ SELECT * FROM MATERIALIZE((SELECT * FROM my_table WHERE date > CURRENT_DATE())) 
 JOIN other_table b ON a.id = b.id;
 ```
 
----
 ### **F. CTE (Common Table Expression) Optimization**
 
 #### **1. CTE Best Practices**
@@ -590,7 +579,6 @@ JOIN
     order_items oi ON co.order_id = oi.order_id;
 ```
 
----
 ### **G. Window Function Optimization**
 
 #### **1. Window Function Types**
@@ -675,11 +663,8 @@ FROM
     sales;
 ```
 
----
----
 ## **3. Table Design Optimization**
 
----
 ### **A. Clustering**
 
 #### **1. Clustering Overview**
@@ -869,7 +854,6 @@ WHERE
     table_name = 'SALES';
 ```
 
----
 ### **B. Partitioning (Snowflake-Specific)**
 
 **Note**: Snowflake does not support traditional partitioning like other databases (e.g., Oracle, PostgreSQL). However, you can achieve similar benefits through:
@@ -933,7 +917,6 @@ WHERE date = '2023-01-15';
 | **Use Consistent Partitioning** | Use the same partitioning scheme across related tables | `PARTITION BY (date)` for all time-series tables |
 | **Monitor Partition Pruning** | Check PARTITIONS_SCANNED in QUERY_HISTORY | `SELECT PARTITIONS_SCANNED FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 
----
 ### **C. Table Compression**
 
 #### **1. Compression in Snowflake**
@@ -992,7 +975,6 @@ CREATE STAGE my_compressed_stage
 | **Test Compression Ratios** | Test different compression types for your data | Compare file sizes with different compression types |
 | **Consider Decompression Overhead** | Compression adds CPU overhead for decompression | Balance compression ratio with performance |
 
----
 ### **D. Column Selection and Data Types**
 
 #### **1. Column Selection Best Practices**
@@ -1084,11 +1066,8 @@ CREATE TABLE my_table (
 );
 ```
 
----
----
 ## **4. Query Execution Optimization**
 
----
 ### **A. EXPLAIN Plan Analysis**
 
 #### **1. What is EXPLAIN?**
@@ -1225,7 +1204,6 @@ EXPLAIN SELECT * FROM my_table WHERE date > CURRENT_DATE() - 7
 WITH STATISTICS = TRUE;
 ```
 
----
 ### **B. Query Profile Analysis**
 
 #### **1. What is Query Profile?**
@@ -1382,7 +1360,6 @@ ORDER BY
     spill_to_remote DESC, spill_to_disk DESC;
 ```
 
----
 ### **C. Warehouse Optimization for Query Performance**
 
 #### **1. Warehouse Sizing**
@@ -1512,7 +1489,6 @@ ALTER ROLE high_priority_role SET QUERY_PRIORITY = 'HIGH';
 GRANT ROLE high_priority_role TO USER my_user;
 ```
 
----
 ### **D. Caching Strategies**
 
 #### **1. Result Caching**
@@ -1603,11 +1579,8 @@ Snowflake caches **frequently accessed data** in **local SSD** for each warehous
 | **Use Larger Warehouses for More Cache** | Larger warehouses have more local disk | `ALTER WAREHOUSE my_wh SET WAREHOUSE_SIZE = 'LARGE'` |
 | **Avoid Frequent Cache Invalidation** | Cache is invalidated when data changes | Batch data changes |
 
----
----
 ## **5. Advanced Query Optimization Techniques**
 
----
 ### **A. Query Rewriting**
 
 #### **1. Automatic Query Rewriting**
@@ -1696,7 +1669,6 @@ SELECT DISTINCT t1.* FROM table1 t1 JOIN table2 t2 ON t1.id = t2.id;
 SELECT * FROM table1 WHERE id IN (SELECT id FROM table2);
 ```
 
----
 ### **B. Materialized Views**
 
 #### **1. Materialized View Overview**
@@ -1906,7 +1878,6 @@ ORDER BY
     storage_gb DESC;
 ```
 
----
 ### **C. Approximate Functions**
 
 #### **1. Approximate Function Overview**
@@ -1992,7 +1963,6 @@ FROM (
 );
 ```
 
----
 ### **D. Query Hints**
 
 #### **1. Query Hint Overview**
@@ -2087,7 +2057,6 @@ SELECT * FROM t1
 JOIN t2 ON t1.id = t2.id;
 ```
 
----
 ### **E. Statistics and Metadata**
 
 #### **1. Statistics in Snowflake**
@@ -2139,11 +2108,8 @@ SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.CLUSTERING_INFORMATION('MY_TABL
 | **Use Clustering for Better Statistics** | Clustering improves partition pruning | `ALTER TABLE my_table CLUSTER BY (date)` |
 | **Avoid Skewed Data** | Skewed data can lead to uneven partition sizes | Use RECLUSTER to rebalance data |
 
----
----
 ## **6. Performance Tuning Workflow**
 
----
 ### **Mermaid: Performance Tuning Workflow**
 ```mermaid
 %% Performance Tuning Workflow
@@ -2245,7 +2211,6 @@ flowchart TD
     class T external;
 ```
 
----
 ### **Step-by-Step Performance Tuning Workflow**
 
 #### **Step 1: Identify Slow Queries**
@@ -2468,11 +2433,8 @@ AS
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
----
 ## **7. Case Studies: Real-World Query Optimization**
 
----
 ### **Case Study 1: Slow Dashboard Queries**
 
 #### **Problem**
@@ -2577,7 +2539,6 @@ AS
 | **Credit Usage** | 50 credits | 5 credits | 90% reduction |
 | **User Satisfaction** | Poor | Excellent | Significant improvement |
 
----
 ### **Case Study 2: High Credit Usage**
 
 #### **Problem**
@@ -2695,7 +2656,6 @@ AS
 | **Spill to Remote** | 10GB | 0 | Eliminated |
 | **ETL Job Duration** | 2 hours | 30 minutes | 4x faster |
 
----
 ### **Case Study 3: Slow JOIN Performance**
 
 #### **Problem**
@@ -2781,9 +2741,6 @@ AS
 | **Join Size** | 100M rows | 10M rows | 90% reduction |
 | **User Satisfaction** | Poor | Excellent | Significant improvement |
 
----
----
 ## **8. Query Optimization Decision Matrix**
 
----
 ### **Mer
