@@ -442,7 +442,6 @@ ORDER BY
 4. Set up alerts for unusual credit usage patterns.
 5. Compare actual credit usage with resource monitor quotas to ensure you're staying within budget.
 
----
 
 ### 4. WAREHOUSE_EVENTS_HISTORY
 
@@ -545,7 +544,6 @@ ORDER BY
 4. Use the data for audit trails and compliance reporting.
 5. Set up alerts for unexpected warehouse events (e.g., frequent suspensions).
 
----
 
 ### 5. RESOURCE_MONITORS
 
@@ -640,7 +638,6 @@ ORDER BY
 4. Use the data to enforce budget controls and prevent bill shocks.
 5. Correlate with WAREHOUSE_METERING_HISTORY to understand credit usage patterns.
 
----
 
 ### 6. RESOURCE_MONITOR_HISTORY
 
@@ -744,7 +741,6 @@ ORDER BY
 4. Use the data to fine-tune resource monitor configurations.
 5. Set up alerts for resource monitor notifications to enable proactive management.
 
----
 
 ### 7. LOGIN_HISTORY
 
@@ -873,7 +869,6 @@ ORDER BY
 4. Use the data for security audits and compliance reporting.
 5. Analyze login patterns to understand user activity and identify potential security issues.
 
----
 
 ### 8. USER_LOGIN_HISTORY
 
@@ -987,7 +982,6 @@ ORDER BY
 4. Use the data for capacity planning and understanding user behavior.
 5. Correlate with QUERY_HISTORY to understand what users are doing during their sessions.
 
----
 
 ### 9. TABLE_STORAGE_METRICS
 
@@ -1096,7 +1090,6 @@ ORDER BY
 4. Identify tables that may benefit from clustering or partitioning.
 5. Correlate with QUERY_HISTORY to understand which tables are being scanned most frequently.
 
----
 
 ### 10. MATERIALIZED_VIEW_REFRESH_HISTORY
 
@@ -1209,7 +1202,6 @@ ORDER BY
 4. Monitor refresh durations to identify performance bottlenecks.
 5. Correlate with QUERY_HISTORY to understand the impact of refreshes on warehouse performance.
 
----
 ### 11. MATERIALIZED_VIEW_STORAGE
 
 **Purpose**: Provides information about storage usage for materialized views.
@@ -1282,7 +1274,6 @@ ORDER BY
 4. Use the data for capacity planning and storage optimization.
 5. Consider the trade-off between storage costs and query performance when using materialized views.
 
----
 ### 12. STORAGE_USAGE
 
 **Purpose**: Provides information about storage usage at the account level.
@@ -1364,7 +1355,6 @@ ORDER BY
 4. Monitor the breakdown between active, time travel, fail-safe, and stage storage.
 5. Correlate with other views (e.g., TABLE_STORAGE_METRICS) to identify the sources of storage growth.
 
----
 ### 13. DATABASE_STORAGE_USAGE
 
 **Purpose**: Provides information about storage usage by database.
@@ -1443,7 +1433,6 @@ ORDER BY
 4. Use the data for capacity planning and cost allocation.
 5. Set up alerts for databases that are growing rapidly.
 
----
 ### 14. SCHEMA_STORAGE_USAGE
 
 **Purpose**: Provides information about storage usage by schema.
@@ -1513,7 +1502,6 @@ ORDER BY
 4. Use the data for capacity planning and cost allocation.
 5. Set up alerts for schemas that are growing rapidly.
 
----
 ### 15. ACCOUNT_USAGE
 
 **Purpose**: Provides a summary of account-level usage, including storage and compute.
@@ -1599,7 +1587,6 @@ ORDER BY
 4. Identify usage patterns (e.g., higher usage on certain days of the week).
 5. Correlate with other views (e.g., WAREHOUSE_METERING_HISTORY, STORAGE_USAGE) for detailed analysis.
 
----
 ## Performance Considerations for Account Usage Views
 
 When querying Account Usage views, consider the following performance best practices:
@@ -1918,7 +1905,6 @@ ORDER BY
 4. Use query tagging to allocate costs to specific teams/projects.
 5. Set up alerts for unusual cost spikes.
 
----
 
 ### 2. Performance Analysis and Optimization
 
@@ -2006,7 +1992,6 @@ SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_PROFILE('query_id_from_QU
 4. Implement query prioritization for mixed workloads.
 5. Set up alerts for performance issues.
 
----
 ### 3. Workload Analysis and Capacity Planning
 
 **Goal**: Understand workload patterns and plan for future capacity needs.
@@ -2095,7 +2080,6 @@ ORDER BY
 4. Use multi-cluster warehouses for variable workloads.
 5. Set up alerts for unusual usage patterns.
 
----
 ### 4. Security and Compliance Monitoring
 
 **Goal**: Monitor for security issues and ensure compliance with organizational policies.
@@ -2205,7 +2189,6 @@ ORDER BY
 4. Monitor user activity for unusual patterns.
 5. Set up alerts for security issues.
 
----
 ### 5. Resource Monitor Analysis
 
 **Goal**: Monitor resource monitor usage and ensure quotas are appropriate.
@@ -2297,7 +2280,6 @@ ORDER BY
 4. Use the data to enforce budget controls.
 5. Document resource monitor configurations and policies.
 
----
 ## Troubleshooting with Account Usage Views
 
 ### 1. High Credit Usage
@@ -2386,7 +2368,6 @@ ORDER BY
 4. Set up alerts for high credit usage.
 5. Use query tagging to identify and track expensive queries.
 
----
 ### 2. Slow Query Performance
 
 **Symptoms**: Queries are running slower than expected.
@@ -2474,7 +2455,6 @@ ORDER BY
 4. Use result caching for repetitive queries.
 5. Set up alerts for slow queries.
 
----
 ### 3. Warehouse Overloaded
 
 **Symptoms**: Queries are queued or failing due to warehouse overloading.
@@ -2561,7 +2541,6 @@ ORDER BY
 4. Use separate warehouses for different workload types.
 5. Set up alerts for warehouse overloading.
 
----
 ### 4. Resource Monitor Suspensions
 
 **Symptoms**: Warehouses are suspended due to resource monitor limits being reached.
@@ -2656,7 +2635,6 @@ ORDER BY
 5. Implement query timeouts to prevent runaway queries.
 6. Set up alerts for resource monitor warnings.
 
----
 ### 5. Failed Queries
 
 **Symptoms**: Queries are failing with errors.
@@ -2799,7 +2777,6 @@ ORDER BY
 6. Check for and resolve deadlocks or resource contention.
 7. Set up alerts for failed queries.
 
----
 ## Best Practices for Using Account Usage Views
 
 ### 1. Query Performance Best Practices
