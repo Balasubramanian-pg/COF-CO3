@@ -11,7 +11,7 @@ graph TD
   Account --> Tasks[Tasks]
   Account --> Pipes[Pipes]
 ```
-
+## Overview
 | Object Type | Purpose | Key Properties |
 |-------------|---------|---------------|
 | Users | People or services that log in | Username, auth method, default role, status |
@@ -31,7 +31,7 @@ flowchart LR
   D --> E[Returns Results]
 ```
 
-**Users**
+## Users
 
 - Represent individual people or automated services
 - Each user has a login name and authentication method
@@ -47,7 +47,7 @@ flowchart LR
 | Auth type | KEY_PAIR | More secure than password for automation |
 | Status | ACTIVE or DISABLED | Controls whether login is allowed |
 
-**Roles**
+## Roles
 
 - Roles group privileges and can be assigned to users or other roles
 - Role hierarchy allows inheritance: parent roles pass privileges to children
@@ -61,7 +61,7 @@ graph TD
   WH_ADMIN --> ENGINEER
   ANALYST --> INTERN
 ```
-
+### Role Patterns
 | Role Pattern | When To Use | Example |
 |--------------|-------------|---------|
 | Functional roles | Team based access | ANALYST_ROLE, ENGINEER_ROLE |
@@ -69,7 +69,7 @@ graph TD
 | Project roles | Short term initiatives | PROJECT_ALPHA_ROLE |
 | Service roles | Automation and pipelines | ETL_SERVICE_ROLE |
 
-**Warehouses**
+## Warehouses
 
 - Virtual compute clusters that execute queries and load data
 - Sized from XSmall to 6XLarge, each step doubles compute power
@@ -95,7 +95,7 @@ flowchart TD
   Q4 --> C[Multi-cluster warehouse with scaling]
 ```
 
-**Databases and Schemas**
+## Databases and Schemas
 
 - Database: Top level logical container for related data
 - Schema: Sub container inside a database for organizing tables and views
@@ -117,7 +117,7 @@ graph LR
   SC3 --> T3[View: daily_metrics]
 ```
 
-**Integrations**
+## Integrations
 
 - Define secure connections to external systems
 - Types: storage (S3, Azure, GCS), notification (SNS, Event Grid), API, OAuth
@@ -129,7 +129,7 @@ graph LR
 | OAuth | Connect to external identity provider | Client ID, secret, token endpoint |
 | API | Call external services from Snowflake | Endpoint URL, auth method |
 
-**Shares**
+## Shares
 
 - Enable secure data sharing without copying data
 - Provider creates share, adds objects, grants to consumer accounts
@@ -147,7 +147,7 @@ sequenceDiagram
   C->>P: Query shared tables directly
 ```
 
-**Tasks and Pipes**
+## Tasks and Pipes
 
 - Tasks: Schedule SQL statements or stored procedures
 - Pipes: Automate COPY INTO from stages when new files arrive
@@ -159,7 +159,7 @@ sequenceDiagram
 | Error handling | Retry logic, alerting via integrations | Dead letter queue, error table |
 | Monitoring | Task history view, system functions | Pipe status, load history |
 
-**Object Creation Flow**
+## Object Creation Flow
 
 ```mermaid
 flowchart LR
@@ -170,7 +170,7 @@ flowchart LR
   E --> F[Document and monitor]
 ```
 
-**Common Object Patterns**
+## Common Object Patterns
 
 | Pattern | Objects Involved | Why It Works |
 |---------|-----------------|--------------|
@@ -180,7 +180,7 @@ flowchart LR
 | Secure sharing | Share object with consumer accounts | Share data without duplication or movement |
 | Automated ingestion | Stage plus pipe plus notification integration | Load new files as soon as they arrive |
 
-**Troubleshooting Table**
+## Troubleshooting Table
 
 | Issue | Likely Cause | Fix |
 |-------|--------------|-----|
@@ -190,7 +190,7 @@ flowchart LR
 | Pipe not loading files | Notification integration misconfigured | Verify queue permissions and event mapping |
 | Share query fails | Consumer lacks role on shared database | Grant USAGE on database to consumer role |
 
-**Key Practices**
+Key Practices
 
 - Name objects clearly and consistently. Avoid generic names like test_db
 - Grant privileges to roles, not directly to users. Makes audits and changes easier
@@ -200,7 +200,7 @@ flowchart LR
 - Document the purpose of each role and warehouse in a central location
 - Monitor object usage with ACCOUNT_USAGE views to find unused resources
 
-**Object Selection Guide**
+### Object Selection Guide
 
 ```mermaid
 flowchart TD
@@ -222,7 +222,7 @@ flowchart TD
   Q8 --> G[Create a Task or Pipe]
 ```
 
-**Bottom Line**
+## Bottom Line
 
 - Account objects are the building blocks of your Snowflake work
 - Start with the minimum you need. Add complexity only when your workflow requires it
