@@ -24,7 +24,6 @@ graph TD
   Error --> Log[Error File Generation]
 ```
 
----
 
 ## 3.1.1 Execution Architecture & Thread Model
 
@@ -46,7 +45,6 @@ graph TD
 - **Idempotency Key:** Snowflake tracks loaded files via deterministic hash: `SHA256(stage_path + file_name + last_modified + file_size)`. Changing any component triggers reprocessing.
 - **Post-Load Immutability:** Once committed, micro-partitions are immutable. `UPDATE`/`DELETE`/`MERGE` create new partitions; originals persist for `DATA_RETENTION_TIME_IN_DAYS`.
 
----
 
 ## 3.1.2 Syntax Variants & Parameter Internals
 
