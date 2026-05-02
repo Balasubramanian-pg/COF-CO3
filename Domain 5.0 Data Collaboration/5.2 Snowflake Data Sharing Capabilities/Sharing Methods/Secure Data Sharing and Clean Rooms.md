@@ -192,7 +192,6 @@ Clean Room Query Lifecycle:
 | `EPSILON_BUDGET_QUERY = 2.0` | Maximum epsilon consumed by single query. | Large queries may need higher budget; increases re-identification risk per query. | 2.0 |
 | `BUDGET_ALERT_THRESHOLD = 0.8` | Triggers alert at 80% budget consumption. | Enables proactive budget management before hard cutoff. | 0.8 |
 
----
 
 ## 4. Performance & Resource Implications
 
@@ -265,7 +264,6 @@ If EPSILON_BUDGET_DAILY = 10.0, maximum 10 COUNT queries per day at ε=1.0 each
 - Use `APPROX_COUNT_DISTINCT` instead of exact `COUNT(DISTINCT)` (lower memory)
 - Partition large datasets and run multiple clean room queries with `WHERE` clauses
 
----
 
 ## 5. Monitoring, Observability & Troubleshooting
 
@@ -581,7 +579,6 @@ SET DIFFERENTIAL_PRIVACY_EPSILON = 0.5,
     ENABLED = TRUE;
 ```
 
----
 
 ## 6. Advanced Production Patterns
 
@@ -834,7 +831,6 @@ FROM clean_room_audit_log
 GROUP BY report_month, clean_room_name, consumer_account_locator;
 ```
 
----
 
 ## 7. Decision Matrix / Quick Reference Flowchart
 
@@ -863,7 +859,6 @@ flowchart TD
     MON4 --> END
 ```
 
----
 
 ## 8. Key Engineering Principles & Bottom Line
 
@@ -900,6 +895,5 @@ flowchart TD
 - [ ] Quarterly privacy audit: verify epsilon consumption patterns, detect re-identification attempts
 - [ ] CI/CD pipeline validates all clean room policy changes before deployment
 
----
 
 **Bottom Line:** Snowflake Secure Data Sharing and Clean Rooms represent two distinct trust architectures. Standard secure shares enforce **access control** (who can see what) through RBAC, row access policies, and dynamic masking—operating at metadata speed with consumer-paid compute. Clean Rooms enforce **privacy guarantees** (what can be learned) through differential privacy, secure enclaves, and operation whitelists—operating at cryptographic speed with dual-billing and non-negotiable budget exhaustion. Production reliability demands treating clean room epsilon as a finite daily currency: budgeted, monitored, alerted, and protected with the same rigor as financial ledgers. The cost model is asymmetric and privacy-bound: provider controls data and privacy policy, consumer controls query formulation and compute allocation (except enclave costs), and Snowflake's global metadata layer enforces the cryptographic boundary. At enterprise scale, clean room governance is not a feature—it is a contractual obligation encoded in SQL.
