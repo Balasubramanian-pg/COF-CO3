@@ -144,7 +144,7 @@ A Snowflake Native App is created with `CREATE APPLICATION` from an application 
 
 Native Apps are the application-layer object type in the hierarchy. They are how Snowflake packages data apps that can create objects, expose services, and participate in Snowflake governance rather than living as external orchestration glue. In operational terms, treat app installation like a deployment transaction, not a simple `CREATE` statement. ([docs.snowflake.com](https://docs.snowflake.com/en/developer-guide/native-apps/native-apps-about), [docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-application))
 
-## Stages and File Formats.md
+## Stages and File Formats
 
 A stage is the object boundary for file ingress and egress. `CREATE STAGE` supports either a named file format reference or an inline file format type definition, and those are mutually exclusive. Snowflake documents `FORMAT_NAME` as the preferred route when you want the stage to inherit a reusable parsing contract, while `TYPE` defines the file type directly on the stage. Default stage file type is CSV if not specified. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-stage))
 
@@ -165,7 +165,7 @@ CREATE OR REPLACE STAGE raw_stage
 
 For loading, `COPY INTO <table>` can consume all supported stage file types, while unloading to a stage has a narrower supported set. Snowflake documents that unloading to a stage supports CSV, JSON, or PARQUET. If you use `CUSTOM`, Snowflake treats the stage as unstructured and requires `FILE_PROCESSOR`. That is a hard boundary worth preserving in platform standards. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-stage))
 
-## Tables and Views.md
+## Tables and Views
 
 Snowflake tables are not one thing. Permanent, temporary, and transient tables differ in durability and recovery semantics, external tables read from files in an external stage, dynamic tables automate refresh, materialized views persist query results for fast reuse, and hybrid tables are optimized for transactional workloads with row locking and integrity constraints. The practical consequence is that table type is an architectural choice, not a storage preference. ([docs.snowflake.com](https://docs.snowflake.com/en/guides-overview-db), [docs.snowflake.com](https://docs.snowflake.com/en/user-guide/tables-temp-transient))
 
@@ -186,7 +186,7 @@ FROM stage_fact;
 
 For dependency-sensitive work, prefer `OBJECT_DEPENDENCIES` over guesswork. Snowflake defines a dependency as a logical reference where one object points to another without copying data. That makes it the right source for impact analysis before drop, replace, clone promotion, or replication. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/account-usage/object_dependencies))
 
-## UDFs and Stored Procedures.md
+## UDFs and Stored Procedures
 
 A UDF is the expression-level abstraction. Snowflake says `CREATE FUNCTION` creates a user-defined function that can return scalar or tabular results, and the handler may be inline or referenced from staged or precompiled code depending on language. Use UDFs when you need reusable logic inside SQL expressions, not when you need orchestration, side effects, or multi-step control flow. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-function))
 
