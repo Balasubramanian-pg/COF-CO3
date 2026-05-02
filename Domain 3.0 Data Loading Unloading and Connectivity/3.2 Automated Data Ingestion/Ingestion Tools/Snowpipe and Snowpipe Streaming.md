@@ -84,13 +84,10 @@ flowchart TD
 | **Monitoring Views**        | `ACCOUNT_USAGE.PIPE_USAGE_HISTORY`               | `ACCOUNT_USAGE.INGESTION_HISTORY`              |
 | **Best For**                 | Batch loading from cloud storage                 | Real-time row ingestion from applications      |
 
----
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **A. Snowpipe (File-Based) Internals**
 
@@ -213,7 +210,6 @@ flowchart TD
   - **Atomic Commits**: File metadata and data are committed together
   - **Cloud Storage**: Files remain in cloud storage until explicitly deleted
 
----
 
 ### **B. Snowpipe Streaming (Row-Based) Internals**
 
@@ -325,12 +321,9 @@ flowchart TD
   - **Atomic Commits**: Each row commit is durable
   - **Offset Tracking**: Offsets are committed after successful loads
 
----
 
----
 ## **3. Parameter/Configuration Deep Dive**
 
----
 
 ### **A. Snowpipe (File-Based) Parameters**
 
@@ -349,7 +342,6 @@ flowchart TD
 | `DUPLICATE_HANDLING`              | How to handle duplicates (`SKIP` or `FAIL`).                                          | `SKIP` = faster, `FAIL` = safer.                                                      | `SKIP` may miss data.                                                                    | `SKIP`                  | `SKIP`, `FAIL`                        |
 | `COMMENT`                         | Description of the pipe.                                                               | No impact.                                                                             | None.                                                                                     | None                    | String (max 256 chars)               |
 
----
 
 ### **B. Snowpipe Streaming (Row-Based) Parameters**
 
@@ -364,11 +356,8 @@ flowchart TD
 | `ENABLE_SCHEMA_DETECTION`         | Automatically detects schema from first payload.                                     | Adds 50-100ms latency for schema inference.                                         | May fail for complex schemas.                                                           | `TRUE`                  | `TRUE`, `FALSE`                       |
 | `TOKEN_EXPIRY`                    | JWT token expiry time (hours).                                                        | Shorter = more frequent token rotation.                                             | Min: 1, Max: 168 (7 days).                                                              | `24`                    | 1-168                                |
 
----
----
 ## **4. Performance & Resource Implications**
 
----
 
 ### **A. Snowpipe (File-Based) Performance**
 
@@ -408,7 +397,6 @@ flowchart TD
 | COPY INTO Worker      | 256MB                   | 1 per file                       |
 | Metadata DB            | Shared                  | Vertical                         |
 
----
 
 ### **B. Snowpipe Streaming (Row-Based) Performance**
 
@@ -446,11 +434,8 @@ flowchart TD
 | Stream Processor       | 512MB                   | 1 per channel                     |
 | COPY INTO Worker       | 256MB                   | 1 per batch                       |
 
----
----
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 
 ### **A. Key Monitoring Views**
 
@@ -463,7 +448,6 @@ flowchart TD
 | `INFORMATION_SCHEMA.PIPES`                   | Pipe definitions and status                                                | `SELECT * FROM INFORMATION_SCHEMA.PIPES WHERE NAME = 'MY_PIPE';` | Session      | Snowpipe                   |
 | `INFORMATION_SCHEMA.STREAMS`                  | Stream definitions and status                                              | `SELECT * FROM INFORMATION_SCHEMA.STREAMS WHERE NAME = 'MY_STREAM';` | Session      | Snowpipe Streaming         |
 
----
 
 ### **B. Error Categorization & Runbooks**
 
@@ -590,7 +574,6 @@ FILE_FORMAT = (TYPE = 'CSV');
 -- (Fix source files and re-upload to stage)
 ```
 
----
 
 #### **2. Snowpipe Streaming Errors**
 
@@ -683,7 +666,6 @@ FILE_FORMAT = (TYPE = 'JSON');
 -- (Fix payload schema and reprocess from DLQ)
 ```
 
----
 ### **C. Proactive Alerts**
 
 #### **Snowpipe Alerts**
@@ -773,11 +755,8 @@ AS
     AVG(DATEDIFF('second', start_time, end_time)) > 5;  -- >5 seconds avg latency
 ```
 
----
----
 ## **6. Advanced Production Patterns**
 
----
 
 ### **A. Idempotency Strategies**
 
@@ -935,7 +914,6 @@ AS
     VALUES (source.row_id, source.data, source.event_time);
     ```
 
----
 ### **B. DLQ Routing & Recovery**
 
 #### **1. Snowpipe DLQ Processing**
@@ -1087,7 +1065,6 @@ AS
   $$;
   ```
 
----
 ### **C. CI/CD Validation**
 
 #### **1. Snowpipe Validation**
@@ -1153,7 +1130,6 @@ AS
       SYSTEM$INGESTION_TOKEN_VALIDITY('MY_STREAM');
   ```
 
----
 ### **D. Retry & Backpressure Logic**
 
 #### **1. Snowpipe Retry Logic**
@@ -1310,7 +1286,6 @@ AS
     CALL MONITOR_STREAM_HEALTH('MY_STREAM');
   ```
 
----
 ### **E. Security & Compliance Controls**
 
 #### **1. Encryption**
@@ -1396,11 +1371,8 @@ AS
       start_time > DATEADD('day', -7, CURRENT_TIMESTAMP());
   ```
 
----
----
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 
 ### **Mermaid: Snowpipe vs. Snowpipe Streaming Decision Tree**
 ```mermaid
@@ -1440,7 +1412,6 @@ flowchart TD
     class E,L,M,N,R,S,T streaming;
 ```
 
----
 ### **Quick Reference Table**
 
 | **Requirement**               | **Snowpipe (File-Based)** | **Snowpipe Streaming (Row-Based)** | **Best Choice**                     |
@@ -1462,11 +1433,8 @@ flowchart TD
 | **Protocol**                 | Cloud notifications       | REST API                            | Depends on environment              |
 | **Monitoring**               | PIPE_USAGE_HISTORY        | INGESTION_HISTORY                   | Both                               |
 
----
----
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 ### **A. Core Principles**
 
 1. **Right Tool for the Right Job**:
@@ -1515,7 +1483,6 @@ flowchart TD
     - Plan for **scaling up** as data volume or latency requirements change.
     - Implement **monitoring** to detect performance degradation.
 
----
 ### **B. Production Checklist**
 
 #### **Snowpipe**
@@ -1553,7 +1520,6 @@ flowchart TD
 - [ ] Test failover and recovery procedures
 - [ ] Monitor credit usage and costs
 
----
 ### **C. Bottom Line**
 
 | **Metric**               | **Snowpipe (File-Based)** | **Snowpipe Streaming (Row-Based)** | **When to Choose**                          |
@@ -1574,11 +1540,8 @@ flowchart TD
 - Use **Snowpipe Streaming** for row-based ingestion from applications with real-time requirements.
 - For hybrid scenarios, consider using **both tools** in parallel (e.g., Snowpipe for batch files and Snowpipe Streaming for real-time updates).
 
----
----
 ## **Appendix: Production-Ready Snippets**
 
----
 ### **A. Snowpipe Setup**
 
 #### **1. Basic Snowpipe with Auto-Ingest**
@@ -1686,7 +1649,6 @@ CREATE PIPE PROD_SNOWPIPE
   AS COPY INTO PROD_TARGET_TABLE FROM @PROD_SNOWPIPE_STAGE;
 ```
 
----
 ### **B. Snowpipe Streaming Setup**
 
 #### **1. Basic Snowpipe Streaming**
@@ -1785,7 +1747,6 @@ CREATE INGESTION STREAM PROD_STREAMING
 -- event_time = payload.event_time
 ```
 
----
 ### **C. Hybrid Setup (Snowpipe + Snowpipe Streaming)**
 
 ```sql
@@ -1833,7 +1794,6 @@ ON
     PROD_BATCH_TABLE.id = PROD_REALTIME_TABLE.id;
 ```
 
----
 ### **D. Monitoring and Alerting Setup**
 
 #### **Snowpipe Monitoring Dashboard**
@@ -1923,7 +1883,6 @@ ORDER BY
     hour DESC;
 ```
 
----
 ### **Final Notes**
 
 For Further Reading:
