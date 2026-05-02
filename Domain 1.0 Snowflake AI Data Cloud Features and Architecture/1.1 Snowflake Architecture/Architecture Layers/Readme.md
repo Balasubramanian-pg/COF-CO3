@@ -71,7 +71,7 @@ graph TD
     User -.-> |"Direct connection (e.g., JDBC)"| CS
 ```
 
-- Diagram: Micro-Partition Data Flow During Query
+### Diagram: Micro-Partition Data Flow During Query
 ```mermaid
 flowchart LR
     Q[Query: SELECT ... WHERE date = '2024-07-01'] --> CS
