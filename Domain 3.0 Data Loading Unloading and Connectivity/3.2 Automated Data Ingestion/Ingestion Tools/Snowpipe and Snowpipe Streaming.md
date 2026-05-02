@@ -1,6 +1,5 @@
 # **Snowpipe and Snowpipe Streaming: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Architecture & Execution Flow**
 
@@ -63,7 +62,6 @@ flowchart TD
     class Q,R,S monitoring;
 ```
 
----
 
 ### **Execution Flow Comparison Table**
 
