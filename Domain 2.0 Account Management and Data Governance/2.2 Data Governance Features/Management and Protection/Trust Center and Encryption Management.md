@@ -35,7 +35,6 @@ graph TD
 | Rotation is mandatory, not optional | Keys must rotate per policy to limit exposure window | Reduces blast radius of potential key compromise |
 | Evidence must be exportable | Compliance requires auditable, shareable artifacts | Enables third-party audits and regulatory submissions |
 
----
 
 ## Snowflake Trust Center: Governance & Assurance
 
@@ -125,7 +124,6 @@ CREATE OR REPLACE ALERT governance.trust_artifact_expiring
   );
 ```
 
----
 
 ## Encryption Architecture in Snowflake
 
