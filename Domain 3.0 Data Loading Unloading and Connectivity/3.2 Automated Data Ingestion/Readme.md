@@ -73,7 +73,6 @@ flowchart TD
 | Snowflake Connector | CDC polling | 1-5 min | 10-100 MB/min | Near real-time | Atomic per batch | Compute | Database replication |
 | Tasks + Stored Procedures | Schedule | 1-60 min | 10-1000 MB/min | Scheduled | Atomic per run | Compute | Scheduled batch ingestion |
 
----
 
 ## Execution Internals & Transactional Boundaries
 
@@ -147,7 +146,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | Large | 1600 MB/min | 5-15 min | 80 | 0.00035 |
 | X-Large | 3200 MB/min | 5-15 min | 160 | 0.000175 |
 
----
 
 ### Kafka Connector Internals
 #### Consumer Group Architecture
