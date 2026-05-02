@@ -36,9 +36,13 @@ CREATE OR REPLACE TABLE analytics.fact_sales_clone
 
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/c015dd09-de40-49ab-8a6f-06330b291f36" />
 
-A view is a logical query object based on one or more tables, views, or any other valid `SELECT` expression. Snowflake supports `CREATE OR ALTER VIEW`, which is useful for idempotent deployment workflows when you want a single statement to create or update a view definition. The view definition is stored as text and is visible in `SHOW VIEWS` and `INFORMATION_SCHEMA.VIEWS`. ([Snowflake Docs][6])
-
-Materialized views are different. Snowflake describes them as being based on a query of an existing table and populated with data. They require Enterprise Edition, and the initial creation behaves like a CTAS-style build. Snowflake also says `CREATE OR REPLACE` materialized view is atomic, so concurrent queries see either the old or the new version. ([Snowflake Docs][7])
+- A view is a logical query object based on one or more tables, views, or any other valid `SELECT` expression.
+- Snowflake supports `CREATE OR ALTER VIEW`, which is useful for idempotent deployment workflows when you want a single statement to create or update a view definition.
+- The view definition is stored as text and is visible in `SHOW VIEWS` and `INFORMATION_SCHEMA.VIEWS`. ([Snowflake Docs][6])
+- Materialized views are different.
+- Snowflake describes them as being based on a query of an existing table and populated with data.
+- They require Enterprise Edition, and the initial creation behaves like a CTAS-style build.
+- Snowflake also says `CREATE OR REPLACE` materialized view is atomic, so concurrent queries see either the old or the new version. ([Snowflake Docs][7])
 
 For dependency analysis, Snowflake distinguishes object dependencies from data movement. A view that references a table creates an object dependency, but CTAS, INSERT, and MERGE do not. That distinction matters when you are deciding whether a table change will break dependent views, because the right question is not “what data moved,” it is “what object references exist.” ([Snowflake Docs][8])
 
