@@ -125,6 +125,18 @@ graph LR
   SC3 --> T3[View: daily_metrics]
 ```
 
+Below you can find a table of differences between a database and a schema for deeper comprehension
+| Feature | Database | Schema |
+| :--- | :--- | :--- |
+| Hierarchy Level | Highest logical container within a Snowflake account. | Subordinate logical container residing within a Database. |
+| Namespace Role | First tier of the namespace structure. | Second tier of the namespace structure. |
+| Contained Elements | Holds one or multiple schemas. | Holds tables, views, stages, sequences, and functions. |
+| Default Creation | When created, Snowflake automatically generates two default schemas: PUBLIC and INFORMATION_SCHEMA. | When created, it contains no default tables or views. |
+| Fully Qualified Name | DATABASE_NAME | DATABASE_NAME.SCHEMA_NAME |
+| Cloning Scope | Cloning a database clones all of its underlying schemas and their objects. | Cloning a schema only clones the objects within that specific schema. |
+| Data Sharing | Shares are created and configured at the database level. | Specific schemas are granted to shares, but the share itself belongs to the database. |
+| Security Granularity | Broad level access control (granting usage on the entire database). | Fine grained access control (granting usage on specific groupings of tables). |
+
 ## Integrations
 
 - Define secure connections to external systems
