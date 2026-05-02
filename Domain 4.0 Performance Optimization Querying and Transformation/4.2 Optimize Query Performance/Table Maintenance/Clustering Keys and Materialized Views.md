@@ -6,10 +6,9 @@
 
 ### **Mermaid: Clustering Keys and Materialized Views Architecture**
 ```mermaid
-%% Clustering Keys and Materialized Views Architecture
 flowchart TD
     subgraph DataLayer["Data Layer"]
-        A[("Table\n(Micro-Partitions)")] -->|Clustering Keys| B[("Clustered Data")]
+        A[("Table<br/>(Micro-Partitions)")] -->|Clustering Keys| B[("Clustered Data")]
         A -->|No Clustering| C[("Unclustered Data")]
     end
 
@@ -52,9 +51,9 @@ flowchart TD
     B --> Q
     G --> R
 
-    %% --- Annotations ---
-    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63 stroke:#333,stroke-width:2px;
-    classDef default fill:#f9f9f9,stroke:#333;
+    %% --- Fixed linkStyle (indices 0-18 only) ---
+    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 stroke:#333,stroke-width:2px;
+
     classDef data fill:#4285f4,stroke:#1976d2;
     classDef clustering fill:#ff9800,stroke:#f57c00;
     classDef mv fill:#009688,stroke:#00796b;
