@@ -5,7 +5,7 @@ A Snowflake database is the namespace boundary between account-level objects and
 >[!Note]
 >At the database layer, you are managing database creation semantics, database roles, schemas, replication or clone behavior, and the metadata surfaces that expose those objects. Snowflake automatically creates `PUBLIC` and `INFORMATION_SCHEMA` when you create a new database, and `INFORMATION_SCHEMA` is the schema that exposes metadata views and table functions for the database and, in some cases, account-wide objects. 
 
->[!Success]
+>[!Caution]
 >Databases created from shares are exceptions: they do not get `PUBLIC` or `INFORMATION_SCHEMA` unless those were explicitly granted, they cannot be cloned, and some properties such as `TRANSIENT` and `DATA_RETENTION_TIME_IN_DAYS` do not apply. ([Snowflake Docs][1])
 
 A practical way to think about database objects is this: the database owns schemas, schemas own tables, views, stages, file formats, streams, tasks, pipes, policies, UDFs, and sequences, and the database boundary is what lets Snowflake apply privilege scope cleanly. Snowflake’s DDL and access-control docs explicitly treat tables, views, stages, file formats, UDFs, and sequences as schema objects, and `GET_DDL` confirms the schema-object namespace pattern `database.schema` or `schema` for objects in that family. ([Snowflake Docs][2])
