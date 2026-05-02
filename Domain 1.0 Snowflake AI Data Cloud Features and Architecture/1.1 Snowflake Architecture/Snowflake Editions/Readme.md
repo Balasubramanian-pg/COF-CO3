@@ -189,6 +189,8 @@ flowchart TD
 
 ## Common Selection Mistakes
 
+![Uploading image.png…]()
+
 - Choosing Standard for production workloads that need scaling. Multi-cluster warehouses require Enterprise or higher [[5]].
 - Assuming Business Critical is optional for regulated data. If HIPAA or PCI applies, the additional controls are required not optional [[5]].
 - Overlooking storage costs. Compute credits get attention but storage is billed separately at 23 USD per TB per month [[2]].
