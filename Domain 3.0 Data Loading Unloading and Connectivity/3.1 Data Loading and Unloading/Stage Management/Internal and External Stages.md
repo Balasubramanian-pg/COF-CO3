@@ -1,8 +1,6 @@
 # **Snowflake Internal & External Stages: Production-Grade Technical Deep Dive**
 
----
 
----
 
 ## **1. Architecture & Execution Flow**
 
