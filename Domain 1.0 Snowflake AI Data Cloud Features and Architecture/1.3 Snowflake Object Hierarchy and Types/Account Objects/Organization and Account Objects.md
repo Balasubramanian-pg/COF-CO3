@@ -29,7 +29,7 @@ flowchart LR
   D --> E[View Unified Billing]
 ```
 
-**Organization Level Objects**
+## Organization Level Objects
 
 - Organization account: The master account that creates and manages other accounts
 - Account listings: View all accounts under the organization with status and region
@@ -37,7 +37,7 @@ flowchart LR
 - Policy templates: Define security, network, or data policies to apply across accounts
 - Billing view: Consolidated credit usage and cost reporting for all accounts
 
-**Account Level Objects**
+## Account Level Objects
 
 - Users: Individual people or service accounts that log in
 - Roles: Collections of privileges assigned to users or other roles
@@ -81,7 +81,7 @@ flowchart TD
   C --> E[Use Roles and Warehouses to Separate Work]
 ```
 
-**Account Creation and Management**
+## Account Creation and Management
 
 | Action | Where You Do It | What Happens |
 |--------|----------------|--------------|
@@ -91,7 +91,7 @@ flowchart TD
 | Delete account | Organization console with confirmation | Account and all data permanently removed after retention period |
 | Transfer account | Organization admin | Move account from one organization to another |
 
-**Security and Governance Boundaries**
+## Security and Governance Boundaries
 
 - Users and roles exist inside one account only. They do not automatically work in other accounts
 - Data sharing can cross account boundaries using secure shares, but objects stay in source account
@@ -112,7 +112,7 @@ sequenceDiagram
   NewAcc->>OrgSys: Report usage and billing to organization
 ```
 
-**Common Setup Patterns**
+## Common Setup Patterns
 
 | Pattern | Structure | Best For |
 |---------|-----------|----------|
@@ -122,7 +122,7 @@ sequenceDiagram
 | Project based | project_alpha_account, project_beta_account | Short term initiatives with clear end dates |
 | Hybrid | prod_account + shared_dev_account | Balance isolation with resource efficiency |
 
-**Things to Watch For**
+## Things to Watch For
 
 - Account locators are permanent. Choose naming carefully before creation
 - Changing an account name does not change its locator. Applications connect via locator
@@ -147,7 +147,7 @@ flowchart TD
   C --> D
 ```
 
-**Key Points**
+## Key Points
 
 - Organization is for management. Account is for work. Keep that separation clear
 - Start with one account if you are small. Split later when isolation becomes valuable
