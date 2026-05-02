@@ -11,8 +11,6 @@ graph LR
 
 Each edition includes all features from the edition below it plus additional capabilities [[5]].
 
----
-
 ## Feature Comparison Table
 
 | Feature Category | Standard | Enterprise | Business Critical | VPS |
@@ -31,8 +29,6 @@ Each edition includes all features from the edition below it plus additional cap
 | Marketplace access | Yes | Yes | Yes | No |
 
 Sources: [[5]][[2]]
-
----
 
 ## Edition Details
 
@@ -124,7 +120,6 @@ Source: [[2]]
 
 Note: Credits are consumed by compute operations. You pay only for what you use [[6]].
 
-
 ## Security Feature Progression
 
 ```mermaid
@@ -153,7 +148,6 @@ flowchart TD
         V3[Isolated environment]
     end
 ```
-
 
 ## Time Travel and Data Recovery
 
@@ -191,14 +185,12 @@ flowchart TD
     Q6 -->|No| C
 ```
 
-
 ## Common Selection Mistakes
 
 - Choosing Standard for production workloads that need scaling. Multi-cluster warehouses require Enterprise or higher [[5]].
 - Assuming Business Critical is optional for regulated data. If HIPAA or PCI applies, the additional controls are required not optional [[5]].
 - Overlooking storage costs. Compute credits get attention but storage is billed separately at 23 USD per TB per month [[2]].
 - Selecting VPS without confirming isolation requirements. VPS is for physical separation. If policy does not require it, Business Critical is usually sufficient [[5]].
-
 
 ## Key Points
 
