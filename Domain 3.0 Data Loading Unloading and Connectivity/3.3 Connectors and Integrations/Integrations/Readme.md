@@ -83,7 +83,6 @@ flowchart TD
     class B snowflake;
 ```
 
----
 
 ### **Integrations Comparison Matrix**
 
@@ -111,15 +110,12 @@ flowchart TD
 | **Okta/Azure AD** | SSO/MFA | Bidirectional | 50-200ms | N/A | ❌ No | IdP | IdP Costs | User authentication |
 | **Privacera/Immuta** | Data governance | Bidirectional | 50-200ms | N/A | ❌ No | Partner | Partner Costs | Data governance |
 
----
 
----
 
 ## **2. Cloud Provider Integrations Deep Dive**
 
 Cloud provider integrations enable **seamless connectivity** between Snowflake and **AWS, Azure, and GCP**. These integrations support **storage, identity management, encryption, and private networking**, ensuring **secure, high-performance, and cost-effective** data access.
 
----
 
 ### **A. AWS Integrations**
 
@@ -270,7 +266,6 @@ CREATE NOTIFICATION INTEGRATION MY_EVENTBRIDGE_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_EVENTBRIDGE_INTEGRATION;
 ```
 
----
 #### **3. AWS IAM Integration**
 ##### **How It Works**
 1. **IAM Role Creation**:
@@ -339,7 +334,6 @@ CREATE STAGE MY_IAM_STAGE
   STORAGE_INTEGRATION = 'MY_IAM_INTEGRATION';
 ```
 
----
 #### **4. AWS KMS Integration**
 ##### **How It Works**
 1. **CMK Creation**:
@@ -388,7 +382,6 @@ ENCRYPTION = (
 );
 ```
 
----
 #### **5. AWS PrivateLink Integration**
 ##### **How It Works**
 1. **VPC Endpoint Creation**:
@@ -444,7 +437,6 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 #### **6. AWS EventBridge Integration**
 ##### **How It Works**
 1. **EventBridge Rule**:
@@ -509,7 +501,6 @@ CREATE PIPE MY_SNOWPIPE
 }
 ```
 
----
 ### **B. Azure Integrations**
 
 #### **1. Architecture Overview**
@@ -661,7 +652,6 @@ CREATE NOTIFICATION INTEGRATION MY_EVENTGRID_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_EVENTGRID_INTEGRATION;
 ```
 
----
 #### **3. Azure Data Lake Storage (ADLS) Gen2 Integration**
 ##### **How It Works**
 1. **External Stage Creation**:
@@ -749,7 +739,6 @@ FILE_FORMAT = (TYPE = 'PARQUET')
 PARTITION BY (year, month, day);
 ```
 
----
 #### **4. Azure Key Vault Integration**
 ##### **How It Works**
 1. **Key Vault Creation**:
@@ -798,7 +787,6 @@ ENCRYPTION = (
 );
 ```
 
----
 #### **5. Azure Private Link Integration**
 ##### **How It Works**
 1. **Private Endpoint Creation**:
@@ -854,7 +842,6 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 #### **6. Azure Event Grid Integration**
 ##### **How It Works**
 1. **Event Grid Subscription**:
@@ -917,7 +904,6 @@ CREATE PIPE MY_SNOWPIPE
 }
 ```
 
----
 ### **C. GCP Integrations**
 
 #### **1. Architecture Overview**
@@ -1065,7 +1051,6 @@ CREATE NOTIFICATION INTEGRATION MY_PUBSUB_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_PUBSUB_INTEGRATION;
 ```
 
----
 #### **3. Google Cloud IAM Integration**
 ##### **How It Works**
 1. **Service Account Creation**:
@@ -1108,7 +1093,6 @@ CREATE STAGE MY_GCP_IAM_STAGE
   FILE_FORMAT = (TYPE = 'PARQUET');
 ```
 
----
 #### **4. Google Cloud KMS Integration**
 ##### **How It Works**
 1. **Key Ring and Key Creation**:
@@ -1157,7 +1141,6 @@ ENCRYPTION = (
 );
 ```
 
----
 #### **5. Google Cloud Private Service Connect (PSC) Integration**
 ##### **How It Works**
 1. **PSC Connection Creation**:
@@ -1213,7 +1196,6 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 #### **6. Google Cloud Pub/Sub Integration**
 ##### **How It Works**
 1. **Pub/Sub Topic Creation**:
@@ -1267,13 +1249,10 @@ gcloud pubsub subscriptions add-iam-policy-binding my-subscription \
   --role="roles/pubsub.subscriber"
 ```
 
----
----
 ## **3. Data Lake Integrations Deep Dive**
 
 Data lake integrations enable **direct querying** of data stored in **cloud storage** (S3, Azure Blob, GCS) or **open table formats** (Iceberg, Delta Lake) without loading the data into Snowflake. This is ideal for **ad-hoc analysis**, **data exploration**, and **cost-effective analytics** on large datasets.
 
----
 
 ### **A. External Tables**
 
@@ -1400,7 +1379,6 @@ flowchart TD
 - **No Automatic Schema Evolution**: Schema must match the files in cloud storage.
 - **File Size Limits**: Depends on cloud storage (5TB max for S3/Azure Blob/GCS).
 
----
 #### **9. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1413,7 +1391,6 @@ flowchart TD
 | `PARTITION_BY` | Partition columns | None | Column name(s) | Enables partition pruning |
 | `INFER_SCHEMA` | Infer schema from files | `TRUE` | `TRUE`, `FALSE` | `TRUE` = automatic schema detection |
 
----
 #### **10. Production-Ready Setup**
 
 ##### **Basic External Table**
@@ -1487,7 +1464,6 @@ FILE_FORMAT = (TYPE = 'PARQUET')
 PATTERN = '.*data_[0-9]+\\.parquet';
 ```
 
----
 ### **B. Iceberg Tables**
 
 #### **1. Architecture**
@@ -1608,7 +1584,6 @@ flowchart TD
 - **Performance Dependent on Cloud Storage**: Query performance depends on cloud storage latency.
 - **No Automatic Compaction**: Iceberg relies on **external compaction** (e.g., Spark jobs).
 
----
 #### **9. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1618,7 +1593,6 @@ flowchart TD
 | `PARTITION_BY` | Partition columns | None | Column name(s) | Enables partition pruning |
 | `SNAPSHOT` | Snapshot ID or timestamp | `CURRENT` | Snapshot ID or timestamp | Enables time travel |
 
----
 #### **10. Production-Ready Setup**
 
 ##### **Basic Iceberg External Table**
@@ -1672,7 +1646,6 @@ SELECT * FROM MY_ICEBERG_TABLE
 AT(SNAPSHOT => 1234567890);
 ```
 
----
 ### **C. Delta Lake Integrations**
 
 #### **1. Architecture**
@@ -1793,7 +1766,6 @@ flowchart TD
 - **Performance Dependent on Cloud Storage**: Query performance depends on cloud storage latency.
 - **No Automatic Optimization**: Requires **external optimization** (e.g., Spark jobs).
 
----
 #### **9. Configuration Parameters**
 
 | **Parameter** | **Description** | **
