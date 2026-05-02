@@ -165,7 +165,6 @@ GROUP BY r.name
 ORDER BY granted_privileges DESC;
 ```
 
----
 
 ## Data Lineage: Governance & Audit
 
@@ -245,7 +244,6 @@ graph LR
 | Compliance reporting | `ACCESS_HISTORY` + `TAG_REFERENCES` | Generate GDPR/HIPAA data movement reports |
 | DR validation | `REPLICATION_USAGE_HISTORY` + `TAG_REFERENCES` | Verify replicated objects retain governance tags |
 
----
 
 ## Cross-Cutting Governance Management
 
@@ -305,7 +303,6 @@ AS
   CALL governance.validate_replication_integrity();
 ```
 
----
 
 ## Best Practices & Common Pitfalls
 
@@ -343,7 +340,6 @@ flowchart TD
   F --> G
 ```
 
----
 
 ## Decision Framework: Replication, Failover, and Lineage
 
@@ -382,7 +378,6 @@ flowchart TD
 | Full lineage compliance | Tags + `ACCESS_HISTORY` + external export | Generate monthly audit reports |
 | Impact analysis | `OBJECT_DEPENDENCIES` + change approval workflow | Block drops if dependencies exist |
 
----
 
 ## Key Principles to Remember
 
