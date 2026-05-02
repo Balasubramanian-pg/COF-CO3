@@ -88,9 +88,14 @@ WHERE referenced_object_name = 'FACT_SALES';
 
 ### Production patterns
 
-Use permanent tables for durable curated data. Use transient tables only when external reconstruction is possible. Use temporary tables for session-local staging. Use external tables when the source of truth is outside Snowflake and you are willing to accept read-only access over external storage. Use hybrid tables only when transactional behavior and integrity constraints are the actual requirement, not just a preference for a different storage format. ([Snowflake Docs][1])
-
-Use views when you want a stable logical contract over changing physical tables. Use materialized views when query latency matters enough to pay for maintained storage and refresh work. Use dynamic tables when you want Snowflake to own the refresh pipeline and you can express the transformation as a deterministic definition query over change-tracked sources. ([Snowflake Docs][6])
+1. Use permanent tables for durable curated data.
+2. Use transient tables only when external reconstruction is possible.
+3. Use temporary tables for session-local staging.
+4. Use external tables when the source of truth is outside Snowflake and you are willing to accept read-only access over external storage.
+5. Use hybrid tables only when transactional behavior and integrity constraints are the actual requirement, not just a preference for a different storage format. ([Snowflake Docs][1])
+6. Use views when you want a stable logical contract over changing physical tables.
+7. Use materialized views when query latency matters enough to pay for maintained storage and refresh work.
+8. Use dynamic tables when you want Snowflake to own the refresh pipeline and you can express the transformation as a deterministic definition query over change-tracked sources. ([Snowflake Docs][6])
 
 ### Bottom line
 
