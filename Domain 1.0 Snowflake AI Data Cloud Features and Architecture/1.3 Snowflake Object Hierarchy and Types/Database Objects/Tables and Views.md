@@ -2,6 +2,9 @@
 
 ## Table families and when they matter
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/656aa0ce-3df4-4545-b94f-1f356b116458" />
+
+
 1. Snowflake’s default table type is permanent.
 2. If you do not specify `TEMPORARY` or `TRANSIENT`, the table is permanent.
 3. Temporary tables exist only for the session that created them and are not visible to other sessions.
