@@ -58,11 +58,9 @@ flowchart TD
 
 ---
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **2.1 Data Type Classification & Storage Internals**
 
@@ -76,7 +74,6 @@ flowchart TD
 | **Semi-Structured (XML)**  | `VARIANT` or `TEXT`                 | Raw or Parsed          | **UTF-8**                   | `XMLGET`, `XMLEXTRACT` (custom UDF) | Full ACID (if stored as `VARIANT`)    |
 
 
----
 
 ### **2.2 Ingestion Internals by Data Type**
 
@@ -107,7 +104,6 @@ flowchart TD
   - **Example**: 1TB CSV load on `X-LARGE` (4 cores) in 10 min:  
   `4 cores * 600 sec / 3600 = 0.67 credits (compute) + 5 credits (cloud) = 5.67 credits total`.
 
----
 
 #### **2.2.2 Semi-Structured Data (JSON/Parquet/Avro/XML)**
 
@@ -138,7 +134,6 @@ flowchart TD
   - **Example**: 1TB JSON load on `X-LARGE`:  
   `4 * 600 / 3600 = 0.67 (compute) + 5 (cloud) + 1.34 (parsing) = 7.01 credits`.
 
----
 
 #### **2.2.3 Unstructured Data (PDF/Logs/Images)**
 
@@ -161,7 +156,6 @@ flowchart TD
   - **Example**: 1TB PDF load on `X-LARGE`:  
   `4 * 600 / 3600 + 5 = 5.67 credits`.
 
----
 
 ### **2.3 Transactional Semantics by Data Type**
 
@@ -176,7 +170,6 @@ flowchart TD
 | **Time Travel** | 90 days                     | 90 days                     | 90 days (metadata only)     |
 
 
----
 
 ### **2.4 Error Handling & Recovery Paths**
 
@@ -192,13 +185,10 @@ flowchart TD
 | `2012`         | All             | Stage I/O error (network/permissions)    | Retry with exponential backoff.                 | +1.5x (retry overhead) |
 
 
----
 
----
 
 ## **3. Parameter/Configuration Deep Dive**
 
----
 
 ### **3.1 Structured Data Parameters**
 
@@ -216,7 +206,6 @@ flowchart TD
 | `ON_ERROR`           | `ABORT_STATEMENT`, `CONTINUE`, `SKIP_FILE`, `SKIP_FILE_<n>`.               | `CONTINUE` = **+2% credits** (partial load).                                         | `SKIP_FILE` logs to `COPY_HISTORY` but **no DLQ**.                                       | `ABORT_STATEMENT`      |
 
 
----
 
 ### **3.2 Semi-Structured Data Parameters**
 
@@ -232,7 +221,6 @@ flowchart TD
 | `GENERATE_COLUMN_DESCRIPTION` | Generate column descriptions from JSON keys.                        | **+5% credits** (metadata generation).                                               | Useful for **self-describing data**.                                   | `FALSE`                 |
 
 
----
 
 ### **3.3 Unstructured Data Parameters**
 
@@ -246,13 +234,10 @@ flowchart TD
 | `BINARY_SIZE_LIMIT`         | Max size for `BLOB` (default: **16MB**).    | **No impact** (enforced at load time).       | **Workaround**: Split large files into chunks.  | `16777216` (16MB)      |
 
 
----
 
----
 
 ## **4. Performance & Resource Implications**
 
----
 
 ### **4.1 Memory & CPU Behavior by Data Type**
 
@@ -267,7 +252,6 @@ flowchart TD
 | **Unstructured (TEXT)**       | Medium (UTF-8 validation) | Low               | 80% heap utilization | +2x credits        | No                 |
 
 
----
 
 ### **4.2 I/O Patterns & Stage Interactions**
 
@@ -281,7 +265,6 @@ flowchart TD
 | **External Function**      | N/A                  | UDF (JS/Python)           | UDF (JS/Python)         | **HTTP egress costs**         |
 
 
----
 
 ### **4.3 Spill-to-Disk Triggers & Credit Math**
 
@@ -312,7 +295,6 @@ Spill Overhead (credits) =
 - Query Duration: 600 sec.
 - **Overhead**: `(200 / 128) * 2 * (600 / 3600) = 0.52 credits`.
 
----
 
 ### **4.4 Warehouse Sizing Rules by Data Type**
 
@@ -327,7 +309,6 @@ Spill Overhead (credits) =
 | **Unstructured (TEXT)**       | `LARGE`                   | 5TB                  | 8               | `1 credit = 1.1 core-seconds` (+10%) |
 
 
----
 
 ### **4.5 Concurrency Scaling & Multi-Cluster Impact**
 
@@ -341,13 +322,10 @@ Spill Overhead (credits) =
 | **Real-Time (JSON Streams)**    | `3X-LARGE`                | 3                | `MULTI_CLUSTER=TRUE` | +20% per cluster    |
 
 
----
 
----
 
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 
 ### **5.1 Key Monitoring Views by Data Type**
 
@@ -363,11 +341,9 @@ Spill Overhead (credits) =
 | `INFORMATION_SCHEMA.EXTERNAL_TABLE_FILES`  | ❌              | ✅                   | ✅                | `TABLE_NAME`, `FILE_NAME`, `FILE_SIZE`                          |
 
 
----
 
 ### **5.2 Production-Grade Monitoring Queries**
 
----
 
 #### **5.2.1 Structured Data Monitoring**
 
@@ -410,7 +386,6 @@ ORDER BY
     STORAGE_BYTES DESC;
 ```
 
----
 
 #### **5.2.2 Semi-Structured Data Monitoring**
 
@@ -445,7 +420,6 @@ FROM
     ));
 ```
 
----
 
 #### **5.2.3 Unstructured Data Monitoring**
 
@@ -479,7 +453,6 @@ WHERE
     AND FILE_FORMAT_TYPE = 'BINARY';
 ```
 
----
 
 #### **5.2.4 Cross-Data-Type Monitoring**
 
@@ -531,11 +504,9 @@ GROUP BY
     data_type;
 ```
 
----
 
 ### **5.3 Error Categorization & Incident Runbooks**
 
----
 
 #### **5.3.1 Structured Data Errors**
 
@@ -549,7 +520,6 @@ GROUP BY
 | `1049`         | Disk full             | Spill-to-disk limit reached.                  | Increase warehouse size or reduce data scanned.                     | +3x credits       |
 
 
----
 
 #### **5.3.2 Semi-Structured Data Errors**
 
@@ -563,7 +533,6 @@ GROUP BY
 | `2003`         | Memory limit exceeded | Large `VARIANT` operations (e.g., `FLATTEN`). | Increase warehouse size or break into smaller batches.             | +2.5x credits      |
 
 
----
 
 #### **5.3.3 Unstructured Data Errors**
 
@@ -576,11 +545,9 @@ GROUP BY
 | `100023`       | File too large    | File exceeds `BINARY_SIZE_LIMIT`. | Split files into chunks (<16MB for `BLOB`).                             | None              |
 
 
----
 
 #### **5.3.4 Incident Recovery Procedures**
 
----
 
 ##### **Runbook: Malformed JSON (`1204`)**
 
@@ -625,7 +592,6 @@ GROUP BY
   - Use **schema validation** (`ENFORCE_SCHEMA = TRUE`).
   - Implement **pre-load validation** (e.g., AWS Lambda + `IS_VALID_JSON`).
 
----
 
 ##### **Runbook: Memory Limit Exceeded (`2003`) for Semi-Structured Data**
 
@@ -674,7 +640,6 @@ GROUP BY
   - **Monitor `MEMORY_USAGE**` in `QUERY_HISTORY`.
   - **Set `STATEMENT_TIMEOUT_IN_SECONDS**` to kill runaway queries.
 
----
 
 ##### **Runbook: Stage I/O Error (`2012`) for Unstructured Data**
 
@@ -699,13 +664,10 @@ GROUP BY
   - Use **Snowflake Internal Stages** for critical loads.
   - **Monitor `STAGE_FILE_METADATA**` for accessibility.
 
----
 
----
 
 ## **6. Advanced Production Patterns**
 
----
 
 ### **6.1 Structured Data Patterns**
 
@@ -719,7 +681,6 @@ GROUP BY
 | **Incremental Loads**  | Daily ETL pipelines                | `MERGE INTO target USING source ON target.id = source.id WHEN MATCHED THEN UPDATE...`. | **Idempotent**, **low credit cost**.               | **Complex logic**.                    |
 
 
----
 
 **Example: Partitioned + Clustered Table**
 
@@ -751,7 +712,6 @@ GROUP BY
     region;
 ```
 
----
 
 **Example: Materialized View for Aggregations**
 
@@ -772,7 +732,6 @@ GROUP BY
 SELECT * FROM daily_sales WHERE sale_date = '2020-06-01';
 ```
 
----
 
 ### **6.2 Semi-Structured Data Patterns**
 
@@ -787,7 +746,6 @@ SELECT * FROM daily_sales WHERE sale_date = '2020-06-01';
 | **Custom UDFs for XML**      | XML parsing                  | `CREATE FUNCTION xml_to_variant(xml_string STRING) RETURNS VARIANT LANGUAGE JAVASCRIPT AS ...`.     | **Flexible**, **supports complex XML**. | **Slower** (+30% credits).                |
 
 
----
 
 **Example: Schema-on-Read with VARIANT**
 
@@ -820,7 +778,6 @@ FROM
     TABLE(FLATTEN(u.event_data:items)) i;
 ```
 
----
 
 **Example: VARIANT to Structured Conversion**
 
@@ -849,7 +806,6 @@ GROUP BY
     user_id;
 ```
 
----
 
 **Example: Custom UDF for XML Parsing**
 
@@ -888,7 +844,6 @@ SELECT
 FROM @my_xml_stage;
 ```
 
----
 
 ### **6.3 Unstructured Data Patterns**
 
@@ -902,7 +857,6 @@ FROM @my_xml_stage;
 | **Chunked BLOBs**      | Large files (>16MB)    | Split files into 16MB chunks before loading.                                            | **Avoids `BINARY_SIZE_LIMIT**`.                                | **Complex ETL**.                   |
 
 
----
 
 **Example: BLOB Storage with Metadata**
 
@@ -939,7 +893,6 @@ WHERE
     doc_size > 10 * POWER(1024, 2); -- >10MB
 ```
 
----
 
 **Example: Log Analysis with TEXT and Regex**
 
@@ -977,7 +930,6 @@ WHERE
     AND log_time > DATEADD('HOUR', -1, CURRENT_TIMESTAMP());
 ```
 
----
 
 **Example: External Function for Image Processing**
 
@@ -1007,7 +959,6 @@ WHERE
     doc_name LIKE '%.jpg';
 ```
 
----
 
 ### **6.4 Idempotency & DLQ Patterns**
 
@@ -1021,7 +972,6 @@ WHERE
 | **Transaction Log**        | All             | Log `QUERY_ID` + `FILE_NAME` in a control table. Replay only unprocessed files.        | [Transaction Log Example](#transaction-log-example) |
 
 
----
 
 **Example: COPY with DLQ for JSON**
 
@@ -1075,7 +1025,6 @@ WHERE file_name IN (
 );
 ```
 
----
 
 **Example: Merge for UPSERT (Structured)**
 
@@ -1101,7 +1050,6 @@ WHEN NOT MATCHED THEN
     VALUES (source.id, source.name, source.value, source.last_updated);
 ```
 
----
 
 **Example: JSON Schema Validation UDF**
 
@@ -1129,7 +1077,6 @@ FROM (
 FILE_FORMAT = (TYPE = 'JSON');
 ```
 
----
 
 **Example: BLOB Checksum for Idempotency**
 
@@ -1179,7 +1126,6 @@ WHEN NOT MATCHED THEN
     VALUES (source.file_name, source.sha256_hash, source.load_time, source.load_status);
 ```
 
----
 
 **Example: Transaction Log for Idempotency**
 
@@ -1236,7 +1182,6 @@ BEGIN;
 COMMIT;
 ```
 
----
 
 ### **6.5 CI/CD Validation Patterns**
 
@@ -1250,7 +1195,6 @@ COMMIT;
 | **Data Quality**           | All             | Great Expectations + Snowflake          | [Great Expectations Example](#great-expectations-example) |
 
 
----
 
 **Example: Schema Comparison for CI/CD**
 
@@ -1284,7 +1228,6 @@ ORDER BY
     environment, TABLE_NAME, COLUMN_NAME;
 ```
 
----
 
 **Example: Performance Test for CI/CD**
 
@@ -1324,7 +1267,6 @@ WHERE
     h.QUERY_TEXT LIKE '%SELECT * FROM my_table%';
 ```
 
----
 
 **Example: Great Expectations for Data Quality**
 
@@ -1368,7 +1310,6 @@ datasources:
 }
 ```
 
----
 
 ### **6.6 Retry & Backpressure Patterns**
 
@@ -1383,7 +1324,6 @@ datasources:
 | **BLOB Size Limit**     | Unstructured    | Split files + Retry               | [Chunked BLOB Example](#chunked-blob-example) |
 
 
----
 
 **Example: Python Retry Logic for COPY**
 
@@ -1419,7 +1359,6 @@ copy_with_retry("""
 """)
 ```
 
----
 
 **Example: Stage Retry with Jitter (Snowflake Scripting)**
 
@@ -1464,7 +1403,6 @@ $$;
 CALL retry_copy_with_jitter('my_stage', 'my_table', 3, 1);
 ```
 
----
 
 **Example: Memory Retry for JSON (Increase Warehouse Size)**
 
@@ -1492,13 +1430,10 @@ BEGIN;
 END;
 ```
 
----
 
----
 
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffd700', 'edgeLabelBackground':'#fff'}}}%%
@@ -1557,13 +1492,10 @@ flowchart TD
     AC --> AD
 ```
 
----
 
----
 
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 
 ### **8.1 Core Principles for Data Handling**
 
@@ -1579,11 +1511,9 @@ flowchart TD
 | **Failure Isolation**             | **Micro-partitioning** (16-128MB chunks) + **automatic retry**.       | **No single point of failure**.                            |
 
 
----
 
 ### **8.2 Bottom Line for Production Engineers**
 
----
 
 #### **8.2.1 Structured Data**
 
@@ -1603,7 +1533,6 @@ flowchart TD
     - **Use `USE_CACHED_RESULT=TRUE**` (90-95% latency reduction, 0 credits).
     - **Right-size warehouses** (avoid `4X-LARGE` for ad-hoc queries).
 
----
 
 #### **8.2.2 Semi-Structured Data**
 
@@ -1620,7 +1549,6 @@ flowchart TD
   - **Avro/Parquet**: **+5% credits** (faster parsing).
   - **Monitor `MEMORY_USAGE**` for `FLATTEN` queries.
 
----
 
 #### **8.2.3 Unstructured Data**
 
@@ -1635,7 +1563,6 @@ flowchart TD
   - **No parsing overhead** for `BLOB` (fastest ingestion).
   - **Storage Cost**: Same as structured/semi-structured ($23/TB/month).
 
----
 
 ### **8.3 Performance Cheat Sheet**
 
@@ -1651,7 +1578,6 @@ flowchart TD
 | **External Functions** | N/A            | ⚡⚡⚡                 | ⚡⚡⚡              | **Cache results** to reduce calls.      |
 
 
----
 
 ### **8.4 Cost Cheat Sheet**
 
@@ -1666,7 +1592,6 @@ flowchart TD
 | **Multi-Cluster**   | +10%/cluster      | +15%/cluster         | +10%/cluster      | **Concurrency scaling**.               |
 
 
----
 
 ### **8.5 Reliability Cheat Sheet**
 
@@ -1681,13 +1606,10 @@ flowchart TD
 | **Transaction Conflicts** | ✅              | ✅                   | ❌                 | **Use `ABORT` + retry**.               |
 
 
----
 
----
 
 ## **9. Production Checklist**
 
----
 
 ### **9.1 Structured Data**
 
@@ -1702,7 +1624,6 @@ flowchart TD
 - **Enable `USE_CACHED_RESULT=TRUE`** for repeated queries.
 - **Right-size warehouses** (avoid `X-SMALL` for production).
 
----
 
 ### **9.2 Semi-Structured Data**
 
@@ -1717,7 +1638,6 @@ flowchart TD
 - **Use Parquet/Avro** for better performance than JSON.
 - **Set `ON_ERROR=CONTINUE`** for partial loads.
 
----
 
 ### **9.3 Unstructured Data**
 
@@ -1732,13 +1652,10 @@ flowchart TD
 - **Use internal stages** for critical data.
 - **Implement retry logic** for stage I/O errors.
 
----
 
----
 
 ## **10. Quick Reference Commands**
 
----
 
 ### **10.1 Structured Data**
 
@@ -1757,7 +1674,6 @@ flowchart TD
 | **Incremental Load**  | `MERGE INTO target USING source ON target.id = source.id WHEN MATCHED THEN UPDATE...;` |
 
 
----
 
 ### **10.2 Semi-Structured Data**
 
@@ -1776,7 +1692,6 @@ flowchart TD
 | **DLQ for JSON**                  | `COPY INTO my_table FROM @my_stage ON_ERROR = CONTINUE;`                                    |
 
 
----
 
 ### **10.3 Unstructured Data**
 
@@ -1795,13 +1710,10 @@ flowchart TD
 | **Retry Failed Loads**        | `COPY INTO my_table FROM @my_stage ON_ERROR = CONTINUE;`                           |
 
 
----
 
----
 
 ## **11. Anti-Patterns to Avoid**
 
----
 
 ### **11.1 Structured Data**
 
@@ -1820,7 +1732,6 @@ flowchart TD
 | **No Monitoring**          | **Undetected failures** (e.g., silent truncation).       | Monitor `QUERY_HISTORY`, `COPY_HISTORY`, `WAREHOUSE_METERING_HISTORY`.   |
 
 
----
 
 ### **11.2 Semi-Structured Data**
 
@@ -1839,7 +1750,6 @@ flowchart TD
 | **XML as TEXT**             | **No native parsing** (regex only).              | Use **custom UDF** (e.g., `XML_TO_VARIANT`).              |
 
 
----
 
 ### **11.3 Unstructured Data**
 
@@ -1858,9 +1768,7 @@ flowchart TD
 | **No Compression**                  | **+30% storage costs**.                                    | Use `COMPRESSION=AUTO` (ZSTD for text).         |
 
 
----
 
----
 
 ## **12. Further Reading**
 
