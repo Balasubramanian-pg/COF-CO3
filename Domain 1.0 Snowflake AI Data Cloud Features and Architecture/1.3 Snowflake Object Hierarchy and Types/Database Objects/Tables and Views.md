@@ -26,7 +26,7 @@ Dynamic tables are managed table objects that Snowflake refreshes automatically 
 ### Iceberg Tables
 Apache Iceberg tables also appear in the table family, but they are a separate table type with their own lifecycle and storage semantics. The `INFORMATION_SCHEMA.TABLES` view exposes `IS_ICEBERG`, `IS_DYNAMIC`, `IS_IMMUTABLE`, and `IS_HYBRID` flags so you can distinguish these variants programmatically instead of guessing from naming conventions. ([Snowflake Docs][5])
 
-### Creation patterns that matter in production
+## Creation patterns that matter in production
 >[!Note]
 >`CREATE TABLE` supports the practical deployment patterns you actually use: CTAS, `LIKE`, `CLONE`, and `USING TEMPLATE`. 
 
@@ -54,7 +54,7 @@ CREATE OR REPLACE TABLE analytics.fact_sales_clone
   CLONE analytics.fact_sales;
 ```
 
-### Views as logical dependencies
+## Views as logical dependencies
 
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/c015dd09-de40-49ab-8a6f-06330b291f36" />
 
@@ -85,7 +85,7 @@ FROM analytics.fact_sales
 GROUP BY sale_date;
 ```
 
-### Operational inventory and impact analysis
+## Operational inventory and impact analysis
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/7dd17cfb-d093-4998-867a-afda71c62e86" />
 
 
@@ -124,7 +124,7 @@ FROM snowflake.account_usage.object_dependencies
 WHERE referenced_object_name = 'FACT_SALES';
 ```
 
-### Production patterns
+## Production patterns
 
 1. Use permanent tables for durable curated data.
 2. Use transient tables only when external reconstruction is possible.
@@ -137,7 +137,7 @@ WHERE referenced_object_name = 'FACT_SALES';
 
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/087899f8-7047-4dd0-8931-ca0b49c50007" />
 
-### Bottom line
+## Bottom line
 
 Tables define physical persistence and concurrency semantics. Views define logical dependency semantics. Materialized views and dynamic tables add managed refresh behavior on top. The engineering mistake is to treat them as the same object with different syntax. Snowflake does not. Neither should your platform design. ([Snowflake Docs][6])
 
