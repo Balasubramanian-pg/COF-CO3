@@ -29,6 +29,7 @@
     - 5X-Large: 256 nodes, 256 credits per hour
     - 6X-Large: 512 nodes, 512 credits per hour
   - Doubling the warehouse size halves query execution time for perfectly parallelizable workloads, but cost remains roughly the same because credits are consumed at double the rate for half the time
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/0091e08e-c2ac-47b6-9cb8-6007f366b39b" />
 
 ## Multi-cluster Warehouses and Concurrency
   - Configured in MAX_CLUSTERS mode, a warehouse can automatically spawn additional clusters (each of the defined size) when the number of queued queries exceeds thresholds
