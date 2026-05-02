@@ -112,13 +112,10 @@ flowchart TD
 | Cloud Storage | External Stages | Query External Data | Cloud Storage → Snowflake | 100-500 ms | 200-2000 MB/min | Yes | Snowflake | Compute |
 | Data Marketplace | Shared Data | Consume 3rd Party Data | Provider → Snowflake | <1 sec | 1-100 MB/sec | Yes | Snowflake | Compute + Data Costs |
 
----
 
----
 
 ## **2. Native Snowflake Connectors Deep Dive**
 
----
 
 ### **A. Kafka Connector**
 
@@ -262,7 +259,6 @@ flowchart TD
 4. **Database CDC replication** using Debezium + Kafka
 5. **Log aggregation** from a centralized Kafka logging cluster
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -282,7 +278,6 @@ flowchart TD
 | `KAFKA_SECURITY_PROTOCOL` | Security protocol | `PLAINTEXT` | `PLAINTEXT`, `SSL`, `SASL_PLAINTEXT`, `SASL_SSL` | SSL = 5% overhead |
 | `DLQ_TOPIC` | DLQ topic for failed messages | None | String | Required for error handling |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Create target table
@@ -330,7 +325,6 @@ WHERE
     consumer_group = 'snowflake-1234567890';
 ```
 
----
 
 ### **B. Snowflake Connector for CDC**
 
@@ -466,7 +460,6 @@ flowchart TD
 4. **Replicating Oracle database changes** to Snowflake
 5. **Maintaining a near real-time copy** of a production database in Snowflake
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -482,7 +475,6 @@ flowchart TD
 | `TRANSFORMATION` | Column transformations | None | SQL expression | Adds 10-20% overhead |
 | `ENABLE_DLQ` | Enable DLQ for failed batches | `TRUE` | `TRUE`, `FALSE` | Adds storage costs |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Create replication group
@@ -523,7 +515,6 @@ WHERE
     replication_group = 'MY_CDC_REPLICATION';
 ```
 
----
 
 ### **C. Snowflake Connector for Spark**
 
@@ -643,7 +634,6 @@ flowchart TD
 4. **Batch processing** of large datasets (TB+)
 5. **Data synchronization** between Spark and Snowflake
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -663,7 +653,6 @@ flowchart TD
 | `format` | File format for COPY INTO | `PARQUET` | `CSV`, `JSON`, `PARQUET`, etc. | Affects load performance |
 | `compress` | Compression for COPY INTO | `AUTO` | `GZIP`, `SNAPPY`, `NONE`, etc. | Affects load performance |
 
----
 #### **Production-Ready Setup (Scala)**
 ```scala
 // Spark Session with Snowflake Connector
@@ -721,7 +710,6 @@ transformedDf.write
 spark.stop()
 ```
 
----
 #### **Production-Ready Setup (PySpark)**
 ```python
 from pyspark.sql import SparkSession
@@ -775,7 +763,6 @@ transformed_df.write \
 spark.stop()
 ```
 
----
 ### **D. Snowflake Connector for Python**
 
 #### **Definition and Architecture**
@@ -884,7 +871,6 @@ flowchart TD
 4. **Lambda functions** for serverless data processing
 5. **Automation scripts** for database maintenance
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -904,7 +890,6 @@ flowchart TD
 | `connection_timeout` | Connection timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `query_timeout` | Query timeout (seconds) | None | 1-3600 | Prevents long-running queries |
 
----
 #### **Production-Ready Setup**
 ```python
 import snowflake.connector
@@ -978,11 +963,8 @@ finally:
         conn.close()
 ```
 
----
----
 ## **3. Partner Connectors Deep Dive**
 
----
 
 ### **A. Fivetran**
 
@@ -1113,7 +1095,6 @@ flowchart TD
 4. **Marketing data**: Ingesting data from Google Ads, Facebook Ads, or Marketo
 5. **Log data**: Loading logs from cloud services (AWS, GCP, Azure)
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1129,7 +1110,6 @@ flowchart TD
 | `Enable CDC` | Capture changes (for databases) | False | True, False | Enables change data capture |
 | `Start Date` | Historical data start date | None | Date | Affects initial load volume |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Step 1: Set up Snowflake user for Fivetran
@@ -1161,7 +1141,6 @@ CREATE STAGE FIVETRAN_DB.FIVETRAN_SCHEMA.FIVETRAN_STAGE
 -- (See Fivetran documentation for specific steps)
 ```
 
----
 ### **B. Stitch**
 
 #### **Definition and Architecture**
@@ -1280,7 +1259,6 @@ flowchart TD
 4. **Marketing data**: Ingesting data from Google Analytics or Facebook Ads
 5. **Product analytics**: Loading data from Amplitude or Mixpanel
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1295,7 +1273,6 @@ flowchart TD
 | `Start Date` | Historical data start date | None | Date | Affects initial load volume |
 | `Enable Log-Based CDC` | Use database logs for CDC | False | True, False | Enables log-based incremental |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Step 1: Set up Snowflake user for Stitch
@@ -1320,7 +1297,6 @@ GRANT ROLE STITCH_ROLE TO USER stitch_user;
 -- (See Stitch documentation for specific steps)
 ```
 
----
 ### **C. Airbyte**
 
 #### **Definition and Architecture**
@@ -1451,7 +1427,6 @@ flowchart TD
 4. **Real-time streaming**: Streaming data from Kafka to Snowflake
 5. **Custom connectors**: Building custom connectors for proprietary systems
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1467,7 +1442,6 @@ flowchart TD
 | `Batch Size` | Rows per batch | 1000 | 1-10000 | Larger = higher throughput |
 | `Max Parallel Workers` | Max parallel workers | 4 | 1-16 | Higher = higher throughput |
 
----
 #### **Production-Ready Setup (Self-Hosted)**
 ```yaml
 # docker-compose.yml for self-hosted Airbyte
@@ -1563,7 +1537,6 @@ GRANT WRITE ON STAGE AIRBYTE_DB.AIRBYTE_SCHEMA.AIRBYTE_STAGE TO ROLE AIRBYTE_ROL
 GRANT ROLE AIRBYTE_ROLE TO USER airbyte_user;
 ```
 
----
 ### **D. Matillion**
 
 #### **Definition and Architecture**
@@ -1690,7 +1663,6 @@ flowchart TD
 4. **Database replication**: Replicating data from PostgreSQL, MySQL, etc. to Snowflake
 5. **Data mart building**: Creating curated datasets for analytics
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1706,7 +1678,6 @@ flowchart TD
 | `Retry Delay` | Delay between retries (minutes) | 5 | 1-60 | Higher = lower resource usage |
 | `Error Notification` | Email for errors | None | Email address | None |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Step 1: Set up Snowflake user for Matillion
@@ -1739,11 +1710,8 @@ CREATE STAGE MATILLION_DB.MATILLION_SCHEMA.MATILLION_STAGE
 -- (See Matillion documentation for specific steps)
 ```
 
----
----
 ## **4. Driver-Based Connectors Deep Dive**
 
----
 
 ### **A. ODBC Driver**
 
@@ -1859,7 +1827,6 @@ flowchart TD
 4. **Custom reporting tools** built with ODBC
 5. **Excel integration** (via ODBC)
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1879,7 +1846,6 @@ flowchart TD
 | `ConnectionTimeout` | Connection timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `QueryTimeout` | Query timeout (seconds) | None | 1-3600 | Prevents long-running queries |
 
----
 #### **Production-Ready Setup (Windows DSN)**
 ```ini
 ; ODBC Data Source Configuration (odbc.ini)
@@ -1924,7 +1890,6 @@ conn.commit()
 conn.close()
 ```
 
----
 #### **Production-Ready Setup (Connection String)**
 ```python
 # Python example using connection string
@@ -1959,7 +1924,6 @@ for row in rows:
 conn.close()
 ```
 
----
 ### **B. JDBC Driver**
 
 #### **Definition and Architecture**
@@ -2072,7 +2036,6 @@ flowchart TD
 4. **Apache Spark jobs** (via Spark Connector)
 5. **Batch processing** in Java
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -2093,7 +2056,6 @@ flowchart TD
 | `queryTimeout` | Query timeout (seconds) | None | 1-3600 | Prevents long-running queries |
 | `socketTimeout` | Socket timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 
----
 #### **Production-Ready Setup (Maven)**
 ```xml
 <!-- pom.xml -->
@@ -2192,7 +2154,6 @@ public class SnowflakeJdbcExample {
 }
 ```
 
----
 #### **Production-Ready Setup (Connection Pooling with HikariCP)**
 ```xml
 <!-- pom.xml -->
@@ -2262,7 +2223,6 @@ public class SnowflakeConnectionPoolExample {
 }
 ```
 
----
 ### **C. Python Connector (snowflake-connector-python)**
 
 #### **Definition and Architecture**
@@ -2270,7 +2230,6 @@ The **Snowflake Connector for Python** (`snowflake-connector-python`) is a **Pyt
 
 *(Note: Already covered in detail in the Native Connectors section. See [Snowflake Connector for Python](#d-snowflake-connector-for-python) above.)*
 
----
 ### **D. .NET Driver**
 
 #### **Definition and Architecture**
@@ -2382,7 +2341,6 @@ flowchart TD
 4. **Windows services** for scheduled data processing
 5. **Custom .NET ETL pipelines**
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -2402,7 +2360,6 @@ flowchart TD
 | `ConnectionTimeout` | Connection timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `CommandTimeout` | Command timeout (seconds) | 60 | 1-3600 | Prevents long-running queries |
 
----
 #### **Production-Ready Setup (NuGet)**
 ```xml
 <!-- Package.config or .csproj -->
@@ -2473,7 +2430,6 @@ class Program
 }
 ```
 
----
 ### **E. Go Driver**
 
 #### **Definition and Architecture**
@@ -2585,7 +2541,6 @@ flowchart TD
 4. **Custom Go ETL pipelines**
 5. **Data processing scripts** in Go
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -2605,7 +2560,6 @@ flowchart TD
 | `connectionTimeout` | Connection timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `queryTimeout` | Query timeout (seconds) | None | 1-3600 | Prevents long-running queries |
 
----
 #### **Production-Ready Setup**
 ```go
 package main
@@ -2683,7 +2637,6 @@ func main() {
 }
 ```
 
----
 ### **F. Node.js Driver**
 
 #### **Definition and Architecture**
@@ -2795,7 +2748,6 @@ flowchart TD
 4. **Custom Node.js ETL pipelines**
 5. **CLI tools** written in Node.js
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -2815,7 +2767,6 @@ flowchart TD
 | `connectionTimeout` | Connection timeout (ms) | 60000 | 1-3600000 | Higher = more resilient |
 | `queryTimeout` | Query timeout (ms) | None | 1-3600000 | Prevents long-running queries |
 
----
 #### **Production-Ready Setup**
 ```bash
 # Install the driver
@@ -2892,11 +2843,8 @@ connection.connect((err, conn) => {
 });
 ```
 
----
----
 ## **5. API-Based Integrations Deep Dive**
 
----
 
 ### **A. REST API**
 
@@ -3036,7 +2984,6 @@ flowchart TD
 4. **Integration with external workflow engines** (e.g., Airflow, Prefect)
 5. **Custom applications** that need programmatic access to Snowflake
 
----
 #### **Authentication Methods**
 
 | **Method** | **Description** | **Use Case** | **Token Expiry** |
@@ -3045,7 +2992,6 @@ flowchart TD
 | **OAuth** | External OAuth provider (e.g., Okta) | User-to-server | Session-dependent |
 | **Username/Password** | Basic authentication | Legacy | Not recommended |
 
----
 #### **Production-Ready Setup (Python)**
 ```python
 import requests
@@ -3142,7 +3088,6 @@ except Exception as e:
     print(f"Error: {e}")
 ```
 
----
 ### **B. Snowflake Ingestion Service**
 
 #### **Definition and Architecture**
@@ -3150,7 +3095,6 @@ The **Snowflake Ingestion Service** is a **REST API-based** ingestion method tha
 
 *(Note: Already covered in detail in the Snowpipe Streaming section. See [Snowpipe Streaming](#b-snowpipe-streaming-row-based-internals) in the previous response.)*
 
----
 ### **C. Snowpipe (File-Based)**
 
 #### **Definition and Architecture**
@@ -3158,11 +3102,8 @@ The **Snowflake Ingestion Service** is a **REST API-based** ingestion method tha
 
 *(Note: Already covered in detail in the Snowpipe section. See [Snowpipe (File-Based) Internals](#a-snowpipe-file-based-internals) in the previous response.)*
 
----
----
 ## **6. Cloud Storage Integrations Deep Dive**
 
----
 
 ### **A. AWS S3 Integration**
 
@@ -3286,7 +3227,6 @@ flowchart TD
 4. **Data archiving**: Unloading data from Snowflake to S3 for long-term storage
 5. **Multi-cloud architectures**: Using S3 as a central storage layer
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -3299,7 +3239,6 @@ flowchart TD
 | `NOTIFY_CHANNEL` | SNS/SQS for Snowpipe notifications | None | SNS topic ARN or SQS queue URL | Required for auto-ingest |
 | `COPY_OPTIONS` | COPY INTO options | None | `ON_ERROR`, `VALIDATION_MODE`, etc. | Affects error handling |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Create a storage integration for PrivateLink
@@ -3338,7 +3277,6 @@ CREATE NOTIFICATION INTEGRATION MY_SNS_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_SNS_INTEGRATION;
 ```
 
----
 ### **B. Azure Blob Storage Integration**
 
 #### **Definition and Architecture**
@@ -3460,7 +3398,6 @@ flowchart TD
 4. **Data archiving**: Unloading data from Snowflake to Azure Blob Storage for long-term storage
 5. **Multi-cloud architectures**: Using Azure Blob Storage as a central storage layer
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -3473,7 +3410,6 @@ flowchart TD
 | `NOTIFY_CHANNEL` | Event Grid for Snowpipe notifications | None | Event Grid topic URL | Required for auto-ingest |
 | `COPY_OPTIONS` | COPY INTO options | None | `ON_ERROR`, `VALIDATION_MODE`, etc. | Affects error handling |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Create a storage integration for Private Link
@@ -3513,7 +3449,6 @@ CREATE NOTIFICATION INTEGRATION MY_EVENT_GRID_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_EVENT_GRID_INTEGRATION;
 ```
 
----
 ### **C. Google Cloud Storage (GCS) Integration**
 
 #### **Definition and Architecture**
@@ -3635,7 +3570,6 @@ flowchart TD
 4. **Data archiving**: Unloading data from Snowflake to GCS for long-term storage
 5. **Multi-cloud architectures**: Using GCS as a central storage layer
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -3648,7 +3582,6 @@ flowchart TD
 | `NOTIFY_CHANNEL` | Pub/Sub for Snowpipe notifications | None | Pub/Sub topic name | Required for auto-ingest |
 | `COPY_OPTIONS` | COPY INTO options | None | `ON_ERROR`, `VALIDATION_MODE`, etc. | Affects error handling |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Create a storage integration for Private Service Connect
@@ -3687,17 +3620,12 @@ CREATE NOTIFICATION INTEGRATION MY_PUBSUB_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_PUBSUB_INTEGRATION;
 ```
 
----
----
 ## **7. External Tables Deep Dive**
 
 *(Note: External Tables were already covered in detail in the previous response. See [External Tables](#5-external-tables) in the Automated Data Ingestion section.)*
 
----
----
 ## **8. Third-Party ETL Tools Deep Dive**
 
----
 
 ### **A. Informatica**
 
@@ -3822,7 +3750,6 @@ flowchart TD
 4. **Hybrid cloud**: Integrating on-premises data with Snowflake
 5. **Complex transformations**: Applying business logic to data before loading into Snowflake
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -3838,7 +3765,6 @@ flowchart TD
 | `Batch Size` | Rows per batch | 10000 | 1-100000 | Larger = higher throughput |
 | `Error Handling` | Error handling strategy | `Reject Rows` | `Reject Rows`, `Log Errors`, `Continue` | Affects data quality |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Step 1: Set up Snowflake user for Informatica
@@ -3871,7 +3797,6 @@ CREATE STAGE INFORMATICA_DB.INFORMATICA_SCHEMA.INFORMATICA_STAGE
 -- (See Informatica documentation for specific steps)
 ```
 
----
 ### **B. Talend**
 
 #### **Definition and Architecture**
@@ -3995,7 +3920,6 @@ flowchart TD
 4. **Hybrid cloud**: Integrating on-premises data with Snowflake
 5. **Complex transformations**: Applying business logic to data before loading into Snowflake
 
----
 #### **Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -4011,7 +3935,6 @@ flowchart TD
 | `Commit Every` | Rows per commit | 10000 | 1-100000 | Larger = better performance |
 | `Use Pushdown` | Enable pushdown to Snowflake | `True` | `True`, `False` | `True` = better performance |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Step 1: Set up Snowflake user for Talend
@@ -4044,11 +3967,8 @@ CREATE STAGE TALEND_DB.TALEND_SCHEMA.TALEND_STAGE
 -- (See Talend documentation for specific steps)
 ```
 
----
----
 ## **9. Data Marketplace Deep Dive**
 
----
 
 ### **Definition and Architecture**
 The **Snowflake Data Marketplace** is a **platform for discovering, accessing, and sharing** third-party datasets directly within Snowflake. It enables organizations to **consume** data from providers (e.g., financial, marketing, weather) and **share** their own data with other Snowflake customers.
@@ -4167,7 +4087,6 @@ flowchart TD
 4. **Risk modeling**: Using third-party risk datasets for modeling
 5. **Supply chain analytics**: Accessing logistics or shipping data
 
----
 #### **Key Datasets in Data Marketplace**
 
 | **Category** | **Provider** | **Dataset** | **Description** | **Pricing** |
@@ -4183,7 +4102,6 @@ flowchart TD
 | Logistics | FourKites | FourKites Visibility | Supply chain and logistics data | Paid |
 | Social | Twitter | Twitter Data | Twitter firehose data | Paid |
 
----
 #### **Production-Ready Setup**
 ```sql
 -- Step 1: Discover datasets in the Data Marketplace
@@ -4239,11 +4157,8 @@ GROUP BY
     database_name, schema_name, table_name;
 ```
 
----
----
 ## **10. Comparison Matrix**
 
----
 ### **Connectors and Integrations Comparison Table**
 
 | **Category** | **Connector/Integration** | **Data Source** | **Latency** | **Throughput** | **Serverless** | **Managed** | **Cost Model** | **Best For** | **Complexity** |
@@ -4272,11 +4187,8 @@ GROUP BY
 | Third-Party ETL | Talend | Any | 1-60 min | 100-5000 MB/min | No | Client | Talend + Snowflake | Open-source ETL | Medium |
 | Data Marketplace | Data Marketplace | Providers | <1 sec | 1-100 MB/sec | Yes | Snowflake | Compute + Data | Third-party data | Low |
 
----
----
 ## **11. Decision Flowchart**
 
----
 ### **Mermaid: Connector and Integration Selection Decision Tree**
 ```mermaid
 %% Connector and Integration Selection Decision Tree
@@ -4348,11 +4260,8 @@ flowchart TD
     class P marketplace;
 ```
 
----
----
 ## **12. Key Engineering Principles**
 
----
 ### **A. Core Principles**
 
 1. **Right Tool for the Right Job**:
@@ -4401,7 +4310,6 @@ flowchart TD
       - Plan for **schema evolution** in source and target.
       - Implement **monitoring** to detect performance degradation.
 
----
 ### **B. Production Checklist**
 
 #### **General**
@@ -4538,7 +4446,6 @@ flowchart TD
 - [ ] **Join datasets** with your own data
 - [ ] **Monitor usage** and costs
 
----
 ### **C. Bottom Line**
 
 | **Metric** | **Native Connectors** | **Partner Connectors** | **Driver-Based Connectors** | **API-Based Integrations** | **Cloud Storage Integrations** | **Data Marketplace** |
@@ -4559,11 +4466,8 @@ flowchart TD
 - Use **Cloud Storage Integrations** (S3, Azure Blob, GCS) for **data lake architectures** or **batch processing**.
 - Use **Data Marketplace** for **accessing third-party datasets** or **monetizing your own data**.
 
----
----
 ## **13. Production-Ready Snippets**
 
----
 ### **A. Native Connectors**
 
 #### **1. Kafka Connector with Avro and Schema Registry**
@@ -4725,7 +4629,6 @@ for row in results:
 pool.closeall()
 ```
 
----
 ### **B. Partner Connectors**
 
 #### **1. Fivetran Setup**
@@ -4832,7 +4735,6 @@ GRANT CREATE TABLE ON SCHEMA AIRBYTE_DB.AIRBYTE_SCHEMA TO ROLE AIRBYTE_ROLE;
 GRANT ROLE AIRBYTE_ROLE TO USER airbyte_user;
 ```
 
----
 ### **C. Driver-Based Connectors**
 
 #### **1. ODBC Driver (Python)**
@@ -5037,7 +4939,6 @@ connection.connect((err, conn) => {
 });
 ```
 
----
 ### **D. API-Based Integrations**
 
 #### **1. REST API with Key Pair Authentication (Python)**
@@ -5195,7 +5096,6 @@ except Exception as e:
     print(f"Error: {e}")
 ```
 
----
 ### **E. Cloud Storage Integrations**
 
 #### **1. S3 External Stage with PrivateLink**
@@ -5313,7 +5213,6 @@ CREATE NOTIFICATION INTEGRATION MY_PUBSUB_INTEGRATION
 ALTER PIPE MY_SNOWPIPE SET NOTIFY_CHANNEL = MY_PUBSUB_INTEGRATION;
 ```
 
----
 ### **F. External Tables**
 ```sql
 -- Create an external stage
@@ -5342,7 +5241,6 @@ SELECT * FROM MY_EXTERNAL_TABLE
 WHERE created_at > DATEADD('month', -1, CURRENT_DATE());
 ```
 
----
 ### **G. Data Marketplace**
 ```sql
 -- Discover datasets in the Data Marketplace
@@ -5383,8 +5281,6 @@ WHERE
     s.sale_date > DATEADD('day', -30, CURRENT_TIMESTAMP());
 ```
 
----
----
 ## **14. Final Notes**
 
 ### **For Further Reading**
