@@ -1,6 +1,5 @@
 # **Snowflake Connectivity: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Connectivity Architecture Overview**
 
@@ -67,7 +66,6 @@ flowchart TD
     class T,U,V,W security;
 ```
 
----
 ### **Connectivity Options Comparison Table**
 
 | **Connectivity Method**       | **Protocol**       | **Use Case**                          | **Latency**       | **Throughput**       | **Security**               | **Managed** | **Cost**               | **Best For**                          |
