@@ -45,7 +45,6 @@ graph TD
   SLA --> Reporting[Operational Reporting]
 ```
 
----
 
 ## 3.1.1 Operational Observability & Telemetry
 
@@ -153,7 +152,6 @@ LIMIT 50;
 - `bytes_written`: Should be 3–10x smaller than `bytes_scanned` due to columnar compression
 - `credits_used`: Compare to warehouse size × execution time to identify inefficiencies
 
----
 
 ## 3.1.2 Incident Response & Troubleshooting Runbooks
 
