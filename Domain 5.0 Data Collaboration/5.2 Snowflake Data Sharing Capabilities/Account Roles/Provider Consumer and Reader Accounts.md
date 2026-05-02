@@ -145,7 +145,6 @@ Result Materialization:
 | `SHARE_READER` privilege | Implicit in reader accounts. Allows consumption of all shares granted to reader. | N/A | Reader users cannot create shares or become providers. | Auto-granted |
 | Reader Account Warehouse Sizing | Reader warehouses billed at standard rate to provider credit pool. | XS: 1 credit/hr → 6XL: 512 credits/hr. No resource monitors in reader account (provider must monitor). | Provider bears all cost risk. Set warehouse auto-suspend aggressively (1 min). | XS-S for exploration; M-L for production workloads |
 
----
 
 ## 4. Performance & Resource Implications
 
@@ -212,7 +211,6 @@ Multi-Cluster Warehouse (Auto-Scale = TRUE):
 
 **Production Rule:** For shared data serving >50 concurrent consumers, use Multi-Cluster Warehouse (M-XL) with auto-scale. Single-cluster warehouses experience **query queuing latency >30 seconds** at 80% concurrency saturation.
 
----
 
 ## 5. Monitoring, Observability & Troubleshooting
 
@@ -395,7 +393,6 @@ ALTER SHARE PROD_SENSITIVE_SHARE ADD ACCOUNTS = verified_org.verified_account;
 ALTER SHARE PROD_SENSITIVE_SHARE COMMENT = 'Incident recovery: ' || CURRENT_TIMESTAMP();
 ```
 
----
 
 ## 6. Advanced Production Patterns
 
@@ -614,7 +611,6 @@ FROM prod_db.security.query_history_stream
 WHERE database_name IN (SELECT database_name FROM INFORMATION_SCHEMA.SHARES);
 ```
 
----
 
 ## 7. Decision Matrix / Quick Reference Flowchart
 
@@ -646,7 +642,6 @@ flowchart TD
     REP_SYNC --> END
 ```
 
----
 
 ## 8. Key Engineering Principles & Bottom Line
 
@@ -678,6 +673,5 @@ flowchart TD
 - [ ] Provider `QUERY_HISTORY` retention policy ≥ 365 days for compliance auditing
 - [ ] Consumer onboarding runbook includes warehouse sizing guidance and cost attribution model
 
----
 
 **Bottom Line:** Snowflake Data Sharing is a metadata-zero-copy architecture with provider-enforced security boundaries. Production reliability depends on treating shares as external API contracts: versioned schemas, strict input validation (row access policies), consumer-side circuit breakers (resource monitors), and comprehensive observability across both provider and consumer query planes. The cost model is asymmetric—provider controls data, consumer controls compute (except readers)—making governance automation and credit attribution non-optional at enterprise scale.
