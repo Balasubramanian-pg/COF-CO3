@@ -100,6 +100,8 @@ Step-by-step flow from SQL submission to result: <br>
   ```
   Solid lines show control/data flow; metadata lookups are frequent and performance-critical. The result cache in Cloud Services can bypass warehouse execution for repeated identical queries.
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/ba89722b-6afb-4138-bca2-b4eed6707975" />
+
 ## Availability and Resilience
   - Cloud Services is deployed across multiple fault domains and availability zones within a cloud region
   - Designed for 99.99%+ availability; transparent failover with no user intervention
