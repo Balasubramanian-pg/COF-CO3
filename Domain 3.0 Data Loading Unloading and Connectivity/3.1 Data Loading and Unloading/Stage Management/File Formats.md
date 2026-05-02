@@ -119,11 +119,9 @@ flowchart TD
 
 ---
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **A. CSV/TSV File Formats**
 #### **1. Parsing Internals**
@@ -167,7 +165,6 @@ flowchart TD
   - On failure, **no partial commits** (entire file is rolled back).
   - **DLQ**: Rows with errors are routed to DLQ if `ON_ERROR = 'CONTINUE'`.
 
----
 
 ### **B. JSON File Formats**
 #### **1. Parsing Internals**
@@ -208,7 +205,6 @@ flowchart TD
   - On failure, **no partial commits** (entire file is rolled back).
   - **DLQ**: Invalid documents are routed to DLQ if `ON_ERROR = 'CONTINUE'`.
 
----
 ### **C. Parquet File Formats**
 #### **1. Parsing Internals**
 - **Columnar Reader**:
@@ -252,7 +248,6 @@ flowchart TD
   - On failure, **no partial commits** (entire file is rolled back).
   - **DLQ**: Corrupt row groups are routed to DLQ if `ON_ERROR = 'CONTINUE'`.
 
----
 ### **D. Avro File Formats**
 #### **1. Parsing Internals**
 - **Row-Based Reader**:
@@ -298,7 +293,6 @@ flowchart TD
   - On failure, **no partial commits** (entire file is rolled back).
   - **DLQ**: Corrupt rows are routed to DLQ if `ON_ERROR = 'CONTINUE'`.
 
----
 ### **E. XML File Formats**
 #### **1. Parsing Internals**
 - **DOM/SAX Parser**:
@@ -337,7 +331,6 @@ flowchart TD
   - On failure, **no partial commits** (entire file is rolled back).
   - **DLQ**: Malformed elements are routed to DLQ if `ON_ERROR = 'CONTINUE'`.
 
----
 ### **F. ORC File Formats**
 #### **1. Parsing Internals**
 - **Columnar Reader**:
@@ -380,11 +373,8 @@ flowchart TD
   - On failure, **no partial commits** (entire file is rolled back).
   - **DLQ**: Corrupt stripes are routed to DLQ if `ON_ERROR = 'CONTINUE'`.
 
----
----
 ## **3. Parameter/Configuration Deep Dive**
 
----
 ### **A. Universal File Format Parameters**
 | **Parameter**               | **Applicability**       | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|-------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -405,7 +395,6 @@ flowchart TD
 | `VALIDATION_MODE`            | All                     | Controls validation (`RETURN_ERRORS`, `RETURN_ROWS`, `RETURN_ALL_ERRORS`).             | `RETURN_ROWS` adds **10-20% latency** but provides detailed errors.                     | `RETURN_ALL_ERRORS` includes all errors (memory-intensive).                            | `RETURN_ERRORS`         |
 | `ON_ERROR`                   | All                     | Error handling (`ABORT`, `CONTINUE`, `SKIP_FILE`).                                    | `SKIP_FILE` reduces load time by **~40%** but skips entire files.                    | `ABORT` fails on first error (default).                                                 | `ABORT`                 |
 
----
 ### **B. CSV/TSV-Specific Parameters**
 | **Parameter**               | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -415,7 +404,6 @@ flowchart TD
 | `TIMESTAMP_FORMAT`          | Format for timestamp columns (e.g., `'YYYY-MM-DD HH:MI:SS.FF'`).                      | None                                                                                   | Must match file data; mismatches cause `NULL` or errors.                                | `AUTO`                  |
 | `BINARY_FORMAT`             | Format for binary columns (`HEX`, `BASE64`, `UTF8`).                                   | None                                                                                   | `HEX` adds **10% parsing overhead**.                                                      | `HEX`                   |
 
----
 ### **C. JSON-Specific Parameters**
 | **Parameter**               | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -425,7 +413,6 @@ flowchart TD
 | `GENERATE_COLUMN_DESCRIPTION` | Generates column descriptions from JSON keys.                                      | None                                                                                   | Adds **5% memory overhead** for VARIANT columns.                                        | `FALSE`                 |
 | `ALLOW_DUPLICATE`           | Allows duplicate keys in JSON objects.                                               | None                                                                                   | Duplicate keys are **overwritten** (last value wins).                                  | `FALSE`                 |
 
----
 ### **D. Parquet-Specific Parameters**
 | **Parameter**               | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -433,14 +420,12 @@ flowchart TD
 | `IGNORE_CORRUPTED_ROW_GROUPS` | Skips corrupt row groups.                                                           | **10% faster** for files with corruption.                                             | Corrupt row groups are **silently skipped**.                                            | `FALSE`                 |
 | `PARQUET_SNAPPY_COMPRESSION` | Forces Snappy compression (overrides `COMPRESSION`).                                | None                                                                                   | Use for compatibility with Snappy-only Parquet files.                                   | `FALSE`                 |
 
----
 ### **E. Avro-Specific Parameters**
 | **Parameter**               | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
 | `AVRO_SCHEMA`               | Explicitly specifies Avro schema (overrides embedded schema).                         | None                                                                                   | Must match writer schema for compatibility.                                             | None                    |
 | `TRUNCATECOLUMNS`           | Truncates columns to match target table.                                              | None                                                                                   | **No atomicity** (partial overwrites possible).                                         | `FALSE`                 |
 
----
 ### **F. XML-Specific Parameters**
 | **Parameter**               | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
@@ -449,18 +434,14 @@ flowchart TD
 | `XML_ROW_TAG`               | Tag to treat as a row in `RELATIONAL` mode.                                            | None                                                                                   | Required for `RELATIONAL` mode.                                                          | None (required)         |
 | `XML_SKIP_BYTE_ORDER_MARK` | Skips byte order mark (BOM) in XML files.                                             | None                                                                                   | Use for UTF-8 files with BOM.                                                            | `TRUE`                  |
 
----
 ### **G. ORC-Specific Parameters**
 | **Parameter**               | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
 |-----------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|-------------------------|
 | `IGNORE_CORRUPTED_STRIPES`  | Skips corrupt stripes.                                                                | **10% faster** for files with corruption.                                             | Corrupt stripes are **silently skipped**.                                               | `FALSE`                 |
 | `ORC_SNAPPY_COMPRESSION`   | Forces Snappy compression (overrides `COMPRESSION`).                                 | None                                                                                   | Use for compatibility with Snappy-only ORC files.                                      | `FALSE`                 |
 
----
----
 ## **4. Performance & Resource Implications**
 
----
 ### **A. Memory Usage by File Format**
 | **File Format** | **Per-Thread Buffer** | **Spill Threshold** | **Overhead**               | **Max File Size (DOM)** | **Memory Notes**                          |
 |-----------------|-----------------------|--------------------|----------------------------|-------------------------|------------------------------------------|
@@ -473,7 +454,6 @@ flowchart TD
 | XML (DOM)       | Full document         | N/A                | Very High                 | **1GB**                 | Fails for files >1GB.                    |
 | ORC             | 200MB                 | 400MB              | Low (columnar metadata)   | N/A                     | Stripe-level buffering.                  |
 
----
 ### **B. Throughput by File Format (Per Warehouse)**
 | **File Format** | **X-Small** | **Small** | **Medium** | **Large** | **X-Large** | **2X-Large** | **4X-Large** | **Bottleneck**               |
 |-----------------|-------------|-----------|------------|-----------|-------------|--------------|--------------|------------------------------|
@@ -486,7 +466,6 @@ flowchart TD
 | XML (DOM)       | 20MB/s      | 40MB/s    | 80MB/s     | 160MB/s   | 320MB/s     | 640MB/s      | 1.28GB/s     | Memory (full document load) |
 | ORC             | 600MB/s     | 1.2GB/s   | 2.4GB/s    | 4.8GB/s   | 9.6GB/s     | 19.2GB/s     | 38.4GB/s     | I/O (columnar scans)         |
 
----
 ### **C. Latency by File Format (Per File)**
 | **File Format** | **1KB File** | **1MB File** | **100MB File** | **1GB File**  | **10GB File** | **Latency Notes**                     |
 |-----------------|--------------|--------------|---------------|---------------|---------------|---------------------------------------|
@@ -499,7 +478,6 @@ flowchart TD
 | XML (DOM)       | 50ms         | 500ms        | 25s           | 250s           | Fails          | Full document load; O(n²) scaling.     |
 | ORC             | 1ms          | 10ms         | 500ms         | 5s             | 50s            | Columnar reads; sub-linear scaling.   |
 
----
 ### **D. CPU Overhead by File Format**
 | **File Format** | **Parsing Overhead** | **Decompression Overhead** | **Schema Overhead** | **Total Overhead** | **Notes**                          |
 |-----------------|-----------------------|----------------------------|--------------------|--------------------|------------------------------------|
@@ -512,7 +490,6 @@ flowchart TD
 | XML (DOM)       | Very High             | N/A                        | N/A                | Very High          | Full document load.                |
 | ORC             | Low                   | Low (Snappy)               | Low                | Low                | Columnar reads + predicate pushdown. |
 
----
 ### **E. Compression Ratio & Speed**
 | **Compression** | **CSV/JSON/XML** | **Parquet/Avro/ORC** | **Compression Ratio** | **Decompression Speed** | **Best For**               |
 |-----------------|------------------|----------------------|-----------------------|-------------------------|----------------------------|
@@ -525,7 +502,6 @@ flowchart TD
 | DEFLATE         | ❌ Not Supported  | ✅ Supported (Avro)   | ~3:1                  | 🐢 Slow                 | High compression (Avro)    |
 | BZIP2           | ❌ Not Supported  | ✅ Supported (Avro)   | ~4:1                  | 🐌 Very Slow            | Archive storage            |
 
----
 ### **F. Credit Costs by File Format**
 | **Operation**       | **CSV/TSV** | **JSON** | **Parquet** | **Avro** | **XML** | **ORC** | **Notes**                          |
 |---------------------|-------------|----------|-------------|----------|---------|---------|------------------------------------|
@@ -534,11 +510,8 @@ flowchart TD
 | **UNLOAD**          | 0.02–0.05   | 0.05–0.1 | 0.01–0.02   | 0.02–0.05 | 0.05–0.1 | 0.01–0.02 | Credits/GB; includes compression.  |
 | **Storage**         | 0.1         | 0.1      | 0.1         | 0.1      | 0.1     | 0.1     | Credits/GB/month (internal only).  |
 
----
----
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 ### **A. Key Monitoring Views**
 | **View**                                      | **Purpose**                                                                 | **Example Query**                                                                                     | **Retention**               |
 |-----------------------------------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|----------------------------|
@@ -549,7 +522,6 @@ flowchart TD
 | `SNOWFLAKE.INFORMATION_SCHEMA.COPY_HISTORY`  | Detailed `COPY INTO` history (per-file).                                   | `SELECT * FROM SNOWFLAKE.INFORMATION_SCHEMA.COPY_HISTORY('MY_TABLE') WHERE FILE_FORMAT = 'JSON';` | Session lifetime |
 | `SNOWFLAKE.ACCOUNT_USAGE.STAGE_STORAGE`       | Storage costs and usage for stages.                                       | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.STAGE_STORAGE WHERE STAGE_NAME = 'MY_STAGE';` | 365 days |
 
----
 ### **B. Error Categorization & Runbooks**
 #### **1. Common Errors & Fixes**
 | **Error Code**               | **File Format** | **Root Cause**                          | **Impact**                          | **Severity** | **Runbook**                                                                                     | **Monitoring View**                     |
@@ -565,7 +537,6 @@ flowchart TD
 | `DUPLICATE_KEY`               | JSON            | Duplicate keys in JSON object.          | `COPY INTO` fails (if `ALLOW_DUPLICATE = FALSE`). | Medium       | 1. Use `ALLOW_DUPLICATE = TRUE`. 2. Deduplicate keys.                                        | `ACCOUNT_USAGE.COPY_HISTORY`            |
 | `MEMORY_LIMIT_EXCEEDED`       | XML (DOM)       | File >1GB (DOM parser).                 | `COPY INTO` fails.                  | Critical     | 1. Use `XML_PARSER = 'SAX'`. 2. Split file into smaller chunks.                              | `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 
----
 #### **2. Incident Runbooks**
 ##### **Runbook: CSV Load Failures**
 ```sql
@@ -744,7 +715,6 @@ ON_ERROR = 'CONTINUE';
 -- Use a pre-processing step to split XML into smaller chunks (<1GB)
 ```
 
----
 ### **C. Proactive Alerts**
 #### **Alert: File Format Mismatch**
 ```sql
@@ -811,11 +781,8 @@ AS
     AND start_time > DATEADD('minute', -10, CURRENT_TIMESTAMP());
 ```
 
----
----
 ## **6. Advanced Production Patterns**
 
----
 ### **A. Schema Evolution Strategies**
 #### **1. Parquet/Avro/ORC Schema Evolution**
 - **Backward Compatibility**:
@@ -879,7 +846,6 @@ AS
         MY_TABLE;
     ```
 
----
 ### **B. Performance Optimization Patterns**
 #### **1. Columnar Formats (Parquet/ORC)**
 - **Predicate Pushdown**:
@@ -942,7 +908,6 @@ AS
     SET INFER_SCHEMA = FALSE;
     ```
 
----
 ### **C. Data Validation Frameworks**
 #### **1. Pre-Load Validation**
 - **File-Level Checks**:
@@ -1008,7 +973,6 @@ AS
         MY_TABLE;
     ```
 
----
 ### **D. Idempotent Loading Patterns**
 #### **1. CSV/TSV Idempotency**
 - **Merge Logic**:
@@ -1055,7 +1019,6 @@ AS
     FILE_FORMAT = (TYPE = 'PARQUET');
     ```
 
----
 ### **E. Migration Patterns**
 #### **1. CSV to Parquet Migration**
 - **Step 1: Create Parquet File Format**:
@@ -1106,11 +1069,8 @@ AS
   FILE_FORMAT = (TYPE = 'PARQUET', COMPRESSION = 'SNAPPY');
   ```
 
----
----
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 ### **Mermaid: File Format Selection Decision Tree**
 ```mermaid
 %% File Format Selection Decision Matrix
@@ -1160,7 +1120,6 @@ flowchart TD
     class AA,AB hierarchical;
 ```
 
----
 ### **Quick Reference Table**
 | **Use Case**                          | **File Format** | **Compression**       | **Error Handling**          | **Schema Evolution** | **Performance**       | **Storage Efficiency** | **Best For**                          |
 |---------------------------------------|-----------------|-----------------------|-----------------------------|----------------------|------------------------|-------------------------|---------------------------------------|
@@ -1174,11 +1133,8 @@ flowchart TD
 | Ad-hoc analytics                       | JSON (VARIANT)   | None                  | `ON_ERROR = 'CONTINUE'`     | ✅ Yes               | ⚡⚡⚡                  | ⚡⚡                     | Flexible querying, nested data        |
 | Structured JSON                        | JSON (RELATIONAL)| None                  | `ON_ERROR = 'CONTINUE'`     | ❌ No                | ⚡⚡⚡                  | ⚡⚡                     | Flat JSON, relational tables           |
 
----
----
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 ### **A. Core Principles**
 1. **Columnar > Row-Based for Analytics**:
    - **Parquet/ORC** outperform CSV/JSON by **3-5x** for analytical queries (predicate pushdown + column pruning).
@@ -1212,7 +1168,6 @@ flowchart TD
    - **UNLOAD**: Partition files by **date/key** (e.g., `@stage/year=2023/month=05/`).
    - **COPY INTO**: Only scan **relevant partitions** (predicate pushdown).
 
----
 ### **B. Production Checklist**
 #### **File Format Design**
 - [ ] **Columnar Formats (Parquet/ORC)**:
@@ -1281,7 +1236,6 @@ flowchart TD
   - **Parquet/ORC**: **50% cheaper** than CSV for analytical queries.
   - **JSON**: **20% more expensive** than Parquet due to VARIANT overhead.
 
----
 ### **C. Bottom Line**
 | **Metric**               | **Parquet** | **ORC** | **Avro** | **JSON** | **CSV** | **XML** | **Best Use Case**               |
 |--------------------------|-------------|---------|----------|----------|---------|---------|----------------------------------|
@@ -1295,11 +1249,8 @@ flowchart TD
 | **Cost (Storage)**       | ⚡⚡⚡⚡⚡     | ⚡⚡⚡⚡⚡ | ⚡⚡⚡    | ⚡       | ⚡       | ⚡       | Cost-Sensitive Workloads         |
 | **Cost (Compute)**       | ⚡⚡⚡⚡       | ⚡⚡⚡⚡ | ⚡⚡⚡    | ⚡⚡      | ⚡⚡⚡    | ⚡⚡⚡    | Budget-Conscious Operations       |
 
----
----
 ## **Appendix: Production-Ready Snippets**
 
----
 ### **A. File Format Creation Templates**
 #### **Parquet (Optimized for Analytics)**
 ```sql
@@ -1375,7 +1326,6 @@ CREATE FILE FORMAT PROD_ORC_FORMAT
   COMMENT = 'Production ORC format for Hive workloads (Snappy compression)';
 ```
 
----
 ### **B. High-Performance COPY INTO Templates**
 #### **Parquet with Predicate Pushdown**
 ```sql
@@ -1422,7 +1372,6 @@ ON_ERROR = 'CONTINUE'
 VALIDATION_MODE = RETURN_ROWS;
 ```
 
----
 ### **C. High-Performance UNLOAD Templates**
 #### **Parquet with Partitioning**
 ```sql
@@ -1455,7 +1404,6 @@ SINGLE = FALSE;
 -- snow sql -q "PUT file:///tmp/unload.csv.gz @PROD_STAGE/;"
 ```
 
----
 ### **D. File Format Migration Scripts**
 #### **CSV to Parquet Migration**
 ```sql
@@ -1500,7 +1448,6 @@ SELECT COUNT(*) FROM PROD_JSON_TABLE;
 SELECT COUNT(*) FROM @PROD_STAGE/parquet/;
 ```
 
----
 ### **E. Validation & Testing Scripts**
 #### **File Format Validation**
 ```sql
@@ -1576,8 +1523,6 @@ FROM
     PROD_TABLE;
 ```
 
----
----
 ### **Final Notes**
 - **For Further Reading**:
   - [Snowflake File Format Documentation](https://docs.snowflake.com/en/sql-reference/sql/create-file-format)
