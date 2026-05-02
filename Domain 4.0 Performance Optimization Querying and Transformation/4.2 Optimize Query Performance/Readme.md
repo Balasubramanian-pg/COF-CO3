@@ -1,6 +1,5 @@
 # **Optimize Query Performance: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Query Optimization Fundamentals**
 
@@ -79,7 +78,6 @@ flowchart TD
     class U,V,W monitoring;
 ```
 
----
 
 ### **Snowflake's Unique Architecture for Query Optimization**
 
