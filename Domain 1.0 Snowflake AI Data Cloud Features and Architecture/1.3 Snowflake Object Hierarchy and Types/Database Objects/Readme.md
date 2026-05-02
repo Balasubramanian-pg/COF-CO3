@@ -112,14 +112,6 @@ Database replication has its own failure surface, especially when objects in one
 
 The most reliable inventory queries are still `SHOW DATABASES`, `SHOW SCHEMAS`, and the relevant `INFORMATION_SCHEMA` and `ACCOUNT_USAGE` views. `SHOW` is good for operational visibility, `INFORMATION_SCHEMA` is good for current-database metadata, and `ACCOUNT_USAGE` is where you go for historical and cross-object auditing. ([Snowflake Docs][9])
 
-Use these as add-on sections only.
-
-## Readme.md
-
-Snowflake database objects are best treated as a layered contract, not a flat catalog. The database is the namespace and governance boundary, schemas are the containment and privilege boundary, and the object types inside schemas determine runtime behavior, durability, and operational risk. In production, the fastest way to break a deployment is to ignore object type differences and assume that all objects participate in the same lifecycle, which is false for pipes, models, external tables, materialized views, and procedures. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-database), [docs.snowflake.com](https://docs.snowflake.com/en/user-guide/security-access-control-overview))
-
-For inventory and impact analysis, use `INFORMATION_SCHEMA` for low-latency current-state inspection and `ACCOUNT_USAGE` for historical, cross-database, and cross-account governance analysis. For dependency management, `OBJECT_DEPENDENCIES` is the right source when you need to know what will break if a base object is replaced or dropped. For access packaging, use database roles inside the database and managed access schemas where you want grant authority centralized. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/info-schema), [docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/account-usage/object_dependencies), [docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/snowflake-db-roles))
-
 ## Pipes and ML Models and Applications.md
 
 ### Pipes
@@ -224,6 +216,10 @@ Operationally, the main difference is side effects and session access. A procedu
 
 
 ### Bottom line
+
+Snowflake database objects are best treated as a layered contract, not a flat catalog. The database is the namespace and governance boundary, schemas are the containment and privilege boundary, and the object types inside schemas determine runtime behavior, durability, and operational risk. In production, the fastest way to break a deployment is to ignore object type differences and assume that all objects participate in the same lifecycle, which is false for pipes, models, external tables, materialized views, and procedures. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-database), [docs.snowflake.com](https://docs.snowflake.com/en/user-guide/security-access-control-overview))
+
+For inventory and impact analysis, use `INFORMATION_SCHEMA` for low-latency current-state inspection and `ACCOUNT_USAGE` for historical, cross-database, and cross-account governance analysis. For dependency management, `OBJECT_DEPENDENCIES` is the right source when you need to know what will break if a base object is replaced or dropped. For access packaging, use database roles inside the database and managed access schemas where you want grant authority centralized. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/info-schema), [docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/account-usage/object_dependencies), [docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/snowflake-db-roles))
 
 A Snowflake database is not just a folder. It is the privilege boundary, clone and replication unit, and metadata root for its schemas and schema objects. In production, the things to care about are database type, schema governance mode, database roles, dependency graphs, and which metadata plane you are querying. If you get those wrong, you get broken grants, broken clones, or broken dependency promotion. ([Snowflake Docs][3])
 
