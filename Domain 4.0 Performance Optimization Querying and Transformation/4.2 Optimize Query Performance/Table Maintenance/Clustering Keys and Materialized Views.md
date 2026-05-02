@@ -93,7 +93,6 @@ SELECT * FROM sales WHERE date = '2023-01-15' AND region = 'US';
 -- Only scans micro-partitions containing data for date='2023-01-15' AND region='US'
 ```
 
----
 
 #### **2. Materialized Views**
 **Definition**: **Materialized Views (MVs)** in Snowflake are **pre-computed query results** that are **stored as tables** and **automatically refreshed** when the underlying data changes. MVs are ideal for **repetitive, expensive queries** that can benefit from **pre-computation**.
@@ -125,7 +124,6 @@ SELECT * FROM daily_sales_mv WHERE day > CURRENT_DATE() - 7;
 -- Snowflake may rewrite this to use the MV instead of querying the base table
 ```
 
----
 ### **Comparison: Clustering Keys vs. Materialized Views**
 
 | **Feature** | **Clustering Keys** | **Materialized Views** | **Notes** |
@@ -147,7 +145,6 @@ SELECT * FROM daily_sales_mv WHERE day > CURRENT_DATE() - 7;
 | **Concurrency** | Improves scan performance | Reduces warehouse load | Both improve concurrency |
 | **Use with External Tables** | Yes (limited) | No | Clustering can be used with external tables; MVs cannot |
 
----
 ### **When to Use Clustering Keys vs. Materialized Views**
 
 | **Use Case** | **Clustering Keys** | **Materialized Views** | **Combined Approach** |
@@ -163,7 +160,6 @@ SELECT * FROM daily_sales_mv WHERE day > CURRENT_DATE() - 7;
 | **Cost-sensitive environments** | ✅ Low cost | ❌ Higher cost | ⚠️ Use clustering first |
 | **Storage-constrained environments** | ✅ No storage overhead | ❌ Storage overhead | ⚠️ Use clustering first |
 
----
 ### **When to Use Both Clustering Keys and Materialized Views**
 Use **both clustering keys and materialized views** for:
 1. **Large tables with repetitive queries** (clustering reduces I/O, MVs reduce compute).
@@ -196,11 +192,8 @@ WHERE day > CURRENT_DATE() - 7 AND region = 'US';
 -- Uses MV for pre-computed aggregations and clustering for partition pruning
 ```
 
----
----
 ## **2. Clustering Keys Deep Dive**
 
----
 ### **A. How Clustering Keys Work in Snowflake**
 
 #### **1. Micro-Partitioning and Clustering**
@@ -270,7 +263,6 @@ Snowflake **automatically reclusters** data in the background as new data is loa
 - Happens **asynchronously** (does not block queries).
 - Can be **forced manually** if needed.
 
----
 ### **B. When to Use Clustering Keys**
 
 #### **1. Good Candidates for Clustering**
@@ -290,7 +282,6 @@ Snowflake **automatically reclusters** data in the background as new data is loa
 ❌ **Frequently updated tables** (reclustering overhead may impact performance).
 ❌ **Tables with uniform data distribution** (clustering provides no benefit).
 
----
 ### **C. Clustering Keys Configuration**
 
 #### **1. Set Clustering Keys on a Table**
@@ -334,7 +325,6 @@ ALTER TABLE my_table RECLUSTER;
 ALTER EXTERNAL TABLE my_external_table CLUSTER BY (date);
 ```
 
----
 ### **D. Clustering Keys Monitoring**
 
 #### **1. Check Clustering Information**
@@ -433,7 +423,6 @@ FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
 WHERE query_id = 'after_clustering_query_id';
 ```
 
----
 ### **E. Clustering Keys Performance Impact**
 
 #### **1. Performance Metrics**
@@ -465,7 +454,6 @@ SELECT * FROM sales WHERE date = '2023-01-15' AND region = 'US';
 | **Credit Usage** | 5 credits | 0.5 credits | 10x reduction |
 | **Clustering Depth** | N/A | 2 | Better pruning |
 
----
 ### **F. Clustering Keys Best Practices**
 
 #### **1. Clustering Key Selection**
@@ -501,7 +489,6 @@ SELECT * FROM sales WHERE date = '2023-01-15' AND region = 'US';
 | **Combine with Other Optimizations** | Use clustering with caching, materialized views, etc. | `CLUSTER BY (date) + MATERIALIZED VIEW` |
 | **Monitor Query Performance** | Check QUERY_HISTORY for performance improvements | `SELECT execution_time FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 
----
 ### **G. Clustering Keys Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -519,7 +506,6 @@ SELECT * FROM sales WHERE date = '2023-01-15' AND region = 'US';
 | **Eventual Consistency** | Clustering is not real-time | Use manual reclustering for time-sensitive queries |
 | **Storage Overhead** | Clustering does not consume additional storage, but reclustering does consume credits | Monitor reclustering costs |
 
----
 ### **H. Clustering Keys Examples**
 
 #### **Example 1: Time-Series Data**
@@ -632,11 +618,8 @@ ORDER BY
     execution_time;
 ```
 
----
----
 ## **3. Materialized Views Deep Dive**
 
----
 ### **A. How Materialized Views Work in Snowflake**
 
 #### **1. Materialized View Architecture**
@@ -721,7 +704,6 @@ flowchart TD
    - MVs are **eventually consistent** with the source tables (not real-time).
    - **Refresh latency**: Typically **1-5 minutes** (configurable).
 
----
 ### **B. When to Use Materialized Views**
 
 #### **1. Good Candidates for Materialized Views**
@@ -743,7 +725,6 @@ flowchart TD
 ❌ **Real-time data** (MVs are eventually consistent).
 ❌ **Unique queries** (each query is different).
 
----
 ### **C. Materialized Views Configuration**
 
 #### **1. Create a Materialized View**
@@ -823,7 +804,6 @@ ALTER MATERIALIZED VIEW my_mv SET REFRESH_MODE = MANUAL;
 ALTER MATERIALIZED VIEW my_mv SET REFRESH_MODE = AUTO;
 ```
 
----
 ### **D. Materialized Views Monitoring**
 
 #### **1. Check Materialized View Status**
@@ -949,7 +929,6 @@ EXPLAIN SELECT * FROM my_table WHERE date > CURRENT_DATE() - 7 GROUP BY region;
 -- Look for MaterializedViewScan in the plan
 ```
 
----
 ### **E. Materialized Views Performance Impact**
 
 #### **1. Performance Metrics**
@@ -993,7 +972,6 @@ GROUP BY
 | **Warehouse Load** | High | Low | Significant improvement |
 | **Storage Usage** | N/A | 2 GB | Additional storage |
 
----
 ### **F. Materialized Views Best Practices**
 
 #### **1. Materialized View Design**
@@ -1028,7 +1006,6 @@ GROUP BY
 | **Combine with Other Optimizations** | Use MVs with clustering, caching, etc. | `CREATE MATERIALIZED VIEW my_mv CLUSTER BY (date) AS SELECT ...` |
 | **Monitor MV Query Performance** | Check QUERY_HISTORY for MV query performance | `SELECT execution_time FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY WHERE query_text LIKE '%my_mv%'` |
 
----
 ### **G. Materialized Views Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1047,7 +1024,6 @@ GROUP BY
 | **Refresh Latency** | MVs are eventually consistent (1-5 minutes) | Use manual refresh for time-sensitive queries |
 | **Compute Overhead** | MV refreshes consume credits | Monitor refresh costs |
 
----
 ### **H. Materialized Views Examples**
 
 #### **Example 1: Daily Sales Aggregation**
@@ -1227,11 +1203,8 @@ ORDER BY
     credits_used DESC;
 ```
 
----
----
 ## **4. Clustering Keys vs. Materialized Views: Decision Matrix**
 
----
 ### **Mermaid: Clustering Keys vs. Materialized Views Decision Tree**
 ```mermaid
 %% Clustering Keys vs. Materialized Views Decision Tree
@@ -1283,7 +1256,6 @@ flowchart TD
     class K,O,R neither;
 ```
 
----
 ### **Comparison Matrix: Clustering Keys vs. Materialized Views**
 
 | **Feature** | **Clustering Keys** | **Materialized Views** | **Notes** |
@@ -1308,7 +1280,6 @@ flowchart TD
 | **Max Keys/Columns** | 4 | No limit (but practical limits apply) | Clustering limited to 4 keys; MVs can have many columns |
 | **DML Support** | Yes | No | Can DML on clustered tables; cannot DML on MVs |
 
----
 ### **When to Use Clustering Keys**
 Use **Clustering Keys** for:
 1. **Large tables** (>1TB) with **repetitive queries** on specific columns.
@@ -1325,7 +1296,6 @@ Use **Clustering Keys** for:
 - Log tables (cluster on `timestamp`, `log_level`)
 - Customer tables (cluster on `region`, `signup_date`)
 
----
 ### **When to Use Materialized Views**
 Use **Materialized Views** for:
 1. **Repetitive, expensive queries** (e.g., daily aggregations).
@@ -1342,7 +1312,6 @@ Use **Materialized Views** for:
 - Star schema fact tables
 - Pre-computed joins for dashboards
 
----
 ### **When to Use Both Clustering Keys and Materialized Views**
 Use **both clustering keys and materialized views** for:
 1. **Large tables with repetitive queries** (clustering reduces I/O, MVs reduce compute).
@@ -1355,11 +1324,8 @@ Use **both clustering keys and materialized views** for:
 - Customer analytics with filtered and aggregated data (cluster on `region`, `signup_date`; MV for customer lifetime value)
 - Log analysis with pattern matching and aggregations (cluster on `timestamp`, `log_level`; MV for error counts by day)
 
----
----
 ## **5. Implementation Patterns**
 
----
 ### **A. Clustering Keys Implementation Patterns**
 
 #### **Pattern 1: Time-Series Data with Date Clustering**
@@ -1406,7 +1372,6 @@ WHERE
 - **Execution Time**: 10-100x faster than without clustering.
 - **Bytes Scanned**: 10-100x reduction.
 
----
 #### **Pattern 2: Multi-Column Clustering for Complex Queries**
 ```sql
 -- Create a table with multi-column clustering
@@ -1458,7 +1423,6 @@ ORDER BY
 - **Execution Time**: 10-100x faster than without clustering.
 - **Bytes Scanned**: 10-100x reduction.
 
----
 #### **Pattern 3: Automatic Clustering for Hands-Off Optimization**
 ```sql
 -- Create a table with automatic clustering
@@ -1500,7 +1464,6 @@ WHERE
 - **Execution Time**: 2-10x faster than without clustering.
 - **Maintenance**: No manual intervention required.
 
----
 #### **Pattern 4: Clustering with Partitioning (External Tables)**
 ```sql
 -- Create an external stage
@@ -1539,7 +1502,6 @@ GROUP BY
 - **Clustering Pruning**: Only scans micro-partitions containing data for region='US'.
 - **Execution Time**: 10-100x faster than without partitioning and clustering.
 
----
 #### **Pattern 5: Clustering for Join Optimization**
 ```sql
 -- Create tables with clustering on join columns
@@ -1597,7 +1559,6 @@ ORDER BY
 - **Execution Time**: 2-10x faster than without clustering.
 - **Bytes Scanned**: 2-10x reduction.
 
----
 ### **B. Materialized Views Implementation Patterns**
 
 #### **Pattern 1: Daily Sales Aggregation**
@@ -1651,7 +1612,6 @@ WHERE
 - **Execution Time**: 100-1000x faster than querying the base table.
 - **Bytes Scanned**: 10-100x reduction.
 
----
 #### **Pattern 2: Customer Analytics**
 ```sql
 -- Create a materialized view for customer analytics
@@ -1700,7 +1660,6 @@ AS
 - **Pre-Computed Aggregations**: MV stores pre-computed aggregations.
 - **Execution Time**: 100-1000x faster than querying the base tables.
 
----
 #### **Pattern 3: Star Schema Fact Table**
 ```sql
 -- Create dimension tables
@@ -1798,7 +1757,6 @@ ORDER BY
 - **Clustering**: MV is clustered for better query performance.
 - **Execution Time**: 100-1000x faster than querying the base tables.
 
----
 #### **Pattern 4: Incremental Materialized Views**
 ```sql
 -- Create a materialized view for incremental data
@@ -1835,7 +1793,6 @@ WHERE day > CURRENT_DATE() - 7;
 - **Execution Time**: 100-1000x faster than querying the base table.
 - **Refresh Overhead**: Lower than full refresh.
 
----
 #### **Pattern 5: Materialized View with Row-Level Security**
 ```sql
 -- Create a secure materialized view
@@ -1867,7 +1824,6 @@ SELECT * FROM secure_sales_mv;
 - **Security**: Row-level security is applied to the MV.
 - **Performance**: Same performance as non-secure MVs.
 
----
 ### **C. Combined Clustering Keys and Materialized Views Patterns**
 
 #### **Pattern 1: Large Sales Table with Clustering and MV**
@@ -1934,7 +1890,6 @@ ORDER BY
 - **Materialized View**: Reduces compute by avoiding query execution.
 - **Combined**: 100-1000x faster than querying the base table without optimizations.
 
----
 #### **Pattern 2: Customer Analytics with Clustering and MV**
 ```sql
 -- Create a customers table with clustering
@@ -2001,7 +1956,6 @@ ORDER BY
 - **Materialized View**: Pre-computes complex aggregations.
 - **Combined**: 100-1000x faster than querying the base tables without optimizations.
 
----
 #### **Pattern 3: Log Analysis with Clustering and MV**
 ```sql
 -- Create a logs table with clustering
@@ -2060,7 +2014,6 @@ LIMIT 1000;
 - **Materialized View**: Pre-computes error counts by day.
 - **Combined**: 10-1000x faster than querying the base table without optimizations.
 
----
 #### **Pattern 4: E-Commerce Product Catalog with Clustering and MV**
 ```sql
 -- Create a products table with clustering
@@ -2139,7 +2092,6 @@ LIMIT 50;
 - **Materialized View**: Pre-computes product analytics by category and price range.
 - **Combined**: 10-1000x faster than querying the base table without optimizations.
 
----
 #### **Pattern 5: Real-Time Dashboard with Clustering and MV**
 ```sql
 -- Create a sales table with clustering
@@ -2214,11 +2166,8 @@ ORDER BY
 - **Scheduled Refresh**: Refreshes the MV every 5 minutes for near-real-time data.
 - **Combined**: 100-1000x faster than querying the base table without optimizations.
 
----
----
 ## **6. Performance Tuning Workflow**
 
----
 ### **Mermaid: Performance Tuning Workflow for Clustering Keys and Materialized Views**
 ```mermaid
 %% Performance Tuning Workflow
@@ -2289,7 +2238,6 @@ flowchart TD
     class X,AC external;
 ```
 
----
 ### **Step-by-Step Performance Tuning Workflow**
 
 #### **Step 1: Identify Slow Queries**
@@ -2552,11 +2500,8 @@ AS
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
----
 ## **7. Cost Optimization Strategies**
 
----
 ### **Cost Comparison: Clustering Keys vs. Materialized Views**
 
 | **Cost Factor** | **Clustering Keys** | **Materialized Views** | **Notes** |
@@ -2568,7 +2513,6 @@ AS
 | **Cloud Services Cost** | Low | Low | Both have minimal cloud services costs |
 | **Total Cost** | Low | Medium-High | MVs have higher total cost |
 
----
 ### **Cost Optimization Best Practices**
 
 #### **1. Clustering Keys Cost Optimization**
@@ -2601,7 +2545,6 @@ AS
 | **Set Budgets** | Set resource monitors to control costs | `CREATE RESOURCE MONITOR my_monitor WITH CREDIT_QUOTA = 10000` |
 | **Use Cost-Effective Warehouses** | Use smaller warehouses for MV refreshes | `ALTER WAREHOUSE admin_wh SET WAREHOUSE_SIZE = 'SMALL'` (for MV maintenance) |
 
----
 ### **Cost Monitoring Queries**
 
 #### **1. Monitor Clustering Costs**
@@ -2713,11 +2656,8 @@ ORDER BY
     total_credits_used DESC;
 ```
 
----
----
 ## **8. Troubleshooting Clustering Keys and Materialized Views**
 
----
 ### **A. Clustering Keys Troubleshooting**
 
 #### **Symptom 1: Clustering Not Improving Performance**
@@ -2782,7 +2722,6 @@ ORDER BY
 5. **Combine with filtering**:
    - Ensure queries use **filters on clustered columns**.
 
----
 #### **Symptom 2: High Reclustering Costs**
 **Diagnosis**:
 1. **Check reclustering history**:
@@ -2831,7 +2770,6 @@ ORDER BY
 4. **Adjust clustering keys**:
    - Use fewer clustering keys to reduce reclustering overhead.
 
----
 #### **Symptom 3: Clustering Depth Not Increasing**
 **Diagnosis**:
 1. **Check clustering depth over time**:
@@ -2874,7 +2812,6 @@ ORDER BY
 3. **Adjust clustering keys**:
    - Use columns with **non-uniform distribution**.
 
----
 ### **B. Materialized Views Troubleshooting**
 
 #### **Symptom 1: MV Not Being Used**
@@ -2943,7 +2880,6 @@ ORDER BY
    ```
    - Look for **MaterializedViewScan** in the plan.
 
----
 #### **Symptom 2: MV Refresh Failing**
 **Diagnosis**:
 1. **Check MV refresh history for errors**:
@@ -2988,7 +2924,6 @@ ORDER BY
    ALTER WAREHOUSE admin_wh SET STATEMENT_TIMEOUT_IN_SECONDS = 3600;  -- 1 hour
    ```
 
----
 #### **Symptom 3: MV Storage Growing Too Fast**
 **Diagnosis**:
 1. **Check MV storage usage**:
@@ -3041,7 +2976,6 @@ ORDER BY
    CREATE MATERIALIZED VIEW my_mv CLUSTER BY (date) AS SELECT ...;
    ```
 
----
 #### **Symptom 4: MV Query Performance Degrading**
 **Diagnosis**:
 1. **Check MV query performance over time**:
@@ -3098,11 +3032,8 @@ ORDER BY
        refresh_time DESC;
    ```
 
----
----
 ## **9. Production Checklist**
 
----
 ### **A. Clustering Keys Checklist**
 
 #### **1. Clustering Keys Setup**
@@ -3160,7 +3091,6 @@ ORDER BY
       AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
   ```
 
----
 ### **B. Materialized Views Checklist**
 
 #### **1. Materialized Views Setup**
@@ -3226,7 +3156,6 @@ ORDER BY
       AND refresh_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
   ```
 
----
 ### **C. Combined Clustering Keys and Materialized Views Checklist**
 
 #### **1. Combined Setup**
@@ -3295,11 +3224,8 @@ ORDER BY
   -- Look for MaterializedViewScan and partition pruning
   ```
 
----
----
 ## **10. Production-Ready Code Snippets**
 
----
 ### **A. Clustering Keys Snippets**
 
 #### **1. Set Clustering Keys**
@@ -3359,7 +3285,6 @@ FOR table IN (
 END FOR;
 ```
 
----
 ### **B. Materialized Views Snippets**
 
 #### **1. Create Materialized Views**
@@ -3453,7 +3378,6 @@ WHERE
     view_name = 'DAILY_SALES_MV';
 ```
 
----
 ### **C. Combined Snippets**
 
 #### **1. Cluster Tables and Create MVs**
@@ -3560,11 +3484,8 @@ AS
   END FOR;
 ```
 
----
----
 ## **11. Final Recommendations**
 
----
 ### **A. Clustering Keys Recommendations**
 
 1. **Start with Clustering**:
@@ -3589,7 +3510,6 @@ AS
    - Limit to **1-4 clustering keys** to avoid reclustering overhead.
    - Avoid clustering on **write-heavy tables** or **small tables**.
 
----
 ### **B. Materialized Views Recommendations**
 
 1. **Use MVs for High-Impact Queries**:
@@ -3615,7 +3535,6 @@ AS
 6. **Drop Unused MVs**:
    - Regularly **review and drop** MVs that are no longer needed.
 
----
 ### **C. Combined Recommendations**
 
 1. **Use Both for Maximum Performance**:
@@ -3644,7 +3563,6 @@ AS
    - Use **Tasks** to **automate reclustering** and **MV refreshes**.
    - Set up **alerts** for performance issues and cost overruns.
 
----
 ### **D. Decision Flowchart Summary**
 
 1. **Identify Performance Issue**:
@@ -3672,7 +3590,6 @@ AS
    - **Review and adjust** optimizations based on usage patterns.
    - **Add more optimizations** as needed.
 
----
 ### **E. Bottom Line**
 
 | **Optimization** | **When to Use** | **Performance Impact** | **Cost** | **Effort** | **Best For** |
