@@ -14,6 +14,8 @@
   - Multi-cluster Warehouse: Allows a single warehouse name to manage multiple independent clusters of the same size, providing scale-out concurrency
 
 ## Virtual Warehouse Sizes and Credit Consumption
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/9e195c55-6823-478d-b17c-33f6b88972b3" />
+
   - Size determines compute resources and credits consumed per full hour of runtime (per-second billing with 60-second minimum after initial start)
   - Standard sizes and relative node counts:
     - X-Small: 1 node, 1 credit per hour (base)
