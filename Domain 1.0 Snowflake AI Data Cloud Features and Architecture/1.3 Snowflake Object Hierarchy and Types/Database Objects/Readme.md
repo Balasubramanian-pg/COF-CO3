@@ -139,6 +139,7 @@ FROM some_other_model;
 ```
 
 ### Applications
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/a4fe7779-2668-4b4a-a239-eae7a2546d96" />
 
 A Snowflake Native App is created with `CREATE APPLICATION` from an application package or listing. When the command runs, Snowflake executes the app setup script, which means app installation is not just metadata registration, it is an initialization workflow with side effects. The command supports telemetry-event authorization, release channels, and feature-policy attachment, which are the levers you use for controlled deployment and governance. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-application))
 
