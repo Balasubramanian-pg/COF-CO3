@@ -1,6 +1,5 @@
 # **Snowflake Workload Management Best Practices: Production-Grade Guide**
 
----
 
 ## **📌 Table of Contents**
 1. [Introduction to Workload Management Best Practices](#1-introduction-to-workload-management-best-practices)
@@ -18,7 +17,6 @@
 13. [Real-World Examples](#13-real-world-examples)
 14. [Final Recommendations](#14-final-recommendations)
 
----
 
 
 ## **1. Introduction to Workload Management Best Practices**
