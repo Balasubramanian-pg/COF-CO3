@@ -1,4 +1,6 @@
 # Snowflake Account Objects Overview
+Let us deep dive into Account objects most commonly used in Snowflake
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/a6d480d4-67b6-43b3-9066-7d9c744d29d7" />
 
 ```mermaid
 graph TD
