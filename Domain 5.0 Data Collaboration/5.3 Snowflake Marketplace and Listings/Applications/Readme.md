@@ -31,7 +31,6 @@ graph TD
   Monetize --> ROI[Consumer Value Realization]
 ```
 
----
 
 ## 1. Application Architecture & Fundamentals
 
@@ -109,7 +108,6 @@ SELECT customer_id, predict_churn(...) AS churn_risk FROM ...; -- Simplified
 GRANT SELECT ON customer_intelligence_db.app_core.churn_segments TO ROLE CONSUMER_APP_ROLE;
 ```
 
----
 
 ## 2. Provider Workflow: Versioning, Packaging & Release
 
