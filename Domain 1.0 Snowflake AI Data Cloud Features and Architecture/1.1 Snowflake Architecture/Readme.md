@@ -95,6 +95,8 @@ Modifying execution parameters must be done with precision. The following table 
 
 ## 4. Performance & Resource Implications
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/81fd5c05-f453-44d9-a847-ce505a3e6a5b" />
+
 ### 4.1 Memory Exhaustion and Spill-to-Disk Mechanics
 Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spilling is the primary cause of non-linear performance degradation.
 *   **Local SSD Spill (`BYTES_SPILLED_TO_LOCAL_STORAGE`)**: Occurs when thread-allocated RAM is exhausted (typical in large Hash Joins or `ORDER BY` without `LIMIT`). Memory is swapped to the instance's ephemeral NVMe SSD.
@@ -108,7 +110,7 @@ Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spill
     *   `STANDARD`: Starts a new cluster immediately when a query queues or the system estimates queue time > 1 second.
     *   `ECONOMY`: Will *only* start a new cluster if the system calculates there is enough queued work to keep the new cluster busy for a full **6 minutes**. Use *only* for asynchronous background batch processing where strict SLAs do not exist.
 
-#### 4.3 Credit Calculation Math and Attribution
+### 4.3 Credit Calculation Math and Attribution
 *   **Compute Minimums**: When a warehouse resumes, it bills a **minimum of 60 seconds**. Afterward, it bills per second. 
     *   *Anti-pattern*: Setting `AUTO_SUSPEND = 10`. If a warehouse starts, runs for 2s, suspends, and starts 5s later, you are billed 60s + 60s = 120s of compute for 4s of work. Minimum recommended `AUTO_SUSPEND` is `60`.
 *   **Cloud Services Layer (CSL) Billing**: CSL operations (compilation, metadata queries, result cache hits) cost credits. However, Snowflake waives CSL credits up to **10% of your daily compute credits**.
