@@ -119,6 +119,8 @@ Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spill
 
 ## 5. Monitoring, Observability & Troubleshooting
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/56944006-1000-44bc-92cd-53471cb5685c" />
+
 ### 5.1 System-Wide Resource Bottleneck Identification
 Deploy this query to `SNOWFLAKE.ACCOUNT_USAGE` to identify warehouse pressure, spill, and queueing across the enterprise.
 
