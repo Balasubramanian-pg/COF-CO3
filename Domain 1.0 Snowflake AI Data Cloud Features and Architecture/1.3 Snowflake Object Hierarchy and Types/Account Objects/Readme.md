@@ -173,6 +173,9 @@ sequenceDiagram
 >[!Note]
 >In the Snowflake architecture, a task is a database object designed to schedule and automate the execution of a single SQL statement, a stored procedure, or procedural logic. Tasks enable the orchestration of recurring data pipelines and administrative operations by executing either on a predefined time based schedule or sequentially as a dependent node within a directed acyclic graph triggered by the successful completion of a predecessor task.
 
+>[!Note]
+>In Snowflake, a pipe is a specialized database object that facilitates continuous, automated data ingestion through the Snowpipe service. A pipe encapsulates a specific COPY INTO command that loads structured or semi structured data from an internal or external stage into a designated target table. The execution of a pipe is typically triggered by cloud storage event notifications or invoked via REST API calls, enabling near real time micro batch processing.
+
 - Tasks: Schedule SQL statements or stored procedures
 - Pipes: Automate COPY INTO from stages when new files arrive
 
