@@ -34,7 +34,11 @@ CREATE DATABASE reporting_replica
 
 ### Schema boundary inside the database
 
-Schemas are the real control plane inside the database. Snowflake’s access-control model says that in a regular schema, the owner role has all privileges on the object by default, including grant and revoke authority, while in a managed access schema the object owners lose the ability to make grant decisions and only the schema owner or a role with `MANAGE GRANTS` can grant privileges on objects in the schema. That is the key production distinction between a plain schema and a governed schema. ([Snowflake Docs][3])
+Schemas are the real control plane inside the database. 
+- Snowflake’s access-control model says that in a regular schema,
+- The owner role has all privileges on the object by default, including grant and revoke authority,
+- While in a managed access schema the object owners lose the ability to make grant decisions and only the schema owner or a role with `MANAGE GRANTS` can grant privileges on objects in the schema.
+- That is the key production distinction between a plain schema and a governed schema. ([Snowflake Docs][3])
 
 Database-level metadata is exposed through `INFORMATION_SCHEMA` and `ACCOUNT_USAGE`. `INFORMATION_SCHEMA` is automatically created in every database and is the low-latency metadata surface for the current database. `ACCOUNT_USAGE` gives account-wide object metadata and historical usage, includes dropped objects, and has longer retention but more latency. The `SCHEMATA` view in `ACCOUNT_USAGE` excludes `ACCOUNT_USAGE`, `READER_ACCOUNT_USAGE`, and `INFORMATION_SCHEMA` schemas, so it is useful for inventory but not a complete dump of every schema in the system. ([Snowflake Docs][4])
 
