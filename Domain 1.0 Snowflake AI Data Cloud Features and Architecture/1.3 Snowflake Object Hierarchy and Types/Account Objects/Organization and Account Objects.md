@@ -147,11 +147,12 @@ sequenceDiagram
 | Hybrid | prod_account + shared_dev_account | Balance isolation with resource efficiency |
 
 ## Things to Watch For
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/1974c53e-a26b-4a9a-a857-255430709608" />
 
-- Account locators are permanent. Choose naming carefully before creation
-- Changing an account name does not change its locator. Applications connect via locator
-- Cross account queries require secure shares or replication. They do not work automatically
-- Billing rolls up to organization, but cost allocation tags must be set per account
+- _Account locators are permanent_. Choose naming carefully before creation
+- Changing an account name **does not** change its locator. Applications connect via locator
+- Cross account queries require secure _shares or replication_. They do not work automatically
+- Billing rolls up to organization, but **cost allocation tags must be set per account**
 - Organization admins can access any account. Limit this role to trusted personnel only
 - Replication and failover work between accounts but require explicit setup and permissions
 
