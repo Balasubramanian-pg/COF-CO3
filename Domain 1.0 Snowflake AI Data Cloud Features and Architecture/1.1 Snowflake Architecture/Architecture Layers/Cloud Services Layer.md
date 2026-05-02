@@ -56,9 +56,9 @@ The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinat
 
 ## Query Lifecycle and Cloud Services Interaction
 
-Step-by-step flow from SQL submission to result:
-    1. User submits SQL to Cloud Services endpoint
-    2. Authentication, session validation, and role context determination
+Step-by-step flow from SQL submission to result: <br>
+1. User submits SQL to Cloud Services endpoint <br>
+2. Authentication, session validation, and role context determination
     3. SQL parsing, object resolution against metadata store
     4. Query optimizer generates execution plan using statistics and micro-partition metadata
     5. Plan is dispatched to a virtual warehouse (or serverless compute) for execution
