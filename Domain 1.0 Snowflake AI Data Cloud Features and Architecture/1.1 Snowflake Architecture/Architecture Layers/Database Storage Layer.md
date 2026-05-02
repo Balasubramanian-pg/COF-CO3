@@ -152,6 +152,9 @@ Data is never directly accessed by users via file system; all reads and writes g
   Metadata-driven pruning eliminates entire micro-partitions before data is read. Columnar layout further limits I/O to columns referenced in the query.
 
 ## Storage Durability and Disaster Recovery
+
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/a6567ceb-d696-4425-b574-57227e783272" />
+
   - Data is synchronously replicated within a cloud region to multiple fault domains; durability exceeds 99.999999999%
   - Database Replication and Failover/Failback allow replicating databases across different regions and cloud providers for disaster recovery and business continuity
   - Replication copies the underlying micro-partitions and metadata continuously; the standby copy can be promoted to serve queries when the primary region fails
