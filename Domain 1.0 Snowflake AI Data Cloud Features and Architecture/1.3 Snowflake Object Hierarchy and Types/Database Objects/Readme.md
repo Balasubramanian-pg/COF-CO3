@@ -63,9 +63,15 @@ ORDER BY table_schema, table_name;
 
 ### Database roles
 
-Database roles are scoped to the database that contains them, and they exist so you can package privileges on that database, its schemas, and its schema objects without widening everything to account roles. Snowflake documents that database roles can receive privileges on the database itself, schemas within it, and schema objects such as tables, views, stages, file formats, UDFs, and sequences inside that database. A database role can then be granted to an account role or another role, which gives you a clean least-privilege pattern for access packaging. ([Snowflake Docs][2])
+Database roles are scoped to the database that contains them, and they exist so you can package privileges on that database, its schemas, and its schema objects without widening everything to account roles. 
 
-The `SNOWFLAKE` database itself is a special case because it ships with Snowflake-provided database roles such as `OBJECT_VIEWER`, `USAGE_VIEWER`, `GOVERNANCE_VIEWER`, and `SECURITY_VIEWER` for controlled access to shared metadata and system views. Administrators can use `GRANT DATABASE ROLE` to assign those database roles to custom roles, and then grant those custom roles to users. That is the supported pattern for delegating read access to Snowflake metadata without opening broad privileges. ([Snowflake Docs][6])
+- Snowflake documents that database roles can receive privileges on the database itself, schemas within it, and schema objects such as tables, views, stages, file formats, UDFs, and sequences inside that database.
+- A database role can then be granted to an account role or another role, which gives you a clean least-privilege pattern for access packaging. ([Snowflake Docs][2])
+
+The `SNOWFLAKE` database itself is a special case because it ships with Snowflake-provided database roles such as `OBJECT_VIEWER`, `USAGE_VIEWER`, `GOVERNANCE_VIEWER`, and `SECURITY_VIEWER` for controlled access to shared metadata and system views. 
+
+>[!Tip]
+>Administrators can use `GRANT DATABASE ROLE` to assign those database roles to custom roles, and then grant those custom roles to users. That is the supported pattern for delegating read access to Snowflake metadata without opening broad privileges. ([Snowflake Docs][6])
 
 ```sql
 CREATE ROLE can_viewmd;
