@@ -106,7 +106,6 @@ INSERT INTO governance.edition_pricing VALUES
   ('Enterprise', 'eu-west-1', 'Azure', 2.78, 'EUR', '2024-01-01');
 ```
 
----
 
 ## Querying Credit Usage from ACCOUNT_USAGE
 
@@ -202,7 +201,6 @@ GROUP BY DATE_TRUNC('month', start_time), service_type
 ORDER BY billing_month DESC;
 ```
 
----
 
 ## Cost Attribution: Tagging and Allocation
 
