@@ -169,6 +169,10 @@ sequenceDiagram
 ```
 
 ## Tasks and Pipes
+
+- Tasks: Schedule SQL statements or stored procedures
+- Pipes: Automate COPY INTO from stages when new files arrive
+
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/819f7626-1ff2-45ef-a235-c56e32ec9a2d" />
 
 >[!Note]
@@ -177,8 +181,6 @@ sequenceDiagram
 >[!Note]
 >In Snowflake, a pipe is a specialized database object that facilitates continuous, automated data ingestion through the Snowpipe service. A pipe encapsulates a specific COPY INTO command that loads structured or semi structured data from an internal or external stage into a designated target table. The execution of a pipe is typically triggered by cloud storage event notifications or invoked via REST API calls, enabling near real time micro batch processing.
 
-- Tasks: Schedule SQL statements or stored procedures
-- Pipes: Automate COPY INTO from stages when new files arrive
 
 | Feature | Tasks | Pipes |
 |---------|-------|-------|
