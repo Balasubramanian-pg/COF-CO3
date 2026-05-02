@@ -19,7 +19,6 @@
 1.5 [Metadata Layer & Transaction Management](#15-metadata-layer-transaction-management)  
 1.6 [Data Transformation Pipeline](#16-data-transformation-pipeline)
 
----
 
 #### **🔹 Section 2: [Performance Optimization Fundamentals](#section-2-performance-optimization-fundamentals)
 
@@ -30,7 +29,6 @@
 2.5 [Credit Optimization & Cost Control](#25-credit-optimization-cost-control)  
 2.6 [Concurrency & Resource Management](#26-concurrency-resource-management)
 
----
 
 #### **🔹 Section 3: [Query Optimization](#section-3-query-optimization)
 
@@ -42,7 +40,6 @@
 3.6 [Common Subexpression Elimination (CSE)](#36-common-subexpression-elimination)  
 3.7 [Query Rewriting Patterns](#37-query-rewriting-patterns)
 
----
 
 #### **🔹 Section 4: [Data Transformation Techniques](#section-4-data-transformation-techniques)
 
@@ -54,7 +51,6 @@
 4.6 [External Functions & UDFs](#46-external-functions-udfs)  
 4.7 [Materialized Views & Incremental Processing](#47-materialized-views-incremental-processing)
 
----
 
 #### **🔹 Section 5: [Advanced SQL Features](#section-5-advanced-sql-features)
 
@@ -65,7 +61,6 @@
 5.5 [Temporal Tables & Time Travel](#55-temporal-tables-time-travel)  
 5.6 [Row-Level & Column-Level Security](#56-row-level-column-level-security)
 
----
 
 #### **🔹 Section 6: [Monitoring, Observability & Troubleshooting](#section-6-monitoring-observability-troubleshooting)
 
@@ -76,7 +71,6 @@
 6.5 [Error Handling & Incident Runbooks](#65-error-handling-incident-runbooks)  
 6.6 [Alerting & Proactive Monitoring](#66-alerting-proactive-monitoring)
 
----
 
 #### **🔹 Section 7: [Advanced Production Patterns](#section-7-advanced-production-patterns)
 
@@ -87,7 +81,6 @@
 7.5 [Multi-Region & Failover Strategies](#75-multi-region-failover-strategies)  
 7.6 [Data Governance & Lineage](#76-data-governance-lineage)
 
----
 
 #### **🔹 Section 8: [Decision Matrices & Quick Reference](#section-8-decision-matrices-quick-reference)
 
@@ -97,7 +90,6 @@
 8.4 [Function Selection Guide](#84-function-selection-guide)  
 8.5 [Error Handling Cheat Sheet](#85-error-handling-cheat-sheet)
 
----
 
 #### **🔹 Section 9: [Key Engineering Principles & Bottom Line](#section-9-key-engineering-principles-bottom-line)
 
@@ -107,7 +99,6 @@
 9.4 [Production Checklists](#94-production-checklists)  
 9.5 [Quick Reference Commands](#95-quick-reference-commands)
 
----
 
 #### **🔹 Section 10: [Appendices](#section-10-appendices)
 
@@ -115,9 +106,7 @@
 10.2 [Performance Benchmarks](#102-performance-benchmarks)  
 10.3 [Further Reading & Resources](#103-further-reading-resources)
 
----
 
----
 
 ## **📖 How to Use This Guide**
 
@@ -126,9 +115,7 @@
 3. **For Quick Answers**: Refer to [Section 8: Decision Matrices](#section-8-decision-matrices-quick-reference).
 4. **For Production Readiness**: Review [Section 7: Advanced Production Patterns](#section-7-advanced-production-patterns).
 
----
 
----
 
 ## **🔗 Section Links**
 
@@ -152,7 +139,6 @@
 | 8.1         | `query-optimization-matrix`       | Query Optimization Decision Matrix     | 800              |
 
 
----
 
 **Total Estimated Lines**: **~15,000+** (modular for readability).  
 **Suggested Workflow**:
@@ -162,9 +148,7 @@
 3. Use **[Section 6: Monitoring & Troubleshooting](#section-6-monitoring-observability-troubleshooting)** for operational excellence.
 4. Reference **[Section 8: Decision Matrices](#section-8-decision-matrices-quick-reference)** for quick answers.
 
----
 
----
 
 ## **🚀 Next Steps**
 
