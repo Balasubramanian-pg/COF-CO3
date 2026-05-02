@@ -59,7 +59,7 @@ Here is the comprehensive information about Snowflake's Architecture Layers, str
   6. Results are returned to Cloud Services, which may cache them (result cache) and sends final output to the client
   7. DDL, cloning, and show commands execute entirely within Cloud Services without a warehouse
 
-- Diagram: Complete Three-Layer Architecture
+### Diagram: Complete Three-Layer Architecture
 ```mermaid
 graph TD
     User[Client Applications / Users] --> |SQL Requests, Authentication| CS[Cloud Services Layer]
