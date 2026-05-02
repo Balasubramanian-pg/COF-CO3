@@ -1,6 +1,6 @@
 # Architecture Layers
 
-Here is the comprehensive information about Snowflake's Architecture Layers, structured without heading markers, using only bullets and clear label distinctions, with mermaid diagrams.
+In this section we are going to look at the architecture layers of snowflake
 
 - Overview
   - Snowflake’s architecture is built on three distinct, decoupled layers: Cloud Services, Compute, and Database Storage
