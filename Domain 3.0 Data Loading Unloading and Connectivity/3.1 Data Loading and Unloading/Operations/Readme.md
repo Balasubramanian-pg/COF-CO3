@@ -286,7 +286,6 @@ FROM DIRECTORY(@s3_raw_stage)
 WHERE relative_path LIKE 'events/2024-01/%';
 ```
 
----
 
 ## 3.1.3 Operational Automation Framework
 
@@ -457,7 +456,6 @@ END;
 $$;
 ```
 
----
 
 ## 3.1.4 Capacity Planning & Resource Management
 
@@ -515,7 +513,6 @@ CREATE OR REPLACE ALERT ops.warehouse_queue_alert
   );
 ```
 
----
 
 ## 3.1.5 Change Management for Loading Pipelines
 
@@ -609,7 +606,6 @@ FORCE = TRUE
 FILES = (SELECT file_name FROM governance.deployment_log WHERE deployment_id = 'deploy_20240115');
 ```
 
----
 
 ## 3.1.6 Operational Cost Control
 
@@ -684,7 +680,6 @@ FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 | **Auto-suspend tuning** | Set `AUTO_SUSPEND=60` for batch, `300` for interactive | Eliminate idle billing without impacting SLA |
 | **Snowpipe serverless** | Use serverless for sporadic loads, warehouse for predictable | 20–40% cost reduction vs. always-on warehouse |
 
----
 
 ## 3.1.7 Operational Security Maintenance
 
@@ -793,7 +788,6 @@ FROM @compliance_exports/load_audit/
 GROUP BY log_source;
 ```
 
----
 
 ## 3.1.8 SLA/SLO Management & Operational Reporting
 
@@ -906,7 +900,6 @@ CREATE OR REPLACE ALERT ops.error_budget_exhausted
   );
 ```
 
----
 
 ## Operational Runbook Templates
 
@@ -976,7 +969,6 @@ CREATE OR REPLACE ALERT ops.error_budget_exhausted
 - Document runbook in central knowledge base
 ```
 
----
 
 ## Key Operational Principles
 
