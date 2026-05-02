@@ -20,7 +20,14 @@ A practical way to think about database objects is this:
 
 ### Database types and object behavior
 
-Standard databases support the usual schema and object lifecycle. `CREATE OR REPLACE` database semantics are atomic, meaning Snowflake deletes the old object and creates the replacement in a single transaction. Snowflake also supports transient databases, which do not have Fail-safe after Time Travel and therefore reduce storage cost, but also reduce recoverability. Snowflake supports shared databases from shares, restored databases from backups, and secondary databases for replication. ([Snowflake Docs][1])
+Standard databases support the usual schema and object lifecycle. 
+
+>[!Tip]
+>`CREATE OR REPLACE` database semantics are atomic, meaning Snowflake deletes the old object and creates the replacement in a single transaction.
+
+Snowflake also supports _transient databases_, which do not have Fail-safe after Time Travel and therefore reduce storage cost, but also reduce recoverability. 
+
+Snowflake supports shared databases from shares, restored databases from backups, and secondary databases for replication. ([Snowflake Docs][1])
 
 ```sql
 CREATE TRANSIENT DATABASE raw_ingest;
