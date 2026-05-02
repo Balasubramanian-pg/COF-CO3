@@ -224,7 +224,6 @@ SHOW RESOURCE MONITORS LIKE 'notified_monitor';
 | Users in role receive email | Via their registered email in Snowflake |
 | Multiple roles supported | Comma-separated list: `(role1, role2, role3)` |
 
----
 
 ## Applying Resource Monitors to Warehouses
 
@@ -290,7 +289,6 @@ ALTER WAREHOUSE new_feature_wh SET RESOURCE_MONITOR = prod_q2_monitor;
 ALTER WAREHOUSE new_feature_wh SET WAREHOUSE_SIZE = LARGE;
 ```
 
----
 
 ## Monitoring Resource Monitor Events and Usage
 
@@ -454,7 +452,6 @@ SELECT * FROM governance.resource_monitor_dashboard
 ORDER BY usage_pct DESC;
 ```
 
----
 
 ## Best Practices for Resource Monitor Configuration
 
@@ -541,7 +538,6 @@ GROUP BY rm.name, rm.credit_quota, rm.frequency, rm.comment
 ORDER BY usage_pct DESC;
 ```
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -585,7 +581,6 @@ flowchart TD
   I --> J
 ```
 
----
 
 ## Integration with Broader Cost Management
 
@@ -688,7 +683,6 @@ CREATE OR REPLACE ALERT cost.repeated_threshold_alert
   );
 ```
 
----
 
 ## Decision Framework: Resource Monitor Design
 
@@ -721,7 +715,6 @@ flowchart TD
 | Do multiple teams share the warehouse | Create separate monitors per team or use tagging for attribution | Single monitor may suffice with clear ownership |
 | Is real-time budget visibility critical | Set up ALERT objects for threshold events | Periodic dashboard review may suffice |
 
----
 
 ## Key Principles to Remember
 
