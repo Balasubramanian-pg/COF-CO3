@@ -142,7 +142,6 @@ The Snowflake Kafka Connector is a first-class integration that enables direct i
 4. Replicating database changes from a CDC pipeline using Kafka
 5. Consuming log data from a centralized logging Kafka cluster
 
----
 
 ### 3. Snowflake Ingestion Service
 
@@ -209,7 +208,6 @@ The Snowflake Ingestion Service is a REST API-based ingestion method that allows
 4. Ingesting log data from application servers
 5. Loading form submissions from a web application
 
----
 
 ### 4. Snowflake Connector for CDC
 
@@ -277,7 +275,6 @@ The Snowflake Connector for Change Data Capture (CDC) enables replication of dat
 4. Replicating Oracle database changes to Snowflake
 5. Maintaining a near real-time copy of a production database in Snowflake
 
----
 
 ### 5. External Tables
 
@@ -344,7 +341,6 @@ External Tables allow querying data directly from files in cloud storage without
 4. Accessing data from a data lake without duplication
 5. Running ad-hoc queries on external data sources
 
----
 
 ### 6. Tasks with Stored Procedures
 
@@ -409,7 +405,6 @@ Snowflake Tasks enable scheduled execution of SQL statements or stored procedure
 4. Scheduled data quality checks and validations
 5. Periodic data archiving to cold storage
 
----
 
 ### 7. Snowflake CLI
 
@@ -473,7 +468,6 @@ The Snowflake CLI (Command Line Interface) is a client-side tool that allows use
 4. Loading reference data from local files
 5. Debugging data loading issues
 
----
 
 ### 8. Partner Connectors
 
@@ -536,7 +530,6 @@ Partner Connectors are third-party solutions that integrate with Snowflake to pr
 4. Managing complex data pipelines with orchestration
 5. Using pre-built transformations and data models
 
----
 
 ### 9. Snowflake ODBC/JDBC Drivers
 
@@ -599,7 +592,6 @@ Snowflake provides ODBC and JDBC drivers that allow applications to connect to S
 4. Loading data from applications that support ODBC/JDBC
 5. Automating data operations from scripting languages
 
----
 
 ## Comparison Matrix
 
@@ -623,7 +615,6 @@ Snowflake provides ODBC and JDBC drivers that allow applications to connect to S
 | **Managed** | Snowflake | Snowflake | Snowflake | Snowflake | Snowflake | Snowflake | Client | Partner | Client |
 | **Best For** | Cloud storage batch | Kafka streaming | REST APIs | Database replication | Ad-hoc querying | Scheduled batch | Local dev | Managed service | Application integration |
 
----
 
 ## Decision Flowchart
 
@@ -679,7 +670,6 @@ Data Ingestion Requirement
     └── High → Custom Tasks + Stored Procedures
 ```
 
----
 
 ## Key Engineering Principles
 
@@ -727,7 +717,6 @@ Design ingestion pipelines to evolve with your needs:
 - Plan for schema evolution in source and target
 - Implement monitoring to detect performance degradation
 
----
 
 ## Production Checklist
 
@@ -815,7 +804,6 @@ Design ingestion pipelines to evolve with your needs:
 - [ ] Test with production-like query volumes
 - [ ] Document connection parameters and security
 
----
 
 ## Production-Ready Implementation Patterns
 
@@ -1231,7 +1219,6 @@ AS
     AND scheduled_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 ## Final Notes
 
 ### For Further Reading
