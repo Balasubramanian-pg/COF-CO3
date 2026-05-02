@@ -43,7 +43,6 @@ flowchart TD
 
 ---
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
@@ -62,7 +61,6 @@ flowchart TD
 | **Commit/Rollback**        | **2-Phase Commit**: Prepare (validate) → Commit (persist). **WAL:** Write-Ahead Log (metadata). | **Durability**: Metadata persisted to **Snowflake’s metadata store** (S3-backed).                                     | Conflict → `1020: Transaction conflict` (retry or `ABORT`).                                                     |
 
 
----
 
 ### **2.2 Transactional Boundaries & Guarantees**
 
@@ -80,9 +78,7 @@ flowchart TD
   - **Conflict Resolution**: `ABORT` on write-write conflicts (retry required).
 - **Durability**: Metadata + data persisted to **Snowflake’s object store** (S3/GCS/Azure Blob) with **11x redundancy**.
 
----
 
----
 
 ## **3. Parameter/Configuration Deep Dive**
 
@@ -103,9 +99,7 @@ flowchart TD
 | `VALIDATION_MODE` (COPY)       | **Options:** `RETURN_ERRORS`, `RETURN_1_ROWS`, `RETURN_ALL_ERRORS`. **Buffer:** 1MB.                  | `RETURN_ALL_ERRORS` increases **memory usage** (+10%).                                                   | **Production:** Use `RETURN_ERRORS` + DLQ for **idempotent retries**.             | `RETURN_ERRORS`                 |
 
 
----
 
----
 
 ## **4. Performance & Resource Implications**
 
@@ -131,7 +125,6 @@ flowchart TD
   - Query Duration: 600 sec.
   - **Overhead**: `(200/128) * 2 * 600 = 1,875 credits`.
 
----
 
 ### **4.2 Concurrency & Warehouse Scaling Rules**
 
@@ -150,7 +143,6 @@ flowchart TD
 - **Single Warehouse**: `8 * warehouse_size` (e.g., `X-LARGE` = 8 * 4 = 32 concurrent queries).
 - **Multi-Cluster**: `8 * warehouse_size * max_clusters` (e.g., `X-LARGE` + `MAX_CLUSTERS=4` = 128 concurrent queries).
 
----
 
 ### **4.3 Credit Calculation Deep Dive**
 
@@ -165,9 +157,7 @@ flowchart TD
 | **Multi-Cluster Overhead** | `Credits = (Base Credits) * (1 + (Max Clusters - 1) * 0.15)`                    | Base: 10 credits, `MAX_CLUSTERS=4` = **10 * 1.45 = 14.5 credits**. |
 
 
----
 
----
 
 ## **5. Monitoring, Observability & Troubleshooting**
 
@@ -185,7 +175,6 @@ flowchart TD
 | `INFORMATION_SCHEMA.TASK_HISTORY`          | **Task execution** (scheduled jobs).                   | `TASK_NAME`, `START_TIME`, `END_TIME`, `STATE`, `ERROR_MESSAGE`                                       | [Query](#task-history-example)          |
 
 
----
 
 #### **5.1.1 Example Queries**
 
@@ -336,7 +325,6 @@ ORDER BY
     START_TIME DESC;
 ```
 
----
 
 ### **5.2 Error Categorization & Incident Runbooks**
 
@@ -355,7 +343,6 @@ ORDER BY
 | `100072`       | **Permission Denied**     | User lacks privileges on object (table, stage, warehouse). | Query/load failure.     | 1. Grant `USAGE` on warehouse. 2. Grant `READ` on stage. 3. Grant `SELECT` on table.     |
 
 
----
 
 #### **5.2.1 Incident Recovery Procedures**
 
@@ -389,7 +376,6 @@ ORDER BY
   - Set `STATEMENT_TIMEOUT_IN_SECONDS=3600` for long-running queries.
   - Monitor `MEMORY_USAGE` in `QUERY_HISTORY`.
 
----
 
 ##### **Runbook: Stage I/O Error (`2012`)**
 
@@ -431,7 +417,6 @@ ORDER BY
     WHERE METADATA$FILE_LAST_MODIFIED > '2026-01-01';
     ```
 
----
 
 ##### **Runbook: Transaction Conflict (`1020`)**
 
@@ -462,9 +447,7 @@ ORDER BY
   - **Reduce transaction scope**: Break large transactions into smaller batches.
   - **Use `SERIALIZABLE` isolation** for high-contention workloads (accept **+20-30% latency**).
 
----
 
----
 
 ## **6. Advanced Production Patterns**
 
@@ -551,7 +534,6 @@ WHERE METADATA$FILE_NAME IN (
 );
 ```
 
----
 
 ### **6.2 DLQ (Dead Letter Queue) Routing**
 
@@ -635,7 +617,6 @@ HAVING
     COUNT(*) > 100; -- Threshold: 100 errors/hour
 ```
 
----
 
 ### **6.3 CI/CD Validation**
 
@@ -775,7 +756,6 @@ ORDER BY
     environment, START_TIME;
 ```
 
----
 
 ### **6.4 Retry & Backpressure Logic**
 
@@ -853,7 +833,6 @@ $$;
 CALL retry_copy('my_stage', 'my_table', 3);
 ```
 
----
 
 ### **6.5 Security & Compliance Controls**
 
@@ -975,9 +954,7 @@ CREATE OR REPLACE NETWORK POLICY allow_corp_network
 ALTER ACCOUNT SET NETWORK_POLICY = allow_corp_network;
 ```
 
----
 
----
 
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
@@ -1019,9 +996,7 @@ flowchart TD
     W --> X
 ```
 
----
 
----
 
 ## **8. Key Engineering Principles & Bottom Line**
 
@@ -1038,7 +1013,6 @@ flowchart TD
 | **Failure Isolation**           | **Micro-partitioning** (16-128MB chunks) + **automatic retry**.                 | **No single point of failure** (query fails only if all clusters fail).       |
 
 
----
 
 ### **8.2 Bottom Line for Production Engineers**
 
@@ -1075,7 +1049,6 @@ flowchart TD
   - **Least Privilege**: Grant `**SELECT` on tables**, not `**OWNERSHIP**`.
   - **Audit Everything**: Enable `**ACCOUNT_USAGE.AUDIT_HISTORY**`.
 
----
 
 ### **8.3 Quick Reference Commands**
 
@@ -1094,7 +1067,6 @@ flowchart TD
 | **List Active Transactions** | `SELECT * FROM TABLE(INFORMATION_SCHEMA.TRANSACTIONS());`                                      |
 
 
----
 
 ### **8.4 Anti-Patterns to Avoid**
 
@@ -1113,9 +1085,7 @@ flowchart TD
 | **Over-Partitioning** | **1000s of micro-partitions** → **metadata overhead**.   | **Target 100-1000 partitions per table**.                                |
 
 
----
 
----
 
 ## **9. Production Checklist**
 
@@ -1130,9 +1100,7 @@ flowchart TD
 - **Audit**: Enable `ACCOUNT_USAGE.AUDIT_HISTORY` and **tag sensitive data**.
 - **Documentation**: Maintain **runbooks** for common errors (`2003`, `2012`, `1020`).
 
----
 
----
 
 ## **10. Further Reading**
 
