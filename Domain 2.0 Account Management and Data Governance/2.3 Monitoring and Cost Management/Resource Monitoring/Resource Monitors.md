@@ -39,7 +39,6 @@ graph TD
   Attribution --> Chargeback[Chargeback Export]
 ```
 
----
 
 ## Resource Monitors: Core Component
 
@@ -111,7 +110,6 @@ CREATE OR REPLACE RESOURCE MONITOR dev_flexible
     ON 100 PERCENT DO NOTIFY;  -- No suspend or block
 ```
 
----
 
 ## Component 1: Query Tagging for Cost Attribution
 
