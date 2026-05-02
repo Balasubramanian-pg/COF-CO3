@@ -39,16 +39,18 @@
 ### Diagram: Data Lifecycle with Time Travel and Fail-safe
   ```mermaid
   gantt
-    title Data Retention Lifecycle
-    dateFormat  YYYY-MM-DD
-    axisFormat %d
-    
-    section Time Travel
-    Point-in-time queries, clones, undrop :active, tt, 2026-01-01, 2026-01-11
-    section Fail-safe
-    Snowflake-only recovery, no user query :fs, after tt, 2026-01-11, 2026-01-18
-    section Permanent Purge
-    Data permanently deleted :done, purge, 2026-01-18, 2026-01-18
+  title Data Retention Lifecycle
+  dateFormat YYYY-MM-DD
+  axisFormat %d
+  
+  section Time Travel
+  Point-in-time queries, clones, undrop :active, tt, 2026-01-01, 11d
+  
+  section Fail-safe
+  Snowflake-only recovery, no user query :fs, after tt, 7d
+  
+  section Permanent Purge
+  Data permanently deleted :done, purge, after fs, 1d
   ```
   Time Travel is user-accessible for the configured retention (e.g., 10 days). Fail-safe extends 7 more days, inaccessible to users. Past that, data is gone.
 
