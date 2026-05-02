@@ -52,7 +52,6 @@ flowchart LR
   Q6 --> Q7[Review and refine quarterly]
 ```
 
----
 
 ## Compute Usage Tracking
 
@@ -175,7 +174,6 @@ ORDER BY usage_date DESC, service_credits DESC;
 -- 'Storage' = data storage (billed separately, not in credit system)
 ```
 
----
 
 ## Storage Usage Tracking
 
