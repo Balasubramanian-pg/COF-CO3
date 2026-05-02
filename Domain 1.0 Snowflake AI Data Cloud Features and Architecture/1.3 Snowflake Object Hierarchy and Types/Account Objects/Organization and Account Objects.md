@@ -79,6 +79,8 @@ Below you will find a table of differences between Organization level object and
 | Security Management | Focuses on multi account governance, centralized identity, and cross region trust configurations. | Focuses on strict access control, user authentication, and network restrictions for a single environment. |
 | Financial Tracking | Provides consolidated billing, capacity planning, and usage metrics across all deployed accounts. | Tracks detailed credit consumption and storage utilization solely for its specific operational environment. |
 | Data Sharing | Dictates global data exchange policies and replication parameters across different deployment regions. | Manages direct data shares and consumer access points restricted to the localized account ecosystem. |
+
+## Different Scenarios to understand better
 | Scenario | Recommended Setup | Why |
 |----------|------------------|-----|
 | One team, one project | Single account | Less overhead, simpler management |
