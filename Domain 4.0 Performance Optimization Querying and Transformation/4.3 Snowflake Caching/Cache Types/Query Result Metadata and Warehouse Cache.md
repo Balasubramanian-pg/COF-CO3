@@ -1,6 +1,5 @@
 # **Query Result Cache and Warehouse Cache: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Overview of Query Result Cache and Warehouse Cache**
 
@@ -11,7 +10,6 @@ Snowflake implements **multiple caching layers** to optimize query performance. 
 
 These caches work in **concert** with other Snowflake optimization features to deliver **sub-second response times** for repetitive operations while **minimizing credit consumption**.
 
----
 
 ### **Mermaid: Query Result Cache and Warehouse Cache Architecture**
 ```mermaid
