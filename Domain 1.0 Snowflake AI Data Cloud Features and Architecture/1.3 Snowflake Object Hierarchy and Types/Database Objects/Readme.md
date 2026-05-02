@@ -93,9 +93,9 @@ GRANT ROLE can_viewmd TO USER smith;
 If you are doing impact analysis, use `ACCOUNT_USAGE.OBJECT_DEPENDENCIES`. 
 
 >[!Tip]
->Snowflake defines an object dependency as a case where one object references a base object without materializing or copying data, such as a view referencing a table.
->-That means dependency tracking is about logical references, not data movement.
->-It is the right source for determining what will break if you rename, replace, or drop a database object. ([Snowflake Docs][7])
+>Snowflake defines an object dependency as a case where one object references a base object without materializing or copying data, such as a view referencing a table.<br>
+>That means dependency tracking is about logical references, not data movement.<br>
+>It is the right source for determining what will break if you rename, replace, or drop a database object. ([Snowflake Docs][7])
 
 ```sql
 SELECT *
