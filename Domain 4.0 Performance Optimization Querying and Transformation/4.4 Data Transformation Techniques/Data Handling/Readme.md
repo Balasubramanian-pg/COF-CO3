@@ -2,7 +2,6 @@
 
 *Production-Grade Technical Deep Dive for Platform Engineers, SREs, and Architects*
 
----
 
 ## **1. Mermaid Execution Flow Diagram**
 
@@ -41,7 +40,6 @@ flowchart TD
     style O fill:#ff9,stroke:#333
 ```
 
----
 
 
 ## **2. Execution Internals & Transactional Boundaries**
