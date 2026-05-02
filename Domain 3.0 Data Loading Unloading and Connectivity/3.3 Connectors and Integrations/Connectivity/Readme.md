@@ -88,13 +88,10 @@ flowchart TD
 | **Partner Connectors**        | Varies             | SaaS, databases, APIs                  | 1-60 min          | 1-1000 MB/min          | TLS 1.2+, Partner        | Partner     | Partner + Snowflake    | Managed ETL                           |
 | **External Tables**           | Cloud Storage APIs | Query external data                   | 100-500ms         | 200-2000 MB/min        | TLS 1.2+, IAM             | Snowflake   | Compute                | Data lakes, external queries          |
 
----
 
----
 
 ## **2. Network Connectivity Deep Dive**
 
----
 
 ### **A. Public Internet Connectivity**
 
@@ -190,11 +187,9 @@ flowchart TD
 4. **Global access** for distributed teams
 5. **Cost-sensitive projects** where PrivateLink costs are prohibitive
 
----
 #### **Configuration**
 No additional configuration is required. Clients connect directly to Snowflake's public endpoints using the **account URL** (e.g., `myaccount.us-east-1.snowflakecomputing.com`).
 
----
 ### **B. AWS PrivateLink**
 
 #### **Definition and Architecture**
@@ -301,7 +296,6 @@ flowchart TD
 - **VPC Peering**: Requires **VPC peering** or **Transit Gateway** for multi-VPC access.
 - **Endpoint Quotas**: AWS imposes **quotas** on VPC endpoints (default: 10 per region).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Create a VPC Endpoint in AWS**
@@ -365,7 +359,6 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 ### **C. Azure Private Link**
 
 #### **Definition and Architecture**
@@ -469,7 +462,6 @@ flowchart TD
 - **VNet Peering**: Requires **VNet peering** for multi-VNet access.
 - **Endpoint Quotas**: Azure imposes **quotas** on Private Endpoints (default: 25 per subscription).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Create a Private Endpoint in Azure**
@@ -531,7 +523,6 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 ### **D. GCP Private Service Connect**
 
 #### **Definition and Architecture**
@@ -637,7 +628,6 @@ flowchart TD
 - **VPC Peering**: Requires **VPC peering** or **Shared VPC** for multi-VPC access.
 - **Endpoint Quotas**: GCP imposes **quotas** on PSC endpoints (default: 100 per project).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Create a PSC Connection in GCP**
@@ -699,7 +689,6 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 ### **E. Hybrid Connectivity (Private + Public)**
 
 #### **Definition and Architecture**
@@ -772,7 +761,6 @@ flowchart TD
    - Use **warehouse tags** or **query tags** to route workloads to PrivateLink or public connectivity.
    - Example: **Warehouse groups** with different connectivity.
 
----
 #### **Configuration Example (AWS)**
 ```sql
 -- Create a network policy to allow PrivateLink IPs
@@ -800,11 +788,8 @@ GRANT ROLE PRODUCTION_ROLE TO USER production_user;
 GRANT ROLE DEVELOPMENT_ROLE TO USER development_user;
 ```
 
----
----
 ## **3. Authentication Methods Deep Dive**
 
----
 
 ### **A. Authentication Overview**
 
@@ -819,7 +804,6 @@ Snowflake supports **multiple authentication methods** to secure access to your 
 | **JWT (Token)**           | High               | REST API, serverless                  | Medium          | Client         | ❌ No           | Configurable    |
 | **External Browser**      | Medium             | Interactive authentication            | High            | IdP            | ✅ Yes          | Session-based   |
 
----
 ### **B. Username/Password Authentication**
 
 #### **Definition and Architecture**
@@ -891,7 +875,6 @@ flowchart TD
 - **Credential Exposure**: Passwords may be **exposed in logs** or **client configurations**.
 - **No Automatic Rotation**: Passwords must be **manually rotated**.
 
----
 #### **Configuration**
 ```sql
 -- Create a user with password authentication
@@ -912,7 +895,6 @@ ALTER ACCOUNT SET SESSION_TIMEOUT = 240;  -- 240 minutes = 4 hours
 ALTER ACCOUNT SET IDLE_SESSION_TIMEOUT = 60;  -- 60 minutes
 ```
 
----
 ### **C. Key Pair Authentication**
 
 #### **Definition and Architecture**
@@ -994,7 +976,6 @@ flowchart TD
 - **No Built-in Rotation**: Keys must be **manually rotated** (use a key management service).
 - **Clock Skew**: JWT validation may fail if **client clock is out of sync** (NTP recommended).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Generate an RSA Key Pair**
@@ -1134,7 +1115,6 @@ public class SnowflakeJWTExample {
 }
 ```
 
----
 ### **D. OAuth Authentication**
 
 #### **Definition and Architecture**
@@ -1215,7 +1195,6 @@ flowchart TD
 - **Token Management**: Access tokens are **short-lived** (typically 1 hour).
 - **Client Secret**: Must be **securely stored** (use **client credentials flow** for server-to-server).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Configure OAuth in IdP (Okta Example)**
@@ -1280,7 +1259,6 @@ ORDER BY
     event_time DESC;
 ```
 
----
 ### **E. SAML Authentication**
 
 #### **Definition and Architecture**
@@ -1352,7 +1330,6 @@ flowchart TD
 - **Redirect Overhead**: Adds **~100-500ms latency** due to redirects.
 - **Complex Setup**: SAML configuration is **more complex** than OAuth.
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Configure SAML in IdP (Okta Example)**
@@ -1421,7 +1398,6 @@ ORDER BY
     event_time DESC;
 ```
 
----
 ### **F. External Browser Authentication**
 
 #### **Definition and Architecture**
@@ -1495,7 +1471,6 @@ flowchart TD
 - **Token Lifetime**: Auth codes are **short-lived** (typically 5-10 minutes).
 - **CLI Only**: Primarily used for **CLI tools** (not ideal for programmatic access).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Enable External Browser Auth**
@@ -1545,7 +1520,6 @@ public class SnowflakeExternalBrowserExample {
 }
 ```
 
----
 ### **G. MFA (Multi-Factor Authentication)**
 
 #### **Definition and Architecture**
@@ -1614,7 +1588,6 @@ flowchart TD
 - **Token Management**: MFA tokens are **short-lived** (typically 1 hour).
 - **Recovery**: Users must **set up backup methods** (e.g., backup codes).
 
----
 #### **Configuration Steps**
 
 ##### **Step 1: Enable MFA in IdP (Okta Example)**
@@ -1661,11 +1634,8 @@ ORDER BY
     event_time DESC;
 ```
 
----
----
 ## **4. Protocol Support Deep Dive**
 
----
 
 ### **A. Protocol Overview**
 
@@ -1681,7 +1651,6 @@ Snowflake supports **multiple protocols** for connecting clients to its services
 | **Azure Blob API** | 443      | TCP           | Snowpipe, External Tables (Azure)    | 1-10 min          | 100-1000 MB/min        | TLS 1.2+, SAS            | Azure data integration                |
 | **GCS API**        | 443      | TCP           | Snowpipe, External Tables (GCS)      | 1-10 min          | 100-1000 MB/min        | TLS 1.2+, IAM             | GCP data integration                  |
 
----
 ### **B. HTTPS (REST API)**
 
 #### **Definition and Architecture**
@@ -1689,7 +1658,6 @@ Snowflake's **REST API** uses **HTTPS (HTTP over TLS)** to provide **programmati
 
 *(Note: Already covered in detail in the API-Based Integrations section. See [REST API](#a-rest-api) above.)*
 
----
 ### **C. JDBC**
 
 #### **Definition and Architecture**
@@ -1697,7 +1665,6 @@ Snowflake's **REST API** uses **HTTPS (HTTP over TLS)** to provide **programmati
 
 *(Note: Already covered in detail in the Driver-Based Connectors section. See [JDBC Driver](#b-jdbc-driver) above.)*
 
----
 ### **D. ODBC**
 
 #### **Definition and Architecture**
@@ -1705,7 +1672,6 @@ Snowflake's **REST API** uses **HTTPS (HTTP over TLS)** to provide **programmati
 
 *(Note: Already covered in detail in the Driver-Based Connectors section. See [ODBC Driver](#a-odbc-driver) above.)*
 
----
 ### **E. Kafka Protocol**
 
 #### **Definition and Architecture**
@@ -1713,7 +1679,6 @@ The **Kafka Protocol** is a **binary TCP protocol** used by Apache Kafka for **h
 
 *(Note: Already covered in detail in the Native Connectors section. See [Kafka Connector](#a-kafka-connector) above.)*
 
----
 ### **F. Cloud Storage APIs (S3, Azure Blob, GCS)**
 
 #### **Definition and Architecture**
@@ -1721,11 +1686,8 @@ Snowflake integrates with **cloud storage APIs** (S3, Azure Blob, GCS) to enable
 
 *(Note: Already covered in detail in the Cloud Storage Integrations section. See [AWS S3 Integration](#a-aws-s3-integration), [Azure Blob Storage Integration](#b-azure-blob-storage-integration), [GCS Integration](#c-google-cloud-storage-gcs-integration) above.)*
 
----
----
 ## **5. Security & Compliance Deep Dive**
 
----
 
 ### **A. Network Security**
 
@@ -1811,11 +1773,9 @@ ORDER BY
     event_time DESC;
 ```
 
----
 #### **2. Private Connectivity (PrivateLink, Private Service Connect)**
 *(Note: Already covered in detail in the Network Connectivity section. See [AWS PrivateLink](#b-aws-privatelink), [Azure Private Link](#c-azure-private-link), [GCP Private Service Connect](#d-gcp-private-service-connect) above.)*
 
----
 #### **3. VPC Peering (Multi-Cloud)**
 **VPC Peering** allows you to **connect VPCs across cloud providers** (e.g., AWS VPC to Azure VNet) or **within the same provider**. This enables **private connectivity** between **multi-cloud environments** and Snowflake.
 
@@ -1845,7 +1805,6 @@ ORDER BY
    - Use **AWS PrivateLink** or **Azure Private Link** to connect to Snowflake.
    - Ensure **VPC/VNet peering** allows traffic to Snowflake's PrivateLink endpoints.
 
----
 ### **B. Data Security**
 
 #### **1. Encryption in Transit**
@@ -1879,7 +1838,6 @@ Snowflake supports **modern cipher suites** for TLS 1.2 and 1.3:
 - **Certificate Rotation**: Snowflake **automatically rotates** certificates.
 - **Custom Certificates**: Not supported (Snowflake manages certificates).
 
----
 #### **2. Encryption at Rest**
 Snowflake **encrypts all data at rest** using **AES-256 encryption**. This includes:
 - **User Data**: Tables, stages, etc.
@@ -1942,7 +1900,6 @@ CREATE STAGE MY_GCP_CMK_STAGE
   FILE_FORMAT = (TYPE = 'PARQUET');
 ```
 
----
 #### **3. Data Masking and Row-Level Security (RLS)**
 Snowflake provides **fine-grained access control** for data using **Data Masking** and **Row-Level Security (RLS)**.
 
@@ -1986,7 +1943,6 @@ ALTER TABLE MY_TABLE
 SELECT * FROM MY_TABLE;
 ```
 
----
 #### **4. Secure Data Sharing**
 Snowflake provides **secure data sharing** between accounts **without copying data**. This is useful for **collaboration**, **data marketplaces**, or **multi-tenant architectures**.
 
@@ -2047,7 +2003,6 @@ ALTER SHARE MY_READER_SHARE ADD ACCOUNTS = ('MY_READER_ACCOUNT');
 -- (Use the reader account's URL: MY_READER_ACCOUNT.snowflakecomputing.com)
 ```
 
----
 ### **C. Compliance Certifications**
 
 Snowflake is **certified** for the following **compliance standards**:
@@ -2076,7 +2031,6 @@ Snowflake is **certified** for the following **compliance standards**:
 | **AWS GovCloud (US)**     | ✅ Yes     | ✅ Yes     | ❌ No     | ✅ Yes       | ✅ Yes       | ✅ Yes       |
 | **Azure Government**     | ✅ Yes     | ✅ Yes     | ❌ No     | ✅ Yes       | ✅ Yes       | ✅ Yes       |
 
----
 #### **Compliance Features**
 | **Feature**               | **SOC 2** | **HIPAA** | **GDPR** | **PCI DSS** | **FedRAMP** | **HITRUST** |
 |---------------------------|-----------|-----------|----------|-------------|-------------|-------------|
@@ -2091,11 +2045,8 @@ Snowflake is **certified** for the following **compliance standards**:
 | **Data Masking**          | ❌ No      | ✅ Yes     | ✅ Yes    | ✅ Yes       | ✅ Yes       | ✅ Yes       |
 | **Row-Level Security**    | ❌ No      | ✅ Yes     | ✅ Yes    | ✅ Yes       | ✅ Yes       | ✅ Yes       |
 
----
----
 ## **6. Monitoring, Observability & Troubleshooting**
 
----
 
 ### **A. Key Monitoring Views**
 
@@ -2108,7 +2059,6 @@ Snowflake is **certified** for the following **compliance standards**:
 | `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` | Track query execution (including connectivity) | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY WHERE start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());` | 365 days |
 | `SNOWFLAKE.ACCOUNT_USAGE.USER_LOGIN_HISTORY` | Track user login history | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.USER_LOGIN_HISTORY WHERE event_time > DATEADD('day', -7, CURRENT_TIMESTAMP());` | 365 days |
 
----
 ### **B. Connectivity Error Categorization**
 
 | **Error Type** | **Error Code** | **Root Cause** | **Impact** | **Severity** | **Runbook** | **Monitoring View** |
@@ -2124,7 +2074,6 @@ Snowflake is **certified** for the following **compliance standards**:
 | **Warehouse Suspended** | `WAREHOUSE_SUSPENDED` | Warehouse is suspended | Query fails | Medium | 1. Resume warehouse. 2. Use auto-resume. | `SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 | **PrivateLink Unavailable** | `PRIVATELINK_UNAVAILABLE` | PrivateLink service down | Connection rejected | Critical | 1. Check AWS/Azure/GCP status. 2. Contact Snowflake support. | `ACCOUNT_USAGE.CONNECTIVITY_HISTORY` |
 
----
 ### **C. Proactive Alerts**
 
 #### **1. Failed Login Attempts**
@@ -2204,7 +2153,6 @@ AS
     change_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 ### **D. Troubleshooting Runbooks**
 
 #### **1. IP Blocked Errors**
@@ -2392,11 +2340,8 @@ snowflake.connector.connect(
 )
 ```
 
----
----
 ## **7. Decision Matrix**
 
----
 ### **Mermaid: Connectivity Method Selection Decision Tree**
 ```mermaid
 %% Connectivity Method Selection Decision Tree
@@ -2483,7 +2428,6 @@ flowchart TD
     class AB marketplace;
 ```
 
----
 ### **Quick Reference Table**
 
 | **Requirement** | **Connectivity Method** | **Authentication Method** | **Protocol** | **Best For** |
@@ -2508,11 +2452,8 @@ flowchart TD
 | **External Data** | PrivateLink/Network Policies | Key Pair, JWT | Cloud Storage APIs | External Tables |
 | **Third-Party Data** | Public | OAuth | HTTPS | Data Marketplace |
 
----
----
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 ### **A. Core Principles**
 
 1. **Private Connectivity First**:
@@ -2567,7 +2508,6 @@ flowchart TD
     - Migrate to **PrivateLink** as security requirements increase.
     - Implement **multi-cloud connectivity** for hybrid architectures.
 
----
 ### **B. Production Checklist**
 
 #### **Network Connectivity**
@@ -2642,7 +2582,6 @@ flowchart TD
   - [ ] Enforce **MFA** for all users.
   - [ ] Enable **audit logging** and **data masking**.
 
----
 ### **C. Bottom Line**
 
 | **Metric** | **PrivateLink** | **Public Internet + Network Policies** | **VPC Peering** | **Best Choice** |
