@@ -55,7 +55,6 @@ flowchart LR
   Q6 --> Q7[Review and adjust quarterly]
 ```
 
----
 
 ## Dynamic Data Masking
 
@@ -181,7 +180,6 @@ $$;
 CALL governance.apply_masking_by_classification();
 ```
 
----
 
 ## Row Access Policies: Row-Level Security
 
