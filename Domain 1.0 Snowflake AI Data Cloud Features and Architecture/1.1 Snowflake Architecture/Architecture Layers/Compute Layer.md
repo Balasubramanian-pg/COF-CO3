@@ -46,7 +46,8 @@
   - Multi-cluster warehouses use the same warehouse name and are billed as separate clusters for the time each runs
 
 ## Auto-suspend and Auto-resume
-  - Auto-suspend: Automatically shuts down a virtual warehouse after a user-defined inactivity period (default 10 minutes, can be as low as 1 minute or disabled)
+>[!Note] Auto-suspend
+>: Automatically shuts down a virtual warehouse after a user-defined inactivity period (default 10 minutes, can be as low as 1 minute or disabled)
   - When suspended, all compute resources are terminated and no credits are consumed, though cache data on local SSDs is discarded
   - Auto-resume: Automatically restarts the warehouse when a new query is submitted; takes a few seconds for the cluster to provision and warm up
   - Enables cost optimization by eliminating idle compute time, a core tenet of the platform’s separation of compute and storage
