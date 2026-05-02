@@ -36,6 +36,7 @@ CREATE OR REPLACE FILE FORMAT raw_csv_ff
 For unloading, Snowflake says file format options can be specified in the table definition, the stage definition, or directly in `COPY INTO <location>`. Snowflake also notes that unloading to JSON produces NDJSON, and that the supported unload formats differ from load-time flexibility. That distinction matters when teams assume load and unload semantics are symmetric, because they are not. ([Snowflake Docs][5])
 
 ### Loading and querying staged data
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/f07fa137-cd0e-4951-9e48-0da249b10e58" />
 
 When a named stage or named file format is attached, Snowflake can reuse those options in both `COPY INTO <table>` and stage-query workflows. This is also the cleanest way to standardize parsing across pipelines, because the stage or file format object becomes the single source of truth instead of repeating format options in every command. Snowflake’s stage-query documentation confirms that file format options can be supplied through a named file format or stage object and then referenced in `SELECT` or `COPY` statements. ([Snowflake Docs][6])
 
