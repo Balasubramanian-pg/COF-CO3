@@ -219,7 +219,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | 50 | 2.5 GB/sec | <1 sec | 50 | 0.0005 |
 | 100 | 5 GB/sec | <1 sec | 100 | 0.0005 |
 
----
 
 ### Snowflake Ingestion Service Internals
 #### Streaming Architecture
@@ -276,7 +275,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | 5000 | 50,000 rows/sec | <1 sec | 1 |
 | 10000 | 100,000 rows/sec | <1 sec | 1 |
 
----
 
 ### External Tables Internals
 #### Query-Time Processing
@@ -323,7 +321,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | Large | 80 | 1600 MB/min | 100-500ms | 0.00035 |
 | X-Large | 100 | 2000 MB/min | 100-500ms | 0.000175 |
 
----
 
 ### Snowflake Connector (CDC) Internals
 #### Change Data Capture Architecture
@@ -378,7 +375,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | SQL Server | 5 min | 300 MB/min | 5-10 min | 0.3 |
 | Oracle | 5 min | 200 MB/min | 5-10 min | 0.3 |
 
----
 
 ### Tasks + Stored Procedures Internals
 #### Scheduled Execution
@@ -426,7 +422,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | Large | 8 | 1600 MB/min | 1-60 min | 2.24 |
 | X-Large | 16 | 3200 MB/min | 1-60 min | 4.48 |
 
----
 
 ## Parameter/Configuration Deep Dive
 
@@ -506,7 +501,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | `USER_TASK_TIMEOUT_MS` | Task timeout (ms) | Lower = faster failure | Min: 1000, Max: 691200000 | 86400000 (24 hours) |
 | `SESSION_TIMEOUT` | Session timeout (minutes) | Lower = faster failure | Min: 1, Max: 11520 | 60 |
 
----
 
 ## Performance & Resource Implications
 
@@ -560,7 +554,6 @@ Snowpipe processes files in micro-batches with the following execution flow:
 | Snowflake Connector | 10 connectors | 1 thread per table |
 | Tasks | 100 tasks | Uses warehouse concurrency |
 
----
 
 ## Monitoring, Observability & Troubleshooting
 
@@ -1019,7 +1012,6 @@ AS
     AND scheduled_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 ## Advanced Production Patterns
 
 ### Idempotency Strategies
@@ -1513,7 +1505,6 @@ $$;
   GRANT USAGE ON INGESTION STREAM MY_STREAM TO ROLE INGEST_ROLE;
   ```
 
----
 ## Decision Matrix
 
 ### Ingestion Method Selection Flowchart
@@ -1567,7 +1558,6 @@ Data Source Type
 | Cost-sensitive | Snowpipe (Serverless) | 1-10 min | 100-1000 MB/min | Low | Low | Cost-optimized cloud storage |
 | Complex transformations | Tasks + Stored Procedures | 1-60 min | 10-1000 MB/min | Medium | High | Custom transformation logic |
 
----
 ## Key Engineering Principles
 
 ### Core Principles
@@ -1710,7 +1700,6 @@ Data Source Type
   - Configure lifecycle policies for cloud storage
   - Monitor storage costs
 
----
 ## Production-Ready Snippets
 
 ### Snowpipe Setup
@@ -1961,7 +1950,6 @@ AS
   CALL PROCESS_DATA();
 ```
 
----
 ## Final Notes
 
 For Further Reading:
