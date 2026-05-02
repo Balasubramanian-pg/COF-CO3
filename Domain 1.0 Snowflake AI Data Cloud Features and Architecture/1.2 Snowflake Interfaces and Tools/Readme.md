@@ -2,9 +2,7 @@
 
 *Senior Snowflake Solutions Architect | Enterprise-Scale Focus*
 
----
 
----
 
 ## 1. Overview & Scope
 
@@ -27,7 +25,6 @@ Snowflake provides multiple interfaces and tools to interact with its AI Data Cl
 - Automate workflows (CI/CD, ETL, ML).
 - Integrate seamlessly with existing ecosystems.
 
----
 
 ## 2. Technical Architecture
 
@@ -86,9 +83,7 @@ flowchart TD
 | **Airflow Integration**    | Orchestrate Snowflake workflows.                  | Airflow Providers (Python)         | Data Engineers, DevOps       |
 
 
----
 
----
 
 ## 3. Core Concepts & Definitions
 
@@ -114,7 +109,6 @@ flowchart TD
   - Data loading/unloading (via UI).
 - **Deprecation Note**: Snowflake recommends migrating to Snowsight for all new development.
 
----
 
 ### 3.2 Command-Line Tools
 
@@ -138,7 +132,6 @@ flowchart TD
   - Supports Snowpark (Python/Scala/Java execution).
 - **Why It Matters**: SnowSQL is deprecated in favor of SnowCLI.
 
----
 
 ### 3.3 Programmatic Interfaces
 
@@ -171,7 +164,6 @@ flowchart TD
     - Query monitoring (QUERY_HISTORY).
 - **Analogy**: Like AWS CLI, but for Snowflake account management.
 
----
 
 #### Snowpark
 
@@ -183,7 +175,6 @@ flowchart TD
   - Works with Snowflake’s distributed engine (scales automatically).
 - **Analogy**: Like Spark, but native to Snowflake (no separate cluster management).
 
----
 
 ### 3.4 IDE Integrations
 
@@ -206,7 +197,6 @@ flowchart TD
   - Snowpark integration.
 - **Analogy**: Like Google Colab, but connected to Snowflake.
 
----
 
 ### 3.5 Third-Party Tools
 
@@ -236,7 +226,6 @@ flowchart TD
   - Matillion: Low-code ETL (drag-and-drop).
 - **Best For**: Data engineers, analysts.
 
----
 
 ### 3.6 Snowflake-Specific Tools
 
@@ -266,9 +255,7 @@ flowchart TD
   - LLM support: Vector search, prompt engineering (via Snowpark Python).
   - Integration with Hugging Face, LangChain, etc.
 
----
 
----
 
 ## 4. How It Works
 
@@ -294,7 +281,6 @@ flowchart TD
 - Collaboration: Share worksheets with other users/roles.
 - Query History: View past queries in the "History" tab.
 
----
 
 ### 4.2 SnowSQL Workflow
 
@@ -334,7 +320,6 @@ flowchart TD
   ```
 - Output Formatting: Use `-o output_format=json` for JSON output.
 
----
 
 ### 4.3 SnowCLI Workflow
 
@@ -363,7 +348,6 @@ flowchart TD
 - Faster than SnowSQL (Go-based).
 - Better for CI/CD (e.g., GitHub Actions, Jenkins).
 
----
 
 ### 4.4 Python Connector Workflow
 
@@ -403,7 +387,6 @@ flowchart TD
 - Arrow Support: Use `snowflake-connector-python[arrow]` for faster data transfer.
 - Async Queries: Use `cursor.execute_async()` for non-blocking queries.
 
----
 
 ### 4.5 REST API Workflow
 
@@ -432,7 +415,6 @@ flowchart TD
 - No SQL Execution: Use JDBC/ODBC or Python Connector for queries.
 - Rate Limits: 10 requests/second.
 
----
 
 ### 4.6 Snowpark Workflow (Python)
 
@@ -477,7 +459,6 @@ flowchart TD
 - Lazy Evaluation: Snowpark optimizes the execution plan before running.
 - Distributed Execution: Runs inside Snowflake’s engine (no data movement).
 
----
 
 ### 4.7 Snowpipe Workflow
 
@@ -508,7 +489,6 @@ flowchart TD
 - Auto-Ingest: Files are loaded within minutes of landing in the stage.
 - Error Handling: Failed files go to a dead-letter queue.
 
----
 
 ### 4.8 Streamlit in Snowflake Workflow
 
@@ -544,7 +524,6 @@ flowchart TD
 - No Server Management: Snowflake hosts the app.
 - Interactive: Supports widgets, filters, and real-time updates.
 
----
 
 ### 4.9 dbt + Snowflake Workflow
 
@@ -590,7 +569,6 @@ flowchart TD
 - Modular: Models are version-controlled (Git).
 - Lineage: dbt tracks dependencies between models.
 
----
 
 ### 4.10 Airflow + Snowflake Workflow
 
@@ -640,9 +618,7 @@ flowchart TD
 - Idempotent: Use `SnowflakeOperator` for retryable tasks.
 - Scalable: Airflow orchestrates complex pipelines.
 
----
 
----
 
 ## 5. Configuration & Syntax
 
@@ -761,9 +737,7 @@ flowchart TD
 | Configure connection | Set `snowflake_conn` in Airflow UI with JSON extras. |
 
 
----
 
----
 
 ## 6. Performance Impact
 
@@ -796,9 +770,7 @@ flowchart TD
 | Build a dashboard with 10 charts | Streamlit        | 1-2 min   | 0.05               | Real-time updates.               |
 
 
----
 
----
 
 ## 7. Best Practices
 
@@ -898,9 +870,7 @@ flowchart TD
 | Set SLAs for critical tasks | Assume tasks will always succeed.    | Ensures timely alerts for failures. |
 
 
----
 
----
 
 ## 8. Limitations & Workarounds
 
@@ -917,9 +887,7 @@ flowchart TD
 | Airflow Snowflake provider lag          | New Snowflake features may not be immediately supported. | Check provider version and update regularly.             |
 
 
----
 
----
 
 ## 9. Monitoring & Troubleshooting
 
@@ -998,7 +966,6 @@ AND start_time >= DATEADD('days', -1, CURRENT_TIMESTAMP())
 ORDER BY execution_time DESC;
 ```
 
----
 
 ### 9.2 Common Issues & Fixes
 
@@ -1015,13 +982,10 @@ ORDER BY execution_time DESC;
 | Airflow Snowflake task stuck | Warehouse queueing or deadlock.          | Check warehouse usage and increase concurrency.                         |
 
 
----
 
----
 
 ## 10. Real-World Examples
 
----
 
 ### 10.1 Snowsight: Sales Dashboard for Retail
 
@@ -1067,7 +1031,6 @@ A retail company wants a real-time dashboard to track daily sales, top products,
   - Interactive filters (e.g., by region, product category).
   - Automated (no manual work).
 
----
 
 ### 10.2 SnowCLI: CI/CD Pipeline for Data Warehouse
 
@@ -1123,7 +1086,6 @@ A data engineering team wants to automate database deployments (DDL, seed data) 
   - Version-controlled (Git history for all changes).
   - Rollback capability (revert to previous commits).
 
----
 
 ### 10.3 Python Connector: ML Feature Store
 
@@ -1188,7 +1150,6 @@ A data science team wants to train a model on customer transaction data stored i
   - Faster iteration (real-time data access).
   - Scalable (handles 10M+ rows).
 
----
 
 ### 10.4 Snowpark: Data Transformation Pipeline
 
@@ -1247,7 +1208,6 @@ A data engineering team needs to transform 10TB of raw sales data into a star sc
   - No cluster management (fully serverless).
   - Cost-effective (pay only for compute used).
 
----
 
 ### 10.5 Snowpipe: Real-Time Log Ingestion
 
@@ -1304,7 +1264,6 @@ A SaaS company wants to ingest and analyze application logs in real-time (10GB/d
   - Scalable (handles 10K+ files/day).
   - Cost-effective (pay only for bytes scanned).
 
----
 
 ### 10.6 Streamlit: Executive Dashboard
 
@@ -1381,7 +1340,6 @@ An executive team needs a self-service dashboard to monitor KPIs (revenue, custo
   - Interactive (executives can filter by date, region, etc.).
   - Secure (RBAC controls access).
 
----
 
 ### 10.7 dbt: Analytics Engineering Pipeline
 
@@ -1454,7 +1412,6 @@ A data team wants to transform raw data into analytics-ready models with testing
   - Tested (data quality guaranteed).
   - Documented (auto-generated docs via `dbt docs generate`).
 
----
 
 ### 10.8 Airflow: Orchestrated ETL Pipeline
 
@@ -1542,11 +1499,8 @@ A data engineering team needs to orchestrate a daily ETL pipeline (extract from 
   - Retryable (Airflow retries failed tasks).
   - Monitored (alerts on failure).
 
----
 
----
 
----
 
 ## 11. Production Checklist
 
@@ -1614,11 +1568,8 @@ A data engineering team needs to orchestrate a daily ETL pipeline (extract from 
 - Use connection pooling to reduce overhead.
 - Set SLAs for critical tasks.
 
----
 
----
 
----
 
 ## 12. Comparison Tables
 
@@ -1680,11 +1631,8 @@ A data engineering team needs to orchestrate a daily ETL pipeline (extract from 
 | Use Case           | Client-side processing | Server-side processing      | Depends on need  |
 
 
----
 
----
 
----
 
 ## 13. Anti-Patterns & Pitfalls
 
@@ -1702,11 +1650,8 @@ A data engineering team needs to orchestrate a daily ETL pipeline (extract from 
 | Running Airflow tasks sequentially            | Slow pipelines.         | No parallelism.            | Set task dependencies for parallel execution.           | Longer runtimes.           |
 
 
----
 
----
 
----
 
 ## 14. Advanced Topics & Edge Cases
 
@@ -1931,11 +1876,8 @@ A data engineering team needs to orchestrate a daily ETL pipeline (extract from 
   - Snowflake as a vector DB: Store and query embeddings directly in Snowflake.
   - Scalable: Handles millions of vectors.
 
----
 
----
 
----
 
 ## 15. Key Takeaways
 
@@ -1950,11 +1892,8 @@ A data engineering team needs to orchestrate a daily ETL pipeline (extract from 
 9. **Monitor everything**: Use INFORMATION_SCHEMA, ACCOUNT_USAGE, and query history to track performance and costs.
 10. **Avoid anti-patterns**: Don’t hardcode credentials, ignore errors, or over-engineer solutions.
 
----
 
----
 
----
 
 ## Next Steps for You (Balu PG)
 
