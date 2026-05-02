@@ -94,9 +94,11 @@ flowchart LR
 ```
 
 ## Design Principles Beneath the Layers
-  - Full separation of storage and compute: data persists without compute; multiple independent compute clusters can share same data
-  - Centralized metadata enables instant operations (clone, time travel, shares) and global optimization
-  - Stateless compute nodes with local caching allow suspend/resume and elastic scaling without data loss
+  - Full separation of storage and compute:
+      - Data persists without compute;
+      - Multiple independent compute clusters can share same data
+  - Centralized metadata enables **instant operations (clone, time travel, shares) and global optimization**
+  - Stateless compute nodes with **local caching** allow suspend/resume and elastic scaling without data loss
   - Immutable micro-partitions guarantee data consistency and simplify concurrency control
 
 ## Summary
