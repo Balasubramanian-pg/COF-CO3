@@ -348,7 +348,6 @@ GROUP BY tr.tag_name, tr.tag_value
 ORDER BY tr.tag_name, tr.tag_value;
 ```
 
----
 
 ## Latency and Retention Considerations
 
@@ -413,7 +412,6 @@ WHERE start_time < DATEADD(day, -330, CURRENT_TIMESTAMP())  -- Export data older
 FILE_FORMAT = (TYPE = PARQUET COMPRESSION = SNAPPY);
 ```
 
----
 
 ## Query Patterns and Best Practices
 
@@ -570,7 +568,6 @@ GROUP BY table_schema, table_name, usage_month, monthly_active_bytes
 ORDER BY projected_next_month_gb DESC;
 ```
 
----
 
 ## Integration Patterns
 
@@ -707,7 +704,6 @@ AS
   );
 ```
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -757,7 +753,6 @@ flowchart TD
   K --> L
 ```
 
----
 
 ## Best Practices Summary
 
@@ -797,7 +792,6 @@ flowchart TD
 | Export to external systems for finance | `COPY INTO @external_stage/...` | Enables chargeback and budget planning in existing tools |
 | Schedule reports aligned with billing cycles | Monthly reports on 1st; weekly on Mondays | Matches finance reporting rhythms |
 
----
 
 ## Decision Framework: Using ACCOUNT_USAGE Views
 
@@ -838,7 +832,6 @@ flowchart TD
 | Query optimization targeting | `QUERY_HISTORY` filtered by `bytes_scanned`/`credits_used` | `WHERE bytes_scanned > 100GB OR credits_used > 10` |
 | Compliance reporting | `ACCESS_HISTORY` + `GRANTS_TO_USERS` + exports | Filter by compliance tags; export to external system |
 
----
 
 ## Key Principles to Remember
 
