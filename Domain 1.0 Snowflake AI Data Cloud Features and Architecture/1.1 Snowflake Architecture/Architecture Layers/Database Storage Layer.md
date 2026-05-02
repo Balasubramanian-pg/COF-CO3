@@ -87,20 +87,20 @@
 ### Diagram: Micro-Partition Structure and Columnar Access
   ```mermaid
   graph TD
-    subgraph MP[Micro-Partition: Sales Table]
-      direction TB
-      col1[Column: Date<br/>min: 2025-01-01 <br/>max: 2025-01-31]
-      col2[Column: Region<br/>values: US, EU, APAC]
-      col3[Column: Amount<br/>range: 10 - 5000]
-      colN[Column: N <br/> ...]
-    end
+  subgraph MP[Micro-Partition: Sales Table]
+    direction TB
+    col1[Column: Date<br/>min: 2025-01-01 <br/>max: 2025-01-31]
+    col2[Column: Region<br/>values: US, EU, APAC]
+    col3[Column: Amount<br/>range: 10 - 5000]
+    colN[Column: N <br/> ...]
+  end
 
-    Query[SELECT SUM(Amount) WHERE Date = '2025-01-15' AND Region = 'EU']
+  Query["SELECT SUM(Amount)<br/>WHERE Date = '2025-01-15' AND Region = 'EU'"]
 
-    Client --> Query
-    Query --> Metadata[(Metadata: Micro-partition ranges)]
-    Metadata -- Prune irrelevant partitions --> MP
-    MP -- Read only Amount and Region columns from relevant partitions --> Warehouse[Virtual Warehouse]
+  Client --> Query
+  Query --> Metadata[(Metadata: Micro-partition ranges)]
+  Metadata -- Prune irrelevant partitions --> MP
+  MP -- Read only Amount and Region columns<br/>from relevant partitions --> Warehouse[Virtual Warehouse]
   ```
   Metadata-driven pruning eliminates entire micro-partitions before data is read. Columnar layout further limits I/O to columns referenced in the query.
 
