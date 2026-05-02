@@ -99,7 +99,6 @@ flowchart TD
 - **N-Gram Index**: Maps n-grams to row IDs for prefix/suffix/wildcard searches
 - **Index Lookup**: Quickly find matching rows using search indexes
 
----
 ### **Query Acceleration vs. Search Optimization**
 
 | **Feature** | **Query Acceleration** | **Search Optimization** |
@@ -114,7 +113,6 @@ flowchart TD
 | **Monitoring** | QUERY_HISTORY, QUERY_PROFILE | SEARCH_OPTIMIZATION_HISTORY |
 | **Limitations** | Limited by query complexity | Limited to full-text search queries |
 
----
 ### **When to Use Query Acceleration vs. Search Optimization**
 
 | **Use Case** | **Recommended Service** | **Example** |
@@ -129,11 +127,8 @@ flowchart TD
 | **Exact Match** | Query Acceleration (Clustering) | `SELECT * FROM users WHERE id = 123` |
 | **Range Queries** | Query Acceleration (Clustering) | `SELECT * FROM sales WHERE date BETWEEN '2023-01-01' AND '2023-01-31'` |
 
----
----
 ## **2. Query Acceleration Deep Dive**
 
----
 ### **A. Automatic Query Rewriting**
 
 #### **1. Definition and Architecture**
@@ -251,7 +246,6 @@ EXPLAIN SELECT * FROM my_table WHERE date > '2023-01-01';
 | **Document Query Patterns** | Document repetitive query patterns for optimization | Internal wiki or Confluence page |
 | **Use Views for Complex Queries** | Views can be folded into the main query | `CREATE VIEW my_view AS SELECT * FROM my_table WHERE ...` |
 
----
 ### **B. Vectorized Execution**
 
 #### **1. Definition and Architecture**
@@ -324,7 +318,6 @@ flowchart TD
 | **Use Approximate Functions** | Approximate functions are vectorized | `SELECT APPROX_COUNT_DISTINCT(col1) FROM my_table` |
 | **Monitor Vectorization** | Check QUERY_PROFILE for vectorized operators | `SELECT operation, rows_produced FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_PROFILE('...'))` |
 
----
 ### **C. Result Caching**
 
 #### **1. Definition and Architecture**
@@ -440,7 +433,6 @@ ALTER SESSION SET RESULT_CACHE_TTL = 3600;
 | **Use Consistent Query Text** | Ensure query text is identical for cache hits | Avoid dynamic SQL, use parameterized queries |
 | **Use Consistent Session Parameters** | Ensure session parameters (e.g., time zone) are consistent | Set session parameters explicitly |
 
----
 ### **D. Metadata Caching**
 
 #### **1. Definition and Architecture**
@@ -520,7 +512,6 @@ flowchart TD
 | **Use Clustering for Better Metadata** | Clustering improves partition pruning | `ALTER TABLE my_table CLUSTER BY (date)` |
 | **Monitor Metadata Cache Hits** | Check metadata cache usage (not directly visible) | Improved query performance |
 
----
 ### **E. Warehouse Optimization**
 
 #### **1. Auto-Suspend and Auto-Resume**
@@ -599,11 +590,8 @@ ALTER SESSION SET QUERY_PRIORITY = 'HIGH';
 SELECT * FROM my_table /*+ PRIORITY(HIGH) */;
 ```
 
----
----
 ## **3. Search Optimization Service (SOS) Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 The **Search Optimization Service (SOS)** is a **paid add-on service** that **accelerates full-text search and pattern matching queries** by creating and maintaining **search indexes** on your tables. SOS is designed to **dramatically improve the performance** of queries that use:
@@ -698,7 +686,6 @@ flowchart TD
 ❌ **Write-heavy tables** (frequent updates may impact index maintenance performance).
 ❌ **Cost-sensitive environments** (SOS has additional storage and compute costs).
 
----
 ### **B. Search Optimization Service Configuration**
 
 #### **1. Enable Search Optimization on a Table**
@@ -791,7 +778,6 @@ ORDER BY
     start_time DESC;
 ```
 
----
 ### **C. Search Optimization Service Performance**
 
 #### **1. Performance Impact**
@@ -821,7 +807,6 @@ WHERE description LIKE '%snowflake%';
 | **Credit Usage** | 50 credits | 0.5 credits | 0.7 credits | 70-100x reduction |
 | **Partitions Scanned** | 1000 | 10 | 20 | 50-100x reduction |
 
----
 ### **D. Search Optimization Service Cost**
 
 #### **1. Cost Model**
@@ -872,7 +857,6 @@ ORDER BY
     total_credits_used DESC;
 ```
 
----
 ### **E. Search Optimization Service Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -892,7 +876,6 @@ ORDER BY
 | **Disable When Not Needed** | Disable SOS when no longer needed to save costs | `ALTER TABLE my_table SET SEARCH_OPTIMIZATION = FALSE` |
 | **Use INDEX_TYPE for Specific Needs** | Use INVERTED for full-text, NGRAM for prefix/suffix | `ALTER TABLE my_table SET SEARCH_OPTIMIZATION = TRUE WITH (INDEX_TYPE = 'INVERTED')` |
 
----
 ### **F. Search Optimization Service Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -910,7 +893,6 @@ ORDER BY
 | **No Wildcard at Start** | LIKE '%term' is slower than LIKE 'term%' | Use NGRAM index type for prefix/suffix searches |
 | **No Support for All Data Types** | Some data types (e.g., VARIANT, GEOGRAPHY) are not supported | Use supported data types (STRING, VARCHAR, etc.) |
 
----
 ### **G. Search Optimization Service Examples**
 
 #### **Example 1: Full-Text Search on Product Descriptions**
@@ -1080,11 +1062,8 @@ ORDER BY
     used_search_optimization DESC, execution_time;
 ```
 
----
----
 ## **4. Query Acceleration vs. Search Optimization: Decision Matrix**
 
----
 ### **Mermaid: Query Acceleration vs. Search Optimization Decision Tree**
 ```mermaid
 %% Query Acceleration vs. Search Optimization Decision Tree
@@ -1128,7 +1107,6 @@ flowchart TD
     class L,Q qa;
 ```
 
----
 ### **Comparison Matrix: Query Acceleration vs. Search Optimization**
 
 | **Feature** | **Query Acceleration** | **Search Optimization** | **Notes** |
@@ -1151,7 +1129,6 @@ flowchart TD
 | **Fuzzy Search** | No | No | Neither supports fuzzy search natively |
 | **Synonym Support** | No | No | Neither supports synonyms natively |
 
----
 ### **When to Use Query Acceleration**
 Use **Query Acceleration** for:
 1. **All queries** (it's automatic and included).
@@ -1169,7 +1146,6 @@ Use **Query Acceleration** for:
 - Ad-hoc analysis queries
 - Batch processing jobs
 
----
 ### **When to Use Search Optimization**
 Use **Search Optimization** for:
 1. **Full-text search queries** (e.g., `WHERE MATCH(column, 'search term')`).
@@ -1184,7 +1160,6 @@ Use **Search Optimization** for:
 - Document search in content management systems
 - Customer support ticket search
 
----
 ### **When to Use Both**
 Use **both Query Acceleration and Search Optimization** for:
 1. **Applications with mixed workloads** (e.g., dashboards with both aggregations and search).
@@ -1217,11 +1192,8 @@ GROUP BY
     category;
 ```
 
----
----
 ## **5. Implementation Patterns**
 
----
 ### **A. Query Acceleration Implementation Patterns**
 
 #### **Pattern 1: Automatic Query Rewriting for Complex Joins**
@@ -1265,7 +1237,6 @@ ORDER BY
 - **Partition Pruning**: Only scans relevant partitions in the `orders` table.
 - **Column Pruning**: Only reads the columns needed for the query.
 
----
 #### **Pattern 2: Result Caching for Dashboard Queries**
 ```sql
 -- Enable result caching for dashboard queries
@@ -1310,7 +1281,6 @@ GROUP BY
 - **First Execution**: Full query execution.
 - **Subsequent Executions**: Results returned from cache in <10ms.
 
----
 #### **Pattern 3: Multi-Cluster Warehouse for High Concurrency**
 ```sql
 -- Create a multi-cluster warehouse for high concurrency workloads
@@ -1341,7 +1311,6 @@ SELECT * FROM products WHERE category = 'Electronics';
 - **Scalability**: Automatically scales out to meet demand.
 - **Performance**: Each query runs on a dedicated cluster.
 
----
 #### **Pattern 4: Warehouse Optimization for Cost Savings**
 ```sql
 -- Create warehouses with auto-suspend for different workloads
@@ -1371,7 +1340,6 @@ ALTER WAREHOUSE adhoc_wh SET STATEMENT_TIMEOUT_IN_SECONDS = 600;  -- 10 minutes
 - **Reporting Warehouse**: Suspends after 10 minutes of inactivity, auto-resumes for interactive queries.
 - **Ad-Hoc Warehouse**: Suspends after 5 minutes of inactivity, auto-resumes for interactive queries.
 
----
 ### **B. Search Optimization Implementation Patterns**
 
 #### **Pattern 1: Full-Text Search on Product Catalog**
@@ -1418,7 +1386,6 @@ LIMIT 50;
 - **Materialized View**: Provides pre-computed aggregations.
 - **Combined**: Sub-second response times for complex queries.
 
----
 #### **Pattern 2: Log Analysis with Pattern Matching**
 ```sql
 -- Enable Search Optimization on the logs table with INVERTED index
@@ -1451,7 +1418,6 @@ LIMIT 1000;
 - **Clustering**: Reduces the number of partitions scanned for the time filter.
 - **Combined**: Fast pattern matching on large log tables.
 
----
 #### **Pattern 3: Customer Search with Prefix Matching**
 ```sql
 -- Enable Search Optimization on the customers table with NGRAM index
@@ -1486,7 +1452,6 @@ LIMIT 100;
 - **Clustering**: Reduces the number of partitions scanned for the region filter.
 - **Combined**: Fast prefix matching on customer data.
 
----
 #### **Pattern 4: Document Search with Full-Text and Metadata**
 ```sql
 -- Enable Search Optimization on the documents table
@@ -1538,11 +1503,8 @@ LIMIT 20;
 - **Materialized View**: Provides fast access to document metadata.
 - **Combined**: Fast and flexible document search.
 
----
----
 ## **6. Monitoring and Alerting**
 
----
 ### **A. Query Acceleration Monitoring**
 
 #### **1. Monitor Automatic Query Rewriting**
@@ -1652,7 +1614,6 @@ ORDER BY
     event_time DESC;
 ```
 
----
 ### **B. Search Optimization Monitoring**
 
 #### **1. Monitor Search Optimization Status**
@@ -1777,7 +1738,6 @@ ORDER BY
     estimated_cost_usd DESC;
 ```
 
----
 ### **C. Proactive Alerts**
 
 #### **1. Query Acceleration Alerts**
@@ -1849,7 +1809,6 @@ AS
     warehouse_name IN ('PROD_WH', 'REPORTING_WH');
 ```
 
----
 #### **2. Search Optimization Alerts**
 
 **Search Optimization Errors Alert**:
@@ -1917,11 +1876,8 @@ AS
     storage_gb DESC;
 ```
 
----
----
 ## **7. Performance Tuning Workflow**
 
----
 ### **Mermaid: Performance Tuning Workflow for Query Acceleration and Search Optimization**
 ```mermaid
 %% Performance Tuning Workflow
