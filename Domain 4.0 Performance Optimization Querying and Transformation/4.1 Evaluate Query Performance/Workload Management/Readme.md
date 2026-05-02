@@ -1,6 +1,5 @@
 # **Snowflake Workload Management: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Workload Management Overview**
 
@@ -66,7 +65,6 @@ flowchart TD
     class S,T,U alerts;
 ```
 
----
 ### **Why Workload Management Matters**
 Workload management in Snowflake ensures:
 1. **Performance Consistency**: Prevents **noisy neighbor** problems where one workload impacts others.
