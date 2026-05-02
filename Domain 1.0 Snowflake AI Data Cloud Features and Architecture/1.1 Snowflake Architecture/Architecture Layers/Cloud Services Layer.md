@@ -11,36 +11,41 @@ The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinat
 
 ### Authentication and Access Control
 
-    - Validates user credentials via multi-factor authentication, SSO, OAuth, key pair, etc.
-    - Enforces **role-based access control** (RBAC) and **discretionary access control** (DAC)
-    - Manages network policies, session policies, and allowed IP lists
+- Validates user credentials via multi-factor authentication, SSO, OAuth, key pair, etc.
+- Enforces **role-based access control** (RBAC) and **discretionary access control** (DAC)
+- Manages network policies, session policies, and allowed IP lists
+
 ### Query Parsing and Optimization
 
-    - Receives SQL statements from all clients (JDBC, ODBC, Python, SnowSQL, etc.)
-    - Parses SQL, performs semantic analysis, resolves object names using metadata
-    - Generates a cost-based optimized logical and physical query plan
-    - Applies transformations like predicate pushdown, pruning, join reordering, and aggregation simplification
-    - Decides on query execution strategy, including micro-partition pruning based on metadata
-  - Metadata Management
-    - Stores all metadata related to Snowflake objects: databases, schemas, tables, views, stages, pipes, streams, tasks, UDFs, stored procedures, etc.
-    - Metadata repository is a distributed, transactional key-value store (historically FoundationDB)
-    - Metadata includes table schemas, micro-partition definitions, clustering keys, constraints, statistics, file listings for external stages, and time travel history
-    - Enables zero-copy cloning, time travel, and data sharing without copying data; these are pure metadata operations
-  - Transaction Management
-    - Coordinates ACID transactions across virtual warehouses and storage
-    - Manages multi-version concurrency control (MVCC) for consistent reads and writes
-    - Tracks table version history, enabling time travel and fail-safe operations at the metadata level
-    - Handles commit protocols and conflict resolution in concurrent workloads without resource locking
-  - Infrastructure Management
-    - Provisions, suspends, resumes, and scales virtual warehouses automatically (multi-cluster warehouses)
-    - Monitors warehouse health, node failures, and replaces failed nodes transparently
-    - Manages data storage, file compaction, clustering, and background re-clustering as a service
-    - Orchestrates automated tasks, Snowpipe, and serverless compute for features like search optimization and materialized views maintenance
-  - Security and Governance
-    - Centralized storage of encryption keys, data masking policies, row access policies, column-level security, and tag-based governance
-    - Dynamic data masking, external tokenization, and secure views are enforced during query compilation in the Cloud Services layer
-    - Auditing, logging, and access history are captured and managed within the services layer
-    - Orchestrates data clean room rules and secure data sharing across accounts
+- Receives SQL statements from all clients (JDBC, ODBC, Python, SnowSQL, etc.)
+- Parses SQL, performs semantic analysis, resolves object names using metadata
+- Generates a cost-based optimized logical and physical query plan
+- Applies transformations like predicate pushdown, pruning, join reordering, and aggregation simplification
+- Decides on query execution strategy, including micro-partition pruning based on metadata
+
+### Metadata Management
+- Stores all metadata related to Snowflake objects: databases, schemas, tables, views, stages, pipes, streams, tasks, UDFs, stored procedures, etc.
+- Metadata repository is a distributed, transactional key-value store (historically FoundationDB)
+- Metadata includes table schemas, micro-partition definitions, clustering keys, constraints, statistics, file listings for external stages, and time travel history
+- Enables zero-copy cloning, time travel, and data sharing without copying data; these are pure metadata operations
+
+### Transaction Management
+- Coordinates ACID transactions across virtual warehouses and storage
+- Manages multi-version concurrency control (MVCC) for consistent reads and writes
+- Tracks table version history, enabling time travel and fail-safe operations at the metadata level
+- Handles commit protocols and conflict resolution in concurrent workloads without resource locking
+
+### Infrastructure Management
+- Provisions, suspends, resumes, and scales virtual warehouses automatically (multi-cluster warehouses)
+- Monitors warehouse health, node failures, and replaces failed nodes transparently
+- Manages data storage, file compaction, clustering, and background re-clustering as a service
+- Orchestrates automated tasks, Snowpipe, and serverless compute for features like search optimization and materialized views maintenance
+
+### Security and Governance
+- Centralized storage of encryption keys, data masking policies, row access policies, column-level security, and tag-based governance
+- Dynamic data masking, external tokenization, and secure views are enforced during query compilation in the Cloud Services layer
+- Auditing, logging, and access history are captured and managed within the services layer
+- Orchestrates data clean room rules and secure data sharing across accounts
 
 ## Key Characteristics
   - Fully managed, multi-tenant service with strict isolation between organizations and accounts
