@@ -79,7 +79,6 @@ flowchart LR
     H -->|PASS| J["Anonymized Results Returned"]
 ```
 
----
 
 ## 2. Execution Internals & Transactional Boundaries
 
@@ -155,7 +154,6 @@ Clean Room Query Lifecycle:
 | Enclave crash/failure | Query fails with `Secure execution error`; no partial results | Enclave transactions are atomic; no spill to untrusted storage |
 | Consumer submits non-compliant query | Compile-time rejection; zero execution cost | AST validation before warehouse allocation |
 
----
 
 ## 3. Parameter/Configuration Deep Dive
 
