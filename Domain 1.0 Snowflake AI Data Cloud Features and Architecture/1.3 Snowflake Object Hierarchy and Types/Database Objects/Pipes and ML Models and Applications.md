@@ -50,6 +50,7 @@ For production controls, treat the default version as the live pointer and versi
 That gives you rollback by pointer switch rather than object replacement, which is the safer pattern when downstream consumers are pinned to a model name rather than a version. ([Snowflake Docs][5])
 
 ### Applications
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/f2126897-4909-4bac-a298-942d0e1f3510" />
 
 A Snowflake Native App is created from an application package or a listing. 
 When `CREATE APPLICATION` runs, Snowflake executes the setup script, so installation is a real initialization workflow, not just object registration. 
