@@ -45,7 +45,6 @@ flowchart LR
   Q6 --> Q7[Review and adjust quarterly]
 ```
 
----
 
 ## Dynamic Data Masking: Concepts and Implementation
 
@@ -249,7 +248,6 @@ DROP ROLE IF EXISTS test_analyst;
 | Policy updated after binding | New logic applies to subsequent queries immediately | Update policy definition, re-run query, verify output changes |
 | Column with no policy bound | Raw value returned (no masking) | Query untagged column, verify no transformation |
 
----
 
 ## Row Access Policies: Row-Level Security Implementation
 
