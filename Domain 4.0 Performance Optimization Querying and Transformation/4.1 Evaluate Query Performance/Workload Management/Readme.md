@@ -75,7 +75,6 @@ Workload management in Snowflake ensures:
 4. **Scalability**: Handles **concurrent workloads** without manual intervention.
 5. **SLA Compliance**: Meets **performance SLAs** for different user groups.
 
----
 ### **Key Workload Management Components**
 
 | **Component** | **Purpose** | **Scope** | **Configuration** | **Monitoring** |
@@ -88,11 +87,8 @@ Workload management in Snowflake ensures:
 | **Query Timeouts** | Prevent long-running queries | Warehouse | `ALTER WAREHOUSE ... STATEMENT_TIMEOUT` | `QUERY_HISTORY` |
 | **Workload Groups** | Group similar workloads (e.g., ETL, Reporting) | Account | N/A (use Resource Monitors + Warehouses) | Custom monitoring |
 
----
----
 ## **2. Resource Monitors Deep Dive**
 
----
 ### **A. Definition and Architecture**
 **Resource Monitors** are Snowflake objects that **track and limit credit usage** for **warehouses, users, or roles**. They enable **cost control** and **budget enforcement** by:
 - **Tracking credit consumption** in real-time.
@@ -145,7 +141,6 @@ flowchart TD
     class L,M monitoring;
 ```
 
----
 ### **B. How Resource Monitors Work**
 1. **Credit Tracking**:
    - Resource monitors **track credit usage** for assigned **warehouses, users, or roles**.
@@ -169,7 +164,6 @@ flowchart TD
    - **Monthly**: Resets at **midnight UTC on the 1st of the month**.
    - **Custom**: User-defined start/end timestamps.
 
----
 ### **C. When to Use Resource Monitors**
 ✅ **Cost Control**: Limit credit usage to stay within **budget**.
 ✅ **Departmental Chargeback**: Allocate credits to **teams/departments**.
@@ -177,13 +171,11 @@ flowchart TD
 ✅ **Development Environments**: Limit credits for **dev/test** workloads.
 ✅ **Compliance**: Enforce **credit limits** for regulatory compliance.
 
----
 ### **D. When NOT to Use Resource Monitors**
 ❌ **Unlimited Budgets**: If credit usage is not a concern.
 ❌ **Shared Warehouses**: If all users share the same warehouse (use **query prioritization** instead).
 ❌ **Serverless Workloads**: Resource monitors do not apply to **serverless** operations (e.g., Snowpipe, Ingestion Service).
 
----
 ### **E. Resource Monitor Types**
 
 | **Type** | **Description** | **Use Case** | **Example** |
@@ -193,7 +185,6 @@ flowchart TD
 | **User-Level** | Monitors credit usage for **specific users** | User-specific limits | `CREATE RESOURCE MONITOR user_monitor WITH CREDIT_QUOTA = 100` |
 | **Role-Level** | Monitors credit usage for **specific roles** | Role-specific limits | `CREATE RESOURCE MONITOR role_monitor WITH CREDIT_QUOTA = 1000` |
 
----
 ### **F. Resource Monitor Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -208,7 +199,6 @@ flowchart TD
 | `SUSPEND_THRESHOLD` | Percentage of quota at which to suspend warehouses | `100` | 1-100 | Lower = earlier suspension |
 | `SUSPEND_IMMEDIATELY` | Suspend warehouses immediately when limit is reached | `FALSE` | `TRUE`, `FALSE` | `TRUE` = stricter enforcement |
 
----
 ### **G. Production-Ready Setup**
 
 #### **1. Account-Level Resource Monitor**
@@ -338,7 +328,6 @@ CREATE RESOURCE MONITOR webhook_monitor
 }
 ```
 
----
 ### **H. Monitoring Resource Monitors**
 ```sql
 -- Check resource monitor usage
@@ -385,7 +374,6 @@ WHERE
     resource_monitor = 'etl_monitor';
 ```
 
----
 ### **I. Resource Monitor Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -402,11 +390,8 @@ WHERE
 | **Test Suspension Behavior** | Test **suspension** in a non-production environment | `ALTER RESOURCE MONITOR test_monitor SET SUSPEND_THRESHOLD = 1` |
 | **Document Quota Policies** | Document **quota policies** and **escalation paths** | Internal wiki or Confluence page |
 
----
----
 ## **3. Warehouse Management Deep Dive**
 
----
 ### **A. Warehouse Types**
 
 | **Type** | **Description** | **Use Case** | **Scaling** | **Cost** | **Concurrency** |
@@ -415,7 +400,6 @@ WHERE
 | **Multi-Cluster** | Multi-cluster warehouse for high concurrency | High concurrency workloads (ETL, reporting) | Auto-scaling (1-10 clusters) | Medium-High | High (10-100+ queries) |
 | **Serverless** | Serverless compute for specific operations | Snowpipe, Ingestion Service, Replication | Auto-scaling | Pay-per-use | Very High (1000+ operations) |
 
----
 ### **B. Warehouse Sizing**
 
 | **Size** | **Compute (Credits/Hour)** | **Memory (GB)** | **Max Threads** | **Best For** | **Credit Cost/Hour** | **Concurrent Queries** |
@@ -429,7 +413,6 @@ WHERE
 | **3X-Large** | 64 | 1024 | 512 | Massive workloads | 17.92 | 64 |
 | **4X-Large** | 128 | 2048 | 1024 | Largest workloads | 35.84 | 128 |
 
----
 ### **C. Warehouse Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -445,7 +428,6 @@ WHERE
 | `QUERY_QUEUE_TIMEOUT_IN_SECONDS` | Timeout (in seconds) for queued queries | `300` (5 min) | 0-86400 | Lower = prevents queue backlogs |
 | `RESOURCE_MONITOR` | Resource monitor for the warehouse | `NULL` | Resource monitor name | Limits credit usage |
 
----
 ### **D. Standard Warehouses**
 
 #### **1. Definition**
@@ -477,7 +459,6 @@ CREATE WAREHOUSE dev_wh
 ALTER WAREHOUSE dev_wh SET WAREHOUSE_SIZE = 'MEDIUM';
 ```
 
----
 ### **E. Multi-Cluster Warehouses**
 
 #### **1. Definition**
@@ -633,7 +614,6 @@ WHERE
 | **Set QUERY_PRIORITY for Critical Queries** | Prioritize critical queries | `ALTER WAREHOUSE my_wh SET QUERY_PRIORITY = 'HIGH'` |
 | **Set STATEMENT_TIMEOUT for Long-Running Queries** | Prevent runaway queries | `ALTER WAREHOUSE my_wh SET STATEMENT_TIMEOUT_IN_SECONDS = 300` |
 
----
 ### **F. Serverless Warehouses**
 - **Serverless warehouses** are used for **specific Snowflake operations** that do not require a traditional warehouse:
   - **Snowpipe**: File ingestion from cloud storage.
@@ -643,11 +623,8 @@ WHERE
 - **Pricing**: Pay-per-use (credits consumed based on operation).
 - **No Configuration**: Serverless warehouses are **managed by Snowflake**.
 
----
----
 ## **4. Query Queues and Prioritization Deep Dive**
 
----
 ### **A. Query Queue Architecture**
 
 ```mermaid
@@ -694,7 +671,6 @@ flowchart TD
     class N,O,P prioritization;
 ```
 
----
 ### **B. How Query Queues Work**
 1. **Query Submission**:
    - Queries are submitted to the **warehouse's query queue**.
@@ -710,7 +686,6 @@ flowchart TD
    - **Max Queued Queries**: Default **50** (configurable via `QUERY_QUEUE_TIMEOUT_IN_SECONDS`).
    - **Queue Timeout**: Queries **time out** if they wait too long in the queue (default: **5 minutes**).
 
----
 ### **C. Priority Levels**
 
 | **Priority** | **Description** | **Use Case** | **Example** |
@@ -719,20 +694,17 @@ flowchart TD
 | **MEDIUM** | Default priority; runs after HIGH, before LOW | General queries, reporting | Default |
 | **LOW** | Lowest priority; runs after HIGH and MEDIUM | Ad-hoc queries, development | `ALTER SESSION SET QUERY_PRIORITY = 'LOW'` |
 
----
 ### **D. When to Use Query Prioritization**
 ✅ **Critical Production Queries**: Prioritize **SLA-bound queries** (e.g., customer-facing dashboards).
 ✅ **ETL Workloads**: Prioritize **ETL jobs** to ensure they complete on time.
 ✅ **Mixed Workloads**: Separate **production** (HIGH) from **development** (LOW) queries.
 ✅ **Resource Contention**: Manage **concurrent queries** in a shared warehouse.
 
----
 ### **E. When NOT to Use Query Prioritization**
 ❌ **Dedicated Warehouses**: If each workload has its own warehouse, prioritization is unnecessary.
 ❌ **Low Concurrency**: If the warehouse rarely has queued queries, prioritization adds complexity.
 ❌ **Serverless Workloads**: Prioritization does not apply to serverless operations.
 
----
 ### **F. Query Prioritization Configuration**
 
 #### **1. Warehouse-Level Priority**
@@ -763,7 +735,6 @@ GRANT ROLE high_priority_role TO USER my_user;
 ALTER ROLE etl_role SET QUERY_PRIORITY = 'HIGH';
 ```
 
----
 ### **G. Query Queue Configuration**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -780,7 +751,6 @@ ALTER WAREHOUSE my_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 60;  -- 1 minute
 ALTER WAREHOUSE my_wh SET STATEMENT_TIMEOUT_IN_SECONDS = 300;  -- 5 minutes
 ```
 
----
 ### **H. Query Queue Monitoring**
 ```sql
 -- Check queued queries
@@ -811,7 +781,6 @@ WHERE
     warehouse_name = 'my_wh';
 ```
 
----
 ### **I. Query Prioritization Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -826,11 +795,8 @@ WHERE
 | **Use Query Tags for Prioritization** | Tag queries for prioritization | `ALTER SESSION SET QUERY_TAG = 'priority=high'` |
 | **Test Priority Changes** | Test priority changes in a **non-production environment** | `ALTER WAREHOUSE test_wh SET QUERY_PRIORITY = 'HIGH'` |
 
----
----
 ## **5. Workload Isolation Strategies**
 
----
 ### **A. Why Workload Isolation Matters**
 Workload isolation ensures:
 1. **Performance Consistency**: Prevents **noisy neighbor** problems.
@@ -839,7 +805,6 @@ Workload isolation ensures:
 4. **SLA Compliance**: Meets **performance SLAs** for different user groups.
 5. **Security**: Isolates **sensitive workloads** (e.g., production vs. development).
 
----
 ### **B. Workload Isolation Strategies**
 
 | **Strategy** | **Description** | **Implementation** | **Use Case** | **Pros** | **Cons** |
@@ -851,7 +816,6 @@ Workload isolation ensures:
 | **Query Tagging** | Tag queries for monitoring and prioritization | `ALTER SESSION SET QUERY_TAG = 'workload=etl'` | Cost allocation, monitoring | ✅ Fine-grained control, ✅ No additional cost | ❌ Manual tagging, ❌ No enforcement |
 | **Serverless Operations** | Use serverless for specific workloads | Snowpipe, Ingestion Service | File ingestion, row ingestion | ✅ Auto-scaling, ✅ Pay-per-use | ❌ Limited to specific operations |
 
----
 ### **C. Workload Isolation Architecture**
 
 ```mermaid
@@ -913,7 +877,6 @@ flowchart TD
     class S,T monitoring;
 ```
 
----
 ### **D. Workload Isolation Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -929,7 +892,6 @@ flowchart TD
 | **Set Auto-Suspend for Idle Warehouses** | Suspend warehouses when idle to **save costs** | `ALTER WAREHOUSE my_wh SET AUTO_SUSPEND = 600` |
 | **Document Workload Policies** | Document **warehouse assignments**, **resource monitors**, and **priority levels** | Internal wiki or Confluence page |
 
----
 ### **E. Workload Isolation Example: Production vs. Development**
 
 #### **1. Production Workloads**
@@ -1052,11 +1014,8 @@ GRANT ROLE dev_etl_role TO USER dev1, dev2;
 GRANT ROLE dev_reporting_role TO USER dev1, dev2;
 ```
 
----
----
 ## **6. Performance and Cost Optimization**
 
----
 ### **A. Right-Sizing Warehouses**
 
 #### **1. Warehouse Sizing Guidelines**
@@ -1144,7 +1103,6 @@ ORDER BY
     start_time DESC;
 ```
 
----
 ### **B. Auto-Suspend and Auto-Resume**
 
 #### **1. Auto-Suspend**
@@ -1181,7 +1139,6 @@ ALTER WAREHOUSE my_wh SET AUTO_RESUME = TRUE;
 ALTER WAREHOUSE batch_wh SET AUTO_RESUME = FALSE;
 ```
 
----
 ### **C. Multi-Cluster Warehouse Scaling**
 
 #### **1. Scaling Policies**
@@ -1235,7 +1192,6 @@ ALTER WAREHOUSE my_wh SET MAX_CLUSTER_COUNT = 4;
 ALTER WAREHOUSE my_wh SET SCALING_POLICY = 'ECONOMY';
 ```
 
----
 ### **D. Query Timeout Management**
 
 #### **1. Statement Timeout**
@@ -1267,7 +1223,6 @@ ALTER WAREHOUSE my_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 60;  -- 1 minute
 ALTER WAREHOUSE batch_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 600;  -- 10 minutes
 ```
 
----
 ### **E. Cost Optimization Strategies**
 
 | **Strategy** | **Description** | **Implementation** | **Cost Savings** | **Performance Impact** |
@@ -1284,11 +1239,8 @@ ALTER WAREHOUSE batch_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 600;  -- 10 mi
 | **Optimize Queries** | Reduce bytes scanned and execution time | Rewrite queries, add filters | ⭐⭐⭐⭐ | ⬆️ Faster queries |
 | **Use Serverless for Specific Workloads** | Use Snowpipe, Ingestion Service | `CREATE PIPE my_pipe AUTO_INGEST = TRUE` | ⭐⭐⭐⭐⭐ | ⬆️ Pay-per-use |
 
----
----
 ## **7. Monitoring and Alerting**
 
----
 ### **A. Key Monitoring Views**
 
 | **View** | **Purpose** | **Retention** | **Key Columns** | **Example Query** |
@@ -1300,7 +1252,6 @@ ALTER WAREHOUSE batch_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 600;  -- 10 mi
 | `RESOURCE_MONITOR_HISTORY` | Resource monitor notification history | 365 days | `monitor_name`, `notification_time`, `notification_type`, `threshold_reached`, `current_usage`, `credit_quota` | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.RESOURCE_MONITOR_HISTORY WHERE monitor_name = 'MY_MONITOR' AND notification_time > DATEADD('day', -7, CURRENT_TIMESTAMP());` |
 | `WAREHOUSE_MONITOR` | Current warehouse status | Session | `warehouse_name`, `size`, `running_queries`, `queued_queries`, `cluster_number`, `total_clusters` | `SELECT * FROM SNOWFLAKE.INFORMATION_SCHEMA.WAREHOUSE_MONITOR;` |
 
----
 ### **B. Workload Monitoring Dashboard**
 
 ```sql
@@ -1376,7 +1327,6 @@ LEFT JOIN (
 ) qh ON w.name = qh.warehouse_name;
 ```
 
----
 ### **C. Proactive Alerts**
 
 #### **1. Warehouse Overloaded Alert**
@@ -1483,7 +1433,6 @@ AS
     AND warehouse_name IN ('prod_etl_wh', 'prod_reporting_wh');
 ```
 
----
 ### **D. Workload Troubleshooting Runbooks**
 
 #### **1. Warehouse Overloaded**
@@ -1678,11 +1627,8 @@ ALTER WAREHOUSE my_wh SET QUERY_PRIORITY = 'HIGH';
 ALTER WAREHOUSE my_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 60;  -- 1 minute
 ```
 
----
----
 ## **8. Decision Matrix: Workload Management Strategies**
 
----
 ### **Mermaid: Workload Management Strategy Selection**
 ```mermaid
 %% Workload Management Strategy Selection
@@ -1761,7 +1707,6 @@ flowchart TD
     class V,W,X,Y,Z,AA,AB,AC,AD,AE,AF,AG config;
 ```
 
----
 ### **Quick Reference Table: Workload Management Strategies**
 
 | **Workload Type** | **Warehouse Type** | **Warehouse Size** | **Max Cluster Count** | **Scaling Policy** | **Auto-Suspend** | **Resource Monitor** | **Query Priority** | **Best For** |
@@ -1776,11 +1721,8 @@ flowchart TD
 | **High Isolation** | Separate Warehouses | Varies | Varies | Varies | Varies | ✅ Yes | Varies | Full workload isolation |
 | **Partial Isolation** | Multi-Cluster | Varies | 4-8 | STANDARD/ECONOMY | 1800 | ✅ Yes | HIGH/MEDIUM/LOW | Partial workload isolation |
 
----
----
 ## **9. Key Engineering Principles for Workload Management**
 
----
 ### **A. Core Principles**
 
 1. **Isolate Critical Workloads**:
@@ -1824,7 +1766,6 @@ flowchart TD
     - **Test warehouse changes** (sizing, scaling, prioritization) in **non-production environments** before applying to production.
     - **Monitor impact** on performance and costs.
 
----
 ### **B. Production Checklist for Workload Management**
 
 #### **Resource Monitors**
@@ -1882,7 +1823,6 @@ flowchart TD
 - [ ] **Monitor Alerts** and **take action** as needed.
 - [ ] **Review Monitoring Data** regularly to **identify trends** and **optimize workloads**.
 
----
 ### **C. Bottom Line: Workload Management in Snowflake**
 
 | **Metric** | **Standard Warehouse** | **Multi-Cluster Warehouse** | **Resource Monitors** | **Query Prioritization** | **Best Choice** |
@@ -1905,11 +1845,8 @@ flowchart TD
 - **Monitor and Alert** on warehouse load, query performance, and credit usage.
 - **Right-Size Warehouses** and **adjust configurations** based on usage patterns.
 
----
----
 ## **10. Production-Ready Snippets**
 
----
 ### **A. Resource Monitor Setup**
 
 #### **1. Account-Level Resource Monitor**
@@ -1997,7 +1934,6 @@ CREATE RESOURCE MONITOR webhook_monitor
 -- 4. Save changes
 ```
 
----
 ### **B. Warehouse Setup**
 
 #### **1. Standard Warehouses**
@@ -2071,7 +2007,6 @@ ALTER WAREHOUSE my_wh SET STATEMENT_QUEUE_TIMEOUT_IN_SECONDS = 60;  -- 1 minute
 ALTER WAREHOUSE my_wh SET RESOURCE_MONITOR = my_monitor;
 ```
 
----
 ### **C. Query Prioritization Setup**
 
 #### **1. Warehouse-Level Priority**
@@ -2099,7 +2034,6 @@ ALTER ROLE high_priority_role SET QUERY_PRIORITY = 'HIGH';
 GRANT ROLE high_priority_role TO USER my_user;
 ```
 
----
 ### **D. Workload Isolation Setup**
 
 #### **1. Separate Warehouses for Different Workloads**
@@ -2128,7 +2062,6 @@ ALTER SESSION SET QUERY_TAG = 'workload=etl,team=data_engineering';
 SELECT * FROM my_table /*+ QUERY_TAG('workload=reporting,team=analytics') */;
 ```
 
----
 ### **E. Monitoring and Alerting Setup**
 
 #### **1. Workload Monitoring Dashboard**
@@ -2254,8 +2187,6 @@ AS
     AND warehouse_name IN ('prod_etl_wh', 'prod_reporting_wh');
 ```
 
----
----
 ## **11. Final Notes**
 
 ### **For Further Reading**
