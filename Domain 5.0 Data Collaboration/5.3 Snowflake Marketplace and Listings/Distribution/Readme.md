@@ -209,7 +209,6 @@ AS
     AND queried_region != consumer_region; -- Flag cross-region access
 ```
 
----
 
 ## 3. Replication for Distribution: Advanced Patterns
 
@@ -331,7 +330,6 @@ WHERE replication_group_name = 'marketplace_dist_group'
 GROUP BY replication_group_name, target_account;
 ```
 
----
 
 ## 4. Data Delivery Patterns: Push vs Pull vs Hybrid
 
@@ -428,7 +426,6 @@ WHERE region = 'US'
 -- (Application code: subscribe to streaming channel for sub-second events)
 ```
 
----
 
 ## 5. Distribution Optimization: Caching & Edge Strategies
 
@@ -547,7 +544,6 @@ async function handleRequest(request) {
 | **Cost** | Reduces Snowflake query volume by 10–100x | Edge platform costs + development/maintenance overhead |
 | **Complexity** | Offloads simple queries from Snowflake | Debugging distributed systems; monitoring edge + Snowflake |
 
----
 
 ## 6. Distribution Monitoring & Cost Attribution
 
@@ -637,7 +633,6 @@ WHERE l.listing_name = 'global_analytics_product'
   AND s.usage_date >= DATEADD(month, -1, CURRENT_DATE());
 ```
 
----
 
 ## 7. Anti-Patterns & Pitfalls in Distribution
 
@@ -649,7 +644,6 @@ WHERE l.listing_name = 'global_analytics_product'
 | **No distribution cost monitoring** | Unexpected credit spikes; budget overruns | Missing `REPLICATION_HISTORY` + `MARKETPLACE_USAGE` correlation | Implement daily cost dashboards; set alerts on replication credit thresholds | 2–3x budget variance; finance team escalations |
 | **Hardcoding region in application logic** | Breaks when provider adds new regions | Consumer app assumes fixed region list | Use `SYSTEM$GET_LISTING_ROUTING_INFO()`; design for dynamic region discovery | 8–16hr incident resolution per region change |
 
----
 
 ## 8. Decision Frameworks & Quick Reference
 
@@ -720,7 +714,6 @@ WHERE listing_name = 'global_product'
 | `400001` | `Insufficient privileges on replica` | Consumer role lacks `IMPORTED PRIVILEGES`; provider must re-grant share to replica |
 | `500012` | `Routing service unavailable` | Temporary Snowflake internal issue; retry with exponential backoff |
 
----
 
 ## Key Principles to Remember
 1. **Distribution is access orchestration, not data copying**. Leverage metadata pointers and routing—not brute-force replication.
