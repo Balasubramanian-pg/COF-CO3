@@ -102,7 +102,6 @@ quadrantChart
 - Budget is secondary to isolation and control
 - Typically large organizations with strict governance
 
----
 
 ## Pricing Overview (US East, AWS)
 
@@ -115,7 +114,6 @@ quadrantChart
 
 Note: Credits represent compute resources. You are charged only for what you use.
 
----
 
 ## What Changes Between Editions
 
@@ -161,7 +159,6 @@ flowchart TD
 | Enterprise and above | Up to 90 days |
 | All editions | Additional 7 days in Fail-safe mode (emergency recovery only, read only) |
 
----
 
 ## Common Selection Errors
 
@@ -170,7 +167,6 @@ flowchart TD
 - Dismissing VPS as unnecessary without consulting compliance or legal teams. If your policy requires physical isolation, VPS is the only valid option.
 - Focusing only on compute costs. Storage is billed separately at approximately 23 USD per TB per month. Regularly review and clean up unused data.
 
----
 
 ## Edition Selection Flowchart
 
@@ -194,7 +190,6 @@ flowchart TD
     Q6 -->|No| C
 ```
 
----
 
 ## Key Takeaways
 
