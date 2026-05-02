@@ -77,7 +77,6 @@ Caching in Snowflake is a **performance optimization technique** that **stores f
 5. **File Metadata Cache**: Caches **external table metadata** (file formats, stages).
 6. **Warehouse Cache**: Caches **warehouse-specific data** (e.g., temporary tables).
 
----
 
 ### **Why Caching Matters in Snowflake**
 
@@ -90,7 +89,6 @@ Caching in Snowflake is a **performance optimization technique** that **stores f
 | **Cost Savings** | Reduces overall Snowflake spend by avoiding redundant computations | ⭐⭐⭐⭐⭐ |
 | **Scalability** | Enables high-performance workloads without proportional cost increases | ⭐⭐⭐⭐ |
 
----
 
 ### **Snowflake Caching Layers Overview**
 
@@ -103,7 +101,6 @@ Caching in Snowflake is a **performance optimization technique** that **stores f
 | **File Metadata Cache** | Per-session | Session | Memory | External table metadata | ⭐⭐ (1.1-2x faster) | Included | Automatic |
 | **Warehouse Cache** | Per-warehouse | Session | SSD | Temporary tables, intermediate results | ⭐⭐⭐ (2-10x faster) | Included | Automatic |
 
----
 
 ### **When to Use Caching in Snowflake**
 
@@ -118,12 +115,9 @@ Caching in Snowflake is a **performance optimization technique** that **stores f
 | **Temporary Tables** | Warehouse Cache | Session-specific temporary tables |
 | **High Concurrency Workloads** | All Caches | Production workloads with many users |
 
----
 
----
 ## **2. Result Cache Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 **Result Cache** in Snowflake **automatically caches query results** for **24 hours** (configurable) if:
@@ -206,7 +200,6 @@ flowchart TD
    - Cached results are stored in **SSD** (local disk cache for the warehouse).
    - **Storage cost**: Included in Snowflake's storage pricing.
 
----
 ### **B. Result Cache Configuration**
 
 #### **1. Enable/Disable Result Caching**
@@ -238,7 +231,6 @@ ALTER SESSION SET RESULT_CACHE_TTL = 0;
 
 **Note**: The maximum `RESULT_CACHE_TTL` is **86400 seconds (24 hours)**.
 
----
 ### **C. Result Cache Performance**
 
 #### **1. Performance Impact**
@@ -272,7 +264,6 @@ GROUP BY
 | **First Run (Cache Miss)** | 5 seconds | 20 GB | 2.5 credits | Full query execution |
 | **Subsequent Runs (Cache Hit)** | 5 ms | 0 | 0 | Results returned from cache |
 
----
 ### **D. Result Cache Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -291,7 +282,6 @@ GROUP BY
 | **Avoid for DML Queries** | DML queries (INSERT, UPDATE, DELETE) are not cached | N/A |
 | **Avoid for DDL Queries** | DDL queries (CREATE, ALTER, DROP) are not cached | N/A |
 
----
 ### **E. Result Cache Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -310,7 +300,6 @@ GROUP BY
 | **No Caching for External Tables** | Limited caching for external tables | Use internal tables or materialized views |
 | **No Caching for Views** | Views are not cached (but their underlying queries may be) | Query the underlying tables directly |
 
----
 ### **F. Result Cache Examples**
 
 #### **Example 1: Dashboard Queries**
@@ -437,11 +426,8 @@ ORDER BY
     query_id;
 ```
 
----
----
 ## **3. Metadata Cache Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 **Metadata Cache** in Snowflake **caches table metadata** (e.g., statistics, schema, partition information) to **improve query performance**. Metadata caching is **automatic** and **transparent to users**.
@@ -519,7 +505,6 @@ flowchart TD
 | **Index Information** | Search optimization indexes | Query optimization | Session |
 | **Materialized View Information** | MV definitions, refresh status | Query rewriting | Session |
 
----
 ### **B. Metadata Cache Configuration**
 
 **Note**: Metadata caching is **automatic** and **requires no configuration**. However, you can **influence** the metadata cache by:
@@ -553,7 +538,6 @@ SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.TABLE_STATISTICS('MY_TABLE'));
 SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.COLUMN_STATISTICS('MY_TABLE', 'COL1'));
 ```
 
----
 ### **C. Metadata Cache Performance**
 
 #### **1. Performance Impact**
@@ -582,7 +566,6 @@ SELECT * FROM my_table WHERE date > '2023-01-01';
 
 **Note**: The **execution time** remains the same, but the **compilation time** is reduced due to cached metadata. The **bytes scanned** may also be reduced due to **partition pruning** enabled by cached metadata.
 
----
 ### **D. Metadata Cache Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -598,7 +581,6 @@ SELECT * FROM my_table WHERE date > '2023-01-01';
 | **Use Automatic Statistics** | Let Snowflake update statistics automatically | No action needed (default) |
 | **Monitor Statistics Freshness** | Check when statistics were last updated | `SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.TABLE_STATISTICS('MY_TABLE'))` |
 
----
 ### **E. Metadata Cache Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -612,7 +594,6 @@ SELECT * FROM my_table WHERE date > '2023-01-01';
 | **No Direct Monitoring** | Metadata cache usage is not directly visible | Monitor compilation time and query performance |
 | **Storage Overhead** | Metadata consumes storage | Monitor storage usage |
 
----
 ### **F. Metadata Cache Examples**
 
 #### **Example 1: Update Statistics for Large Table**
@@ -683,11 +664,8 @@ ALTER TABLE my_table UPDATE STATISTICS;
 SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.TABLE_STATISTICS('MY_TABLE'));
 ```
 
----
----
 ## **4. Local Disk Cache Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 **Local Disk Cache** in Snowflake **caches frequently accessed data** in **local SSD storage** for each **virtual warehouse**. This cache is **automatically managed** by Snowflake and **transparent to users**.
@@ -756,7 +734,6 @@ flowchart TD
    - **Per-warehouse**: Each warehouse has its own local disk cache.
    - **Per-session**: Data cached during a session may be reused for subsequent queries in the same session.
 
----
 ### **B. Local Disk Cache Configuration**
 
 **Note**: Local disk cache is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -783,7 +760,6 @@ SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_PROFILE('query_id'));
 -- Look for cached data in the profile
 ```
 
----
 ### **C. Local Disk Cache Performance**
 
 #### **1. Performance Impact**
@@ -810,7 +786,6 @@ SELECT * FROM my_table WHERE date > CURRENT_DATE() - 7;
 | **First Query** | 5 seconds | 200 ms | 2.5 credits | Data fetched from cloud storage |
 | **Subsequent Queries** | 1 second | 5 ms | 0.5 credits | Data returned from local SSD cache |
 
----
 ### **D. Local Disk Cache Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -826,7 +801,6 @@ SELECT * FROM my_table WHERE date > CURRENT_DATE() - 7;
 | **Use Auto-Suspend for Idle Warehouses** | Suspend warehouses when idle to save costs | `ALTER WAREHOUSE my_wh SET AUTO_SUSPEND = 600` |
 | **Document Cacheable Data** | Document which tables benefit from caching | Internal wiki or Confluence page |
 
----
 ### **E. Local Disk Cache Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -840,7 +814,6 @@ SELECT * FROM my_table WHERE date > CURRENT_DATE() - 7;
 | **No Caching for External Tables** | Limited caching for external tables | Use internal tables or materialized views |
 | **Storage Overhead** | Cache consumes SSD storage | Monitor warehouse storage usage |
 
----
 ### **F. Local Disk Cache Examples**
 
 #### **Example 1: Cache Hot Tables**
@@ -906,11 +879,8 @@ SELECT * FROM table2 WHERE region = 'US';
 SELECT * FROM table3 WHERE category = 'Electronics';
 ```
 
----
----
 ## **5. Query Cache Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 **Query Cache** in Snowflake **caches query plans and compiled queries** to **improve query performance** for **repetitive or similar queries**. Query caching is **automatic** and **transparent to users**.
@@ -989,7 +959,6 @@ flowchart TD
 | **Compiled Query Cache** | Caches the **compiled query** (ready to execute) | Per-session | Session | ⭐⭐⭐ (2-5x faster) |
 | **Parameterized Query Cache** | Caches **parameterized queries** (e.g., `SELECT * FROM my_table WHERE id = ?`) | Per-session | Session | ⭐⭐⭐ (2-5x faster) |
 
----
 ### **B. Query Cache Configuration**
 
 **Note**: Query caching is **automatic** and **requires no configuration**. However, you can **influence** the query cache by:
@@ -1008,7 +977,6 @@ flowchart TD
 SELECT * FROM my_table WHERE id = ?;
 ```
 
----
 ### **C. Query Cache Performance**
 
 #### **1. Performance Impact**
@@ -1036,7 +1004,6 @@ SELECT * FROM my_table WHERE date > '2023-01-02' AND region = 'EU';
 | **First Query** | 300 ms | 5 seconds | 2.5 credits | Query compiled and executed |
 | **Subsequent Queries** | 10 ms | 5 seconds | 2.5 credits | Reused cached query plan |
 
----
 ### **D. Query Cache Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1052,7 +1019,6 @@ SELECT * FROM my_table WHERE date > '2023-01-02' AND region = 'EU';
 | **Test Query Performance** | Compare performance with and without query caching | Run queries and compare compilation times |
 | **Use Connection Pooling** | Reuse connections to reuse cached query plans | Configure connection pooling in your application |
 
----
 ### **E. Query Cache Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1066,7 +1032,6 @@ SELECT * FROM my_table WHERE date > '2023-01-02' AND region = 'EU';
 | **No Custom Cache Size** | Cannot configure query cache size | Use parameterized queries for better reuse |
 | **Memory Overhead** | Query cache consumes memory | Monitor warehouse memory usage |
 
----
 ### **F. Query Cache Examples**
 
 #### **Example 1: Parameterized Queries**
@@ -1155,11 +1120,8 @@ ORDER BY
     compilation_time;
 ```
 
----
----
 ## **6. File Metadata Cache Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 **File Metadata Cache** in Snowflake **caches metadata for external tables** (e.g., file formats, stages, external locations) to **improve query performance**. File metadata caching is **automatic** and **transparent to users**.
@@ -1234,7 +1196,6 @@ flowchart TD
 | **File Metadata** | File sizes, last modified times, partitions | Partition pruning, file access | Session |
 | **Partition Metadata** | Partition columns, partition values | Partition pruning | Session |
 
----
 ### **B. File Metadata Cache Configuration**
 
 **Note**: File metadata caching is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -1256,7 +1217,6 @@ SELECT * FROM INFORMATION_SCHEMA.FILE_FORMATS
 WHERE file_format_name = 'MY_FILE_FORMAT';
 ```
 
----
 ### **C. File Metadata Cache Performance**
 
 #### **1. Performance Impact**
@@ -1285,7 +1245,6 @@ SELECT * FROM my_external_table WHERE date > '2023-01-01';
 
 **Note**: The **execution time** remains the same, but the **compilation time** is reduced due to cached file metadata. The **bytes scanned** may also be reduced due to **partition pruning** enabled by cached metadata.
 
----
 ### **D. File Metadata Cache Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1299,7 +1258,6 @@ SELECT * FROM my_external_table WHERE date > '2023-01-01';
 | **Document External Table Configurations** | Document stage, file format, and external table configurations | Internal wiki or Confluence page |
 | **Test Query Performance** | Compare performance with and without file metadata caching | Run queries and compare compilation times |
 
----
 ### **E. File Metadata Cache Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1312,7 +1270,6 @@ SELECT * FROM my_external_table WHERE date > '2023-01-01';
 | **Cloud Storage Latency** | File metadata cache does not eliminate cloud storage latency | Use local stages or internal tables |
 | **Storage Overhead** | File metadata consumes storage | Monitor storage usage |
 
----
 ### **F. File Metadata Cache Examples**
 
 #### **Example 1: Partitioned External Table**
@@ -1387,11 +1344,8 @@ SELECT * FROM my_clustered_external_table
 WHERE sale_date > '2023-01-01' AND region = 'US';
 ```
 
----
----
 ## **7. Warehouse Cache Deep Dive**
 
----
 ### **A. Definition and Architecture**
 
 **Warehouse Cache** in Snowflake **caches warehouse-specific data** (e.g., temporary tables, intermediate results) to **improve query performance**. Warehouse caching is **automatic** and **transparent to users**.
@@ -1461,7 +1415,6 @@ flowgraph TD
    - **Per-warehouse**: Each warehouse has its own cache.
    - **Per-session**: Data cached during a session may be reused for subsequent queries in the same session.
 
----
 ### **B. Warehouse Cache Configuration**
 
 **Note**: Warehouse cache is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -1488,7 +1441,6 @@ SELECT * FROM cte WHERE region = 'US';
 -- The CTE results may be cached in the warehouse cache
 ```
 
----
 ### **C. Warehouse Cache Performance**
 
 #### **1. Performance Impact**
@@ -1518,7 +1470,6 @@ SELECT * FROM temp_sales WHERE region = 'US';
 | **First Query** | 5 seconds | 200 ms | 2.5 credits | Data fetched from cloud storage |
 | **Subsequent Queries** | 100 ms | 5 ms | 0.1 credits | Data returned from warehouse cache |
 
----
 ### **D. Warehouse Cache Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1533,7 +1484,6 @@ SELECT * FROM temp_sales WHERE region = 'US';
 | **Use Auto-Suspend for Idle Warehouses** | Suspend warehouses when idle to save costs | `ALTER WAREHOUSE my_wh SET AUTO_SUSPEND = 600` |
 | **Document Cacheable Data** | Document which data benefits from caching | Internal wiki or Confluence page |
 
----
 ### **E. Warehouse Cache Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1548,7 +1498,6 @@ SELECT * FROM temp_sales WHERE region = 'US';
 | **Session-Scoped** | Temporary tables are session-scoped | Use global temporary tables for cross-session caching |
 | **Storage Overhead** | Cache consumes SSD storage | Monitor warehouse storage usage |
 
----
 ### **F. Warehouse Cache Examples**
 
 #### **Example 1: Temporary Tables**
@@ -1629,11 +1578,8 @@ SELECT * FROM temp_table1 WHERE col1 = 'value';
 SELECT * FROM temp_table2 WHERE col2 = 'value';
 ```
 
----
----
 ## **8. Caching Decision Matrix**
 
----
 ### **Mermaid: Snowflake Caching Decision Tree**
 ```mermaid
 %% Snowflake Caching Decision Tree
@@ -1694,7 +1640,6 @@ flowchart TD
     class U,V,W,X,Y,Z default;
 ```
 
----
 ### **Caching Selection Matrix**
 
 | **Cache Type** | **Best For** | **When to Use** | **Performance Impact** | **Cost** | **Configuration Effort** | **TTL** | **Scope** |
@@ -1706,7 +1651,6 @@ flowchart TD
 | **File Metadata Cache** | External table queries | Queries on S3, Azure Blob, GCS | ⭐⭐ (1.1-2x faster) | Included | None | Session | Per-session |
 | **Warehouse Cache** | Temporary data, intermediate results | ETL, intermediate results, temporary tables | ⭐⭐⭐ (2-10x faster) | Included | None | Session | Per-warehouse |
 
----
 ### **When to Use Each Cache Type**
 
 | **Use Case** | **Recommended Cache Types** | **Example** |
@@ -1722,7 +1666,6 @@ flowchart TD
 | **ETL Pipelines** | Warehouse Cache, Local Disk Cache | `CREATE TEMPORARY TABLE temp AS SELECT * FROM source_table` |
 | **Ad-Hoc Analysis** | Result Cache, Query Cache | `SELECT * FROM my_table WHERE col1 = 'value'` |
 
----
 ### **Cache Type Comparison**
 
 | **Feature** | **Result Cache** | **Metadata Cache** | **Local Disk Cache** | **Query Cache** | **File Metadata Cache** | **Warehouse Cache** |
@@ -1739,11 +1682,8 @@ flowchart TD
 | **Invalidated By** | Data changes, query text changes, permissions, TTL | DDL, data changes, TTL | Warehouse restart, TTL | DDL, schema changes, TTL | DDL, external changes, TTL | Warehouse restart, TTL |
 | **Limitations** | Query text must match exactly | Session-scoped | Per-warehouse, limited by size | Session-scoped | Session-scoped | Per-warehouse, temporary data only |
 
----
----
 ## **9. Caching Best Practices**
 
----
 ### **A. General Caching Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1763,7 +1703,6 @@ flowchart TD
 | **Document Caching Strategies** | Document which caches are used and why | Internal wiki or Confluence page |
 | **Set Up Alerts for Cache Issues** | Alert on cache misses, high compilation times, etc. | `CREATE ALERT ...` |
 
----
 ### **B. Cache-Specific Best Practices**
 
 #### **1. Result Cache Best Practices**
@@ -1818,7 +1757,6 @@ flowchart TD
 - **Avoid Frequent Warehouse Restarts**: Cache is lost when warehouse is restarted.
 - **Use Multi-Cluster Warehouses for High Concurrency**: Distribute cache across multiple clusters.
 
----
 ### **C. Caching Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -1835,11 +1773,8 @@ flowchart TD
 | **Not Using Temporary Tables** | Not using temporary tables for intermediate results | ❌ No warehouse cache benefits | Use temporary tables for intermediate results |
 | **Not Combining Caching with Other Optimizations** | Using caching in isolation | ❌ Suboptimal performance | Combine caching with clustering, materialized views, etc. |
 
----
----
 ## **10. Caching Monitoring and Alerting**
 
----
 ### **A. Monitoring Caching Performance**
 
 #### **1. Result Cache Monitoring**
@@ -1908,7 +1843,6 @@ ORDER BY
     cache_hit_rate_percent DESC;
 ```
 
----
 #### **2. Metadata Cache Monitoring**
 ```sql
 -- Check compilation time (indirect indicator of metadata cache usage)
@@ -1948,7 +1882,6 @@ ORDER BY
     avg_compilation_time DESC;
 ```
 
----
 #### **3. Local Disk Cache Monitoring**
 ```sql
 -- Check query profile for local disk cache usage
@@ -1986,7 +1919,6 @@ ORDER BY
     start_time;
 ```
 
----
 #### **4. Query Cache Monitoring**
 ```sql
 -- Check compilation time for query cache usage
@@ -2020,7 +1952,6 @@ ORDER BY
     avg_compilation_time DESC;
 ```
 
----
 #### **5. File Metadata Cache Monitoring**
 ```sql
 -- Check compilation time for external table queries
@@ -2067,7 +1998,6 @@ ORDER BY
     avg_compilation_time DESC;
 ```
 
----
 #### **6. Warehouse Cache Monitoring**
 ```sql
 -- Check query profile for warehouse cache usage
@@ -2107,7 +2037,6 @@ ORDER BY
     start_time;
 ```
 
----
 ### **B. Caching Alerts**
 
 #### **1. Low Cache Hit Rate Alert**
@@ -2133,7 +2062,6 @@ AS
         NULLIF(COUNT(*), 0) < 50;  -- Cache hit rate < 50%
 ```
 
----
 #### **2. High Compilation Time Alert**
 ```sql
 CREATE OR REPLACE ALERT high_compilation_time_alert
@@ -2157,7 +2085,6 @@ AS
     compilation_time DESC;
 ```
 
----
 #### **3. Cache Not Used for Repetitive Queries Alert**
 ```sql
 CREATE OR REPLACE ALERT cache_not_used_for_repetitive_queries_alert
@@ -2190,7 +2117,6 @@ AS
     cache_hits = 0;  -- No cache hits for repetitive queries
 ```
 
----
 #### **4. High Cache Invalidation Alert**
 ```sql
 CREATE OR REPLACE ALERT high_cache_invalidation_alert
@@ -2214,7 +2140,6 @@ AS
     COUNT(*) > 5;  -- More than 5 DDL changes in the last hour
 ```
 
----
 #### **5. Warehouse Cache Performance Alert**
 ```sql
 CREATE OR REPLACE ALERT warehouse_cache_performance_alert
@@ -2239,11 +2164,8 @@ AS
     execution_time DESC;
 ```
 
----
----
 ## **11. Caching Troubleshooting**
 
----
 ### **A. Result Cache Troubleshooting**
 
 #### **Symptom 1: Result Cache Not Working**
@@ -2296,7 +2218,6 @@ AS
    ALTER SESSION SET RESULT_CACHE_TTL = 3600;  -- 1 hour
    ```
 
----
 #### **Symptom 2: Low Cache Hit Rate**
 **Diagnosis**:
 1. **Check cache hit rate**:
@@ -2346,7 +2267,6 @@ AS
    ALTER SESSION SET RESULT_CACHE_TTL = 7200;  -- 2 hours
    ```
 
----
 #### **Symptom 3: Cache Invalidation Due to Data Changes**
 **Diagnosis**:
 1. **Check for data changes between queries**:
@@ -2402,7 +2322,6 @@ AS
    ALTER SESSION SET RESULT_CACHE_TTL = 300;  -- 5 minutes
    ```
 
----
 ### **B. Metadata Cache Troubleshooting**
 
 #### **Symptom 1: High Compilation Time**
@@ -2457,7 +2376,6 @@ AS
 4. **Monitor metadata cache hits**:
    - Check compilation time for queries on the same table.
 
----
 #### **Symptom 2: Metadata Cache Not Improving Performance**
 **Diagnosis**:
 1. **Check if metadata is being cached**:
@@ -2490,7 +2408,6 @@ AS
 3. **Check for data skew**:
    - Skewed data can reduce the effectiveness of metadata cache.
 
----
 ### **C. Local Disk Cache Troubleshooting**
 
 #### **Symptom 1: Local Disk Cache Not Improving Performance**
@@ -2529,7 +2446,6 @@ AS
 4. **Avoid frequent warehouse restarts**:
    - Cache is lost when warehouse is restarted.
 
----
 #### **Symptom 2: High I/O Latency**
 **Diagnosis**:
 1. **Check query profile for I/O latency**:
@@ -2577,7 +2493,6 @@ AS
 4. **Use local disk cache for hot data**:
    - Query the same data repeatedly to populate the cache.
 
----
 ### **D. Query Cache Troubleshooting**
 
 #### **Symptom 1: High Compilation Time for Parameterized Queries**
@@ -2632,7 +2547,6 @@ AS
 4. **Avoid frequent DDL changes**:
    - DDL changes invalidate query cache.
 
----
 #### **Symptom 2: Query Cache Not Reusing Plans**
 **Diagnosis**:
 1. **Check for schema changes**:
@@ -2677,7 +2591,6 @@ AS
    CREATE PROCEDURE my_proc() AS SELECT * FROM my_table;
    ```
 
----
 ### **E. File Metadata Cache Troubleshooting**
 
 #### **Symptom 1: High Compilation Time for External Tables**
@@ -2731,7 +2644,6 @@ AS
 4. **Use internal tables for hot data**:
    - Copy external data to internal tables for better performance.
 
----
 #### **Symptom 2: File Metadata Cache Not Improving Performance**
 **Diagnosis**:
 1. **Check if external table metadata is being cached**:
@@ -2752,7 +2664,6 @@ AS
 3. **Use file formats with caching in mind**:
    - Use **Parquet** or **ORC** for better performance.
 
----
 ### **F. Warehouse Cache Troubleshooting**
 
 #### **Symptom 1: Warehouse Cache Not Improving Performance**
@@ -2791,7 +2702,6 @@ AS
 4. **Avoid frequent warehouse restarts**:
    - Cache is lost when warehouse is restarted.
 
----
 #### **Symptom 2: High Execution Time for Temporary Tables**
 **Diagnosis**:
 1. **Check query profile for temporary table performance**:
@@ -2844,11 +2754,8 @@ AS
    SELECT * FROM cte WHERE col1 = 'value';
    ```
 
----
----
 ## **12. Production Checklist for Snowflake Caching**
 
----
 ### **A. Result Cache Checklist**
 
 #### **1. Configuration**
@@ -2893,7 +2800,6 @@ AS
 - [ ] **Use for Expensive Queries**: Queries using >10 credits.
 - [ ] **Document Cacheable Queries**: Maintain a list of queries that benefit from caching.
 
----
 ### **B. Metadata Cache Checklist**
 
 #### **1. Configuration**
@@ -2923,7 +2829,6 @@ AS
 - [ ] **Use Clustering for Better Metadata**: Improves partition pruning.
 - [ ] **Use Consistent Table Schemas**: Avoid frequent schema changes.
 
----
 ### **C. Local Disk Cache Checklist**
 
 #### **1. Configuration**
@@ -2956,7 +2861,6 @@ AS
 - [ ] **Avoid Frequent Warehouse Restarts**: Cache is lost when warehouse is restarted.
 - [ ] **Use Auto-Suspend for Idle Warehouses**: Suspend warehouses when idle to save costs.
 
----
 ### **D. Query Cache Checklist**
 
 #### **1. Configuration**
@@ -2980,7 +2884,6 @@ AS
 - [ ] **Avoid Frequent DDL Changes**: DDL changes invalidate query cache.
 - [ ] **Use Consistent Session Parameters**: Set time zone, role, etc. explicitly.
 
----
 ### **E. File Metadata Cache Checklist**
 
 #### **1. Configuration**
@@ -3006,7 +2909,6 @@ AS
 - [ ] **Use Clustering for External Tables**: Improves query performance.
 - [ ] **Use Internal Tables for Hot Data**: Copy external data to internal tables for better performance.
 
----
 ### **F. Warehouse Cache Checklist**
 
 #### **1. Configuration**
@@ -3035,11 +2937,8 @@ AS
 - [ ] **Avoid Frequent Warehouse Restarts**: Cache is lost when warehouse is restarted.
 - [ ] **Use Multi-Cluster Warehouses for High Concurrency**: Distribute cache across multiple clusters.
 
----
----
 ## **13. Final Recommendations**
 
----
 ### **A. Caching Strategy Summary**
 
 | **Cache Type** | **When to Use** | **Performance Impact** | **Cost** | **Effort** | **Best For** |
@@ -3051,7 +2950,6 @@ AS
 | **File Metadata Cache** | External table queries | ⭐⭐ (1.1-2x faster) | Included | None | Queries on S3, Azure Blob, GCS |
 | **Warehouse Cache** | Temporary data, intermediate results | ⭐⭐⭐ (2-10x faster) | Included | None | ETL, intermediate results, temporary tables |
 
----
 ### **B. Caching Implementation Roadmap**
 
 #### **Phase 1: Enable Basic Caching**
@@ -3132,7 +3030,6 @@ AS
    SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_PROFILE('query_id'));
    ```
 
----
 ### **C. Caching Best Practices Summary**
 
 1. **Start with Result Caching**:
@@ -3176,7 +3073,6 @@ AS
     - Alert on **low cache hit rates**, **high compilation times**, etc.
     - Example: `CREATE ALERT low_cache_hit_rate_alert ...`.
 
----
 ### **D. Caching Anti-Patterns to Avoid**
 
 1. **Not Using Caching at All**:
@@ -3219,7 +3115,6 @@ AS
     - **Impact**: No warehouse cache benefits.
     - **Solution**: Use temporary tables for intermediate results.
 
----
 ### **E. Bottom Line**
 
 Snowflake's **multi-layered caching** provides **powerful performance optimizations** for a wide range of workloads. By **understanding the different cache types**, **when to use each**, and **how to monitor and optimize** them, you can **dramatically improve query performance** while **reducing costs** and **enhancing the user experience**.
