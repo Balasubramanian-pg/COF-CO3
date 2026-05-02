@@ -32,11 +32,15 @@ flowchart LR
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/af7c1481-f3db-4c72-aced-06d2cda2e791" />
 
 >[!Tip]
->In the Snowflake architecture, an organization level object is a supreme administrative entity that exists at the highest tier of the Snowflake ecosystem, spanning multiple individual accounts. These objects facilitate centralized governance, consolidated billing management, and cross cloud deployment strategies. They enable administrators to provision, monitor, and link numerous Snowflake environments across various cloud providers and geographic regions from a singular administrative control plane.
+>In the Snowflake architecture, an organization level object is a supreme administrative entity that exists at the highest tier of the Snowflake ecosystem, spanning multiple individual accounts.
+>These objects facilitate centralized governance, consolidated billing management, and cross cloud deployment strategies.
+>They enable administrators to provision, monitor, and link numerous Snowflake environments across various cloud providers and geographic regions from a singular administrative control plane.
 
 >[!Tip]
->In Snowflake, an account level object is a top tier logical entity encapsulated entirely within the boundaries of a single specific Snowflake account. These objects function independently of any individual database and are responsible for governing account wide operations, resource provisioning, and global security configurations. They establish the foundational infrastructure for data processing by defining user identities, access control mechanisms, compute clusters, and system wide integration policies.
->
+>In Snowflake, an account level object is a top tier logical entity encapsulated entirely within the boundaries of a single specific Snowflake account.
+>These objects function independently of any individual database and are responsible for governing account wide operations, resource provisioning, and global security configurations.
+>They establish the foundational infrastructure for data processing by defining user identities, access control mechanisms, compute clusters, and system wide integration policies.
+
 ## Organization Level Objects
 
 - Organization account is The master account that creates and manages other accounts
