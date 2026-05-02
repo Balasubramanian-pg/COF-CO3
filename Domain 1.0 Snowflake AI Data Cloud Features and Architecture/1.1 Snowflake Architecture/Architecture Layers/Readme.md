@@ -94,6 +94,8 @@ flowchart LR
 ```
 
 ## Design Principles Beneath the Layers
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/1bda961b-6405-4925-bd31-3e8e63c32baf" />
+
   - Full separation of storage and compute:
       - Data persists without compute;
       - Multiple independent compute clusters can share same data
