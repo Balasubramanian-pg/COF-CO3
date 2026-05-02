@@ -61,9 +61,14 @@ GROUP BY sale_date;
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/7dd17cfb-d093-4998-867a-afda71c62e86" />
 
 
-`INFORMATION_SCHEMA.TABLES` is the fastest low-latency way to classify table objects in a database. The documented columns include `IS_TEMPORARY`, `IS_ICEBERG`, `IS_DYNAMIC`, `IS_IMMUTABLE`, and `IS_HYBRID`, which lets you audit table families directly instead of relying on naming conventions or metadata in other systems. Snowflake also notes that `INFORMATION_SCHEMA` only shows objects visible to the current role and does not honor `MANAGE GRANTS` the way `SHOW` commands can. ([Snowflake Docs][5])
+1. `INFORMATION_SCHEMA.TABLES` is the fastest low-latency way to classify table objects in a database.
+2. The documented columns include `IS_TEMPORARY`, `IS_ICEBERG`, `IS_DYNAMIC`, `IS_IMMUTABLE`, and `IS_HYBRID`, which lets you audit table families directly instead of relying on naming conventions or metadata in other systems.
+3. Snowflake also notes that `INFORMATION_SCHEMA` only shows objects visible to the current role and does not honor `MANAGE GRANTS` the way `SHOW` commands can. ([Snowflake Docs][5])
 
-`OBJECT_DEPENDENCIES` is the control surface for blast-radius analysis. Snowflake says it records cases where one object references another without copying or materializing data, and that the view has up to three hours of latency. If you are changing a base table, query that view first to identify dependent views and other objects that will be affected. ([Snowflake Docs][8])
+>[!Tip]
+>`OBJECT_DEPENDENCIES` is the control surface for blast-radius analysis.
+
+Snowflake says it records cases where one object references another without copying or materializing data, and that the view has up to three hours of latency. If you are changing a base table, query that view first to identify dependent views and other objects that will be affected. ([Snowflake Docs][8])
 
 ```sql
 SELECT
