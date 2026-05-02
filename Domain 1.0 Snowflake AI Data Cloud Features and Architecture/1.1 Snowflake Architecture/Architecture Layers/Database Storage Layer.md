@@ -42,6 +42,8 @@ We Will narrow down on Database storage layer in this section
   - Because storage is decoupled, **workloads can be isolated** while accessing the same underlying data, enabling use cases like production, development, and QA environments sharing data via zero-copy cloning
 
 ## Time Travel and Data Retention
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/63e993e3-5351-4d55-b555-cd7dea523d41" />
+
   - Time Travel allows querying and recovering data as it existed at any point within a configurable retention period (up to 90 days for Snowflake Enterprise Edition and higher)
   - Data changes (INSERTS, UPDATES, DELETES, TRUNCATES) result in new micro-partitions; old micro-partitions are retained for the time travel window before being purged
   - Retention period can be set per database, schema, or table; a minimum of 1 day (0 for transient databases)
