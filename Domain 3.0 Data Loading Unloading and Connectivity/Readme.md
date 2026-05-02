@@ -167,7 +167,6 @@ PURGE = FALSE;
 | `Missing column` | `ENFORCE_LENGTH = TRUE` with NULL mismatch | Set `EMPTY_FIELD_AS_NULL = TRUE`, disable enforcement |
 | `Permission denied` | Missing stage USAGE or integration privilege | `GRANT USAGE ON STAGE TO ROLE`, verify cloud IAM |
 
----
 
 ## 3. Continuous & Streaming Data Ingestion
 
@@ -280,7 +279,6 @@ value.converter.schema.registry.url=http://schema-registry:8081
 - **Offset Management**: Connector tracks Kafka offsets in Snowflake metadata table
 - **Schema Evolution**: Avro/Protobuf schema registry integration; `VARIANT` column auto-handles structural changes
 
----
 
 ## 4. Data Unloading & External Export
 
@@ -346,7 +344,6 @@ s3://analytics-archive/exported/
 - Use **VPC endpoints / PrivateLink** to keep traffic within cloud backbone and reduce costs/latency.
 - Schedule large unloads during off-peak hours; monitor `COPY_HISTORY` for bytes unloaded.
 
----
 
 ## 5. Connectivity & Integration Architecture
 
@@ -396,7 +393,6 @@ jdbc:snowflake://<account_locator>.<region>.snowflakecomputing.com/?
 | **Orchestration** | Airflow, Prefect, Dagster, Matillion | Python connector, task-level warehouse scaling, error handling |
 | **ML/Data Science** | Databricks, SageMaker, Vertex AI | Spark connector, Snowpark Python, external function APIs |
 
----
 
 ## 6. Security, Network & Private Connectivity
 
@@ -464,7 +460,6 @@ ctx = snowflake.connector.connect(
 - **GDPR/HIPAA/PCI**: Use `COPY INTO` with `ENFORCE_LENGTH`, `ON_ERROR = 'ABORT_STATEMENT'`, audit via `COPY_HISTORY` and `ACCESS_HISTORY`.
 - **Zero-copy cloning**: Preserves data lineage; does not duplicate physical storage.
 
----
 
 ## 7. Performance Optimization & Best Practices
 
@@ -514,7 +509,6 @@ ALTER TABLE raw.events_json ADD SEARCH OPTIMIZATION ON EQUALITY(src:customer_id)
 | Oversizing warehouse for small loads | Wasted credits, no performance gain | Right-size based on file count/volume |
 | Ignoring `ENFORCE_LENGTH` | Silent truncation, data integrity loss | Enable for production, log violations |
 
----
 
 ## 8. Monitoring, Troubleshooting & Cost Management
 
@@ -591,7 +585,6 @@ AS
   );
 ```
 
----
 
 ## 9. Decision Frameworks & Quick Reference
 
@@ -658,7 +651,6 @@ DRIVER={SnowflakeDSIIDriver};SERVER=<account>.<region>.snowflakecomputing.com;UI
 | `300004` | `Warehouse suspended` | Enable `AUTO_RESUME = TRUE` or manually resume |
 | `400001` | `Insufficient privileges` | Grant `USAGE` on stage/integration, verify role context |
 
----
 
 ## Key Principles to Remember
 1. **File size dictates parallelism.** 10–100 MB uncompressed per file maximizes Snowflake's multi-threaded load engine.
