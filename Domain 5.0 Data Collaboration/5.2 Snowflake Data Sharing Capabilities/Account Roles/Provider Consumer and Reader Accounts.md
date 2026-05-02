@@ -56,7 +56,6 @@ flowchart LR
     J -->|YES| L["Query Executes"]
 ```
 
----
 
 ## 2. Execution Internals & Transactional Boundaries
 
@@ -114,7 +113,6 @@ Result Materialization:
 
 **Critical Edge Case:** If a provider drops a table while a consumer query is executing, the query fails with `Object not found` only if it attempts to read a micro-partition metadata entry that no longer exists. Queries that have already cached partition lists in the result cache may return stale data until cache eviction (default 24 hours).
 
----
 
 ## 3. Parameter/Configuration Deep Dive
 
