@@ -97,6 +97,8 @@ WHERE referenced_object_name = 'FACT_SALES';
 7. Use materialized views when query latency matters enough to pay for maintained storage and refresh work.
 8. Use dynamic tables when you want Snowflake to own the refresh pipeline and you can express the transformation as a deterministic definition query over change-tracked sources. ([Snowflake Docs][6])
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/087899f8-7047-4dd0-8931-ca0b49c50007" />
+
 ### Bottom line
 
 Tables define physical persistence and concurrency semantics. Views define logical dependency semantics. Materialized views and dynamic tables add managed refresh behavior on top. The engineering mistake is to treat them as the same object with different syntax. Snowflake does not. Neither should your platform design. ([Snowflake Docs][6])
