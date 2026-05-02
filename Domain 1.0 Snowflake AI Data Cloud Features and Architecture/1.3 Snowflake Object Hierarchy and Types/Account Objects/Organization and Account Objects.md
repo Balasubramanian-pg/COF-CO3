@@ -31,6 +31,12 @@ flowchart LR
 
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/af7c1481-f3db-4c72-aced-06d2cda2e791" />
 
+>[!Tip]
+>In the Snowflake architecture, an organization level object is a supreme administrative entity that exists at the highest tier of the Snowflake ecosystem, spanning multiple individual accounts. These objects facilitate centralized governance, consolidated billing management, and cross cloud deployment strategies. They enable administrators to provision, monitor, and link numerous Snowflake environments across various cloud providers and geographic regions from a singular administrative control plane.
+
+>[!Tip)
+>In Snowflake, an account level object is a top tier logical entity encapsulated entirely within the boundaries of a single specific Snowflake account. These objects function independently of any individual database and are responsible for governing account wide operations, resource provisioning, and global security configurations. They establish the foundational infrastructure for data processing by defining user identities, access control mechanisms, compute clusters, and system wide integration policies.
+>
 ## Organization Level Objects
 
 - Organization account is The master account that creates and manages other accounts
@@ -58,7 +64,17 @@ quadrantChart
   "Dev test prod separation": [0.7, 0.5]
   "Regulated multi region": [0.9, 0.9]
 ```
+Below you will find a table of differences between Organization level object and account level object 
 
+| Feature | Organization Level Object | Account Level Object |
+| :--- | :--- | :--- |
+| Scope | Spans the entire corporate entity, encompassing all associated Snowflake accounts globally. | Confined strictly within the boundaries of one specific Snowflake account. |
+| Primary Administrative Role | Managed primarily by the ORGADMIN role. | Managed primarily by the ACCOUNTADMIN, SYSADMIN, or SECURITYADMIN roles. |
+| Core Examples | Accounts, Organization wide Usage Metrics, Global Database Replication configurations. | Users, Roles, Virtual Warehouses, Databases, Resource Monitors, Integrations. |
+| Compute and Storage | Does not directly execute database queries or store structured business data. | Manages the specific compute resources and broad data containers utilized for analytics. |
+| Security Management | Focuses on multi account governance, centralized identity, and cross region trust configurations. | Focuses on strict access control, user authentication, and network restrictions for a single environment. |
+| Financial Tracking | Provides consolidated billing, capacity planning, and usage metrics across all deployed accounts. | Tracks detailed credit consumption and storage utilization solely for its specific operational environment. |
+| Data Sharing | Dictates global data exchange policies and replication parameters across different deployment regions. | Manages direct data shares and consumer access points restricted to the localized account ecosystem. |
 | Scenario | Recommended Setup | Why |
 |----------|------------------|-----|
 | One team, one project | Single account | Less overhead, simpler management |
