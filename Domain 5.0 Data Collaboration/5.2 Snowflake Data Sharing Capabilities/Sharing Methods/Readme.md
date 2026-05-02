@@ -152,7 +152,6 @@ GRANT SELECT ON ALL VIEWS IN SCHEMA prod_sales_shared.sales TO ROLE shared_data_
 | `MAX_CONCURRENCY_LEVEL` | 8 | 8 (default) | Direct shares don't affect this — consumer warehouse handles concurrency independently |
 | `STATEMENT_TIMEOUT_IN_SECONDS` | 172800 | 3600 (1 hour) | Prevents runaway queries from burning credits on shared data scans |
 
----
 
 ## 3. METHOD 2: DATA EXCHANGE
 
@@ -218,7 +217,6 @@ GRANT IMPORTED PRIVILEGES ON DATABASE exchange_sales_shared TO ROLE analyst_role
 | **Operational overhead** | High per-consumer | Low (self-service catalog) |
 | **Cost** | Consumer pays compute | Consumer pays compute |
 
----
 
 ## 4. METHOD 3: SNOWFLAKE MARKETPLACE LISTING
 
@@ -291,7 +289,6 @@ GRANT IMPORTED PRIVILEGES ON DATABASE marketplace_sales TO ROLE data_science_rol
 | **Subscription** | Monthly/annual fixed fee | 70-85% of gross | 15-30% | Predictable, high-volume datasets |
 | **Capacity Drawdown** | Deducted from consumer's Snowflake contract | Provider paid by Snowflake | N/A | Enterprise consumers with committed capacity |
 
----
 
 ## 5. METHOD 4: READER ACCOUNT
 
@@ -408,7 +405,6 @@ flowchart TB
     style RWH fill:#ffcccc
 ```
 
----
 
 ## 6. CROSS-REGION SHARING: REPLICATION + SHARE
 
@@ -493,7 +489,6 @@ CREATE DATABASE sales_west FROM SHARE provider_org.west_region_sales_share;
 | **Failover capability** | Yes (if using failover groups) | No |
 | **Best for** | Internal org sharing, predictable consumer base | External monetization, unknown consumer geography |
 
----
 
 ## 7. SHARING METHODS COMPREHENSIVE COMPARISON MATRIX
 
@@ -517,7 +512,6 @@ CREATE DATABASE sales_west FROM SHARE provider_org.west_region_sales_share;
 | **Data Clean Room** | ❌ No | ❌ No | ❌ No | ❌ No |
 | **Best Use Case** | Internal same-region sharing, trusted partners | Large org with many internal consumers | External monetization, public data products | Third-party access without Snowflake subscription |
 
----
 
 ## 8. MONITORING & OBSERVABILITY BY METHOD
 
@@ -691,7 +685,6 @@ FROM (
 WHERE lag_minutes > 60;
 ```
 
----
 
 ## 9. ADVANCED PRODUCTION PATTERNS
 
@@ -822,7 +815,6 @@ ALTER FAILOVER GROUP global_sales_fg PROMOTE;
 -- Share continues to function from new primary.
 ```
 
----
 
 ## 10. DECISION MATRIX / QUICK REFERENCE
 
@@ -884,7 +876,6 @@ flowchart TD
 | **Failover Group** | ❌ | ❌ | ✅ | Business Critical only  |
 | **Database Role to Share** | ✅ | ✅ | ✅ | Available on all editions  |
 
----
 
 ## 11. KEY ENGINEERING PRINCIPLES & BOTTOM LINE
 
@@ -924,12 +915,10 @@ Snowflake's four sharing methods are **not alternatives** — they are **complem
 
 **Final Verdict:** Start with direct shares for proof-of-concept. Graduate to Data Exchange when internal consumers exceed 10 accounts. Launch Marketplace listings when you have production-grade, documented, monetizable datasets. Create reader accounts only after legal and finance have signed off on unlimited credit liability — and only with resource monitors that suspend at 100% with zero exceptions.
 
----
 
 *Document Version: 2026.05.02*
 *Classification: Production Engineering Reference — Sharing Methods Subdomain*
 *Applicable Editions: Standard, Enterprise, Business Critical*
 
----
 
 **[Download Complete Technical Deep Dive](sandbox:///mnt/agents/output/snowflake_data_sharing_methods.md)**
