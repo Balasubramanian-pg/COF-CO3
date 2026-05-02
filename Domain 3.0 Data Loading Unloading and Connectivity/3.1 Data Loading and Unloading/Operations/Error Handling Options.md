@@ -76,7 +76,6 @@ Snowflake's error handling operates at **two distinct granularities**: row-level
 - **Use Case:** Financial ledgers, regulatory reporting, zero-tolerance data pipelines, idempotent retry workflows.
 - **Idempotency Requirement:** Must be paired with `FORCE=TRUE` and explicit retry logic to avoid duplicate processing.
 
----
 
 ## 3.1.3 Pre-Flight Validation: `VALIDATION_MODE`
 
@@ -105,7 +104,6 @@ VALIDATION_MODE = 'RETURN_ALL_ERRORS';
 -- FILE_NAME | ROW_NUMBER | START_POSITION | ERROR_CODE | ERROR_MESSAGE | REJECTED_VALUE
 ```
 
----
 
 ## 3.1.4 Error File Generation & Stage I/O Mechanics
 
@@ -139,7 +137,6 @@ When `ON_ERROR = 'CONTINUE'` or validation errors occur, Snowflake generates CSV
 - Error file parsing is **sequential**. Loading error tables back into Snowflake requires single-threaded `COPY INTO` or external processing.
 - **Compliance Note:** Error files contain raw PII. Must be secured with stage-level encryption, RBAC, and audit logging.
 
----
 
 ## 3.1.5 Historical Tracking & Observability
 
@@ -201,7 +198,6 @@ HAVING SUM(error_count) > 0
 ORDER BY error_rate_pct DESC;
 ```
 
----
 
 ## 3.1.6 Performance & Resource Implications
 
@@ -218,7 +214,6 @@ ORDER BY error_rate_pct DESC;
 - Spill triggers I/O wait, 3–10x latency increase, potential OOM if disk fills.
 - **Mitigation:** Reduce `MAX_CONCURRENCY`, increase warehouse size, or switch to `SKIP_FILE` for high-error datasets.
 
----
 
 ## 3.1.7 Advanced Error Handling Patterns
 
@@ -257,7 +252,6 @@ AS
 - **DLQ Configuration:** `snowflake.topic2table.map` + `buffer.count.errors`. Exceeds threshold → connector pauses, publishes to Kafka DLQ topic.
 - **Schema Evolution Errors:** Avro schema mismatch → connector fails fast. Requires schema registry compatibility mode (`BACKWARD`/`FORWARD`).
 
----
 
 ## 3.1.8 Operational Triage & Runbooks
 
@@ -295,7 +289,6 @@ AS
 4. **Reprocess:** Run `COPY INTO ... FORCE = TRUE ON_ERROR = 'SKIP_FILE_3'`.
 5. **Verify:** Monitor `error_rate_pct` for 1 hour. Clear alert if <0.1%.
 
----
 
 ## 3.1.9 Decision Matrix: Selecting Error Handling Strategy
 
@@ -307,7 +300,6 @@ AS
 | Pragmatic quality gate | `SKIP_FILE_3` | `RETURN_n_ERRORS` | Threshold-based alerting | Error count per file, trend |
 | CI/CD pipeline validation | N/A (no load) | `RETURN_ALL_ERRORS` | Fail build on error count > 0 | Validation time, error categories |
 
----
 
 ## Key Engineering Principles
 
