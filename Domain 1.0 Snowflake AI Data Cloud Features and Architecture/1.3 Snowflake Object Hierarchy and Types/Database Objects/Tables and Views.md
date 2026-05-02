@@ -1,6 +1,6 @@
-## Tables and Views
+# Tables and Views
 
-### Table families and when they matter
+## Table families and when they matter
 
 1. Snowflake’s default table type is permanent.
 2. If you do not specify `TEMPORARY` or `TRANSIENT`, the table is permanent.
@@ -14,10 +14,13 @@
 >[!Tip]
 >Snowflake also states you cannot create hybrid tables as temporary or transient, and you cannot place them inside transient schemas or databases. ([Snowflake Docs][2])
 
+### External Tables
 External tables are read-only tables over files in an external stage. Snowflake stores metadata for those files inside Snowflake, but the stage itself is external. External tables can be queried and joined, but DML is not supported. Snowflake also says query performance can be slower than native tables, and materialized views can be used to improve performance over external tables. ([Snowflake Docs][3])
 
+### Dynamic Tables
 Dynamic tables are managed table objects that Snowflake refreshes automatically from a definition query. Snowflake runs the definition query and merges changes from the base objects using compute resources associated with the table. Creation requires that the base objects have change tracking enabled, and the dynamic table refresh and scheduler behavior is controlled through the dynamic-table DDL surface. ([Snowflake Docs][4])
 
+### Iceberg Tables
 Apache Iceberg tables also appear in the table family, but they are a separate table type with their own lifecycle and storage semantics. The `INFORMATION_SCHEMA.TABLES` view exposes `IS_ICEBERG`, `IS_DYNAMIC`, `IS_IMMUTABLE`, and `IS_HYBRID` flags so you can distinguish these variants programmatically instead of guessing from naming conventions. ([Snowflake Docs][5])
 
 ### Creation patterns that matter in production
