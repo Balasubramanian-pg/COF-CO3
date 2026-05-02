@@ -49,7 +49,10 @@ Use a UDF when the logic must behave like a function inside a query and return a
 
 ### Production pattern
 
-For platform code, keep UDFs small, deterministic, and composable. Use stored procedures for orchestration, DDL, DML, and cross-step workflows. If a routine starts needing control flow, state, or side effects, promote it from UDF to stored procedure instead of overloading a function with procedural behavior. That matches Snowflake’s invocation and capability model. ([Snowflake Docs][3])
+1. For platform code, keep UDFs small, deterministic, and composable.
+2. Use stored procedures for orchestration, DDL, DML, and cross-step workflows.
+3. If a routine starts needing control flow, state, or side effects, promote it from UDF to stored procedure instead of overloading a function with procedural behavior.
+4. That matches Snowflake’s invocation and capability model. ([Snowflake Docs][3])
 
 If useful, I can do the same treatment for `Session and Context Variables.md` next.
 
