@@ -110,10 +110,19 @@ We Will narrow down on Database storage layer in this section
   - Both are fully managed and operate transparently
 
 ## Storage Lifecycle and Operations
-  - Ingestion: Data loaded via COPY INTO, Snowpipe, streams, etc., is automatically converted into micro-partitions and stored in cloud storage, with metadata registered in Cloud Services
-  - Deletion: DML operations (DELETE, UPDATE, TRUNCATE, DROP) retain old micro-partitions for the time travel period, then they are automatically garbage collected
-  - Storage metrics: Total and average compressed bytes are tracked; visible via ACCOUNT_USAGE views and billing
-  - Storage access: Data is never directly accessed by users via file system; all reads and writes go through Snowflake SQL or Snowpipe REST API
+There are 4 different aspects that we will zoom into here, but will understand in depth later
+
+### Ingestion 
+Data loaded via COPY INTO, Snowpipe, streams, etc., is automatically converted into micro-partitions and stored in cloud storage, with metadata registered in Cloud Services
+
+### Deletion
+DML operations (DELETE, UPDATE, TRUNCATE, DROP) retain old micro-partitions for the time travel period, then they are automatically garbage collected
+
+### Storage metrics
+Total and average compressed bytes are tracked; visible via ACCOUNT_USAGE views and billing
+
+### Storage access
+Data is never directly accessed by users via file system; all reads and writes go through Snowflake SQL or Snowpipe REST API
 
 ## Interaction with Other Layers
   - Cloud Services Layer: Maintains the metadata catalog that maps tables and partitions to physical micro-partition files in cloud storage; holds clustering metadata, statistical information, and version history that enables partition pruning
