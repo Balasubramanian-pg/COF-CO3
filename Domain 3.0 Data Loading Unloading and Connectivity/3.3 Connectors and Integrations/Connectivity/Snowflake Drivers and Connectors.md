@@ -1,6 +1,5 @@
 # **Snowflake Drivers and Connectors: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Overview of Snowflake Drivers and Connectors**
 
@@ -75,7 +74,6 @@ flowchart TD
     class Z,AA,AB cloud;
 ```
 
----
 
 ### **Drivers vs. Connectors: Key Differences**
 
