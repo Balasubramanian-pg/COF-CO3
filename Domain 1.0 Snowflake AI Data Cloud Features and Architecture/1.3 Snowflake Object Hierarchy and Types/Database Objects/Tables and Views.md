@@ -68,7 +68,10 @@ GROUP BY sale_date;
 >[!Tip]
 >`OBJECT_DEPENDENCIES` is the control surface for blast-radius analysis.
 
-Snowflake says it records cases where one object references another without copying or materializing data, and that the view has up to three hours of latency. If you are changing a base table, query that view first to identify dependent views and other objects that will be affected. ([Snowflake Docs][8])
+Snowflake says it records cases where one object references another without copying or materializing data, and that the view has up to three hours of latency. 
+
+>[!Tip]
+>If you are changing a base table, query that view first to identify dependent views and other objects that will be affected. ([Snowflake Docs][8])
 
 ```sql
 SELECT
