@@ -254,7 +254,6 @@ CREATE OR REPLACE ROW ACCESS POLICY recent_data_only
     >= DATEADD(month, -12, CURRENT_DATE());
 ```
 
----
 
 ## Column-Level Security Approaches
 
@@ -302,7 +301,6 @@ GRANT SELECT ON VIEW hr.employee_directory TO ROLE analyst_role;
 | Analytics use cases needing grouping on sensitive values | Masking with hash function | Enables `GROUP BY hashed_email` without exposing raw values |
 | Legacy applications expecting specific column formats | Format-preserving masking | Maintains application compatibility while protecting data |
 
----
 
 ## Secure Views: Hiding Logic and Data
 
@@ -353,7 +351,6 @@ GRANT SELECT ON VIEW analytics.customer_lifetime_summary TO ROLE partner_role;
 | Logic encapsulation | Hide complex business rules, calculations, or proprietary algorithms | Protect intellectual property while enabling data consumption |
 | Multi-source abstraction | Join multiple tables but expose only curated result set | Simplify consumer queries while protecting source complexity |
 
----
 
 ## Object Tagging Framework for Classification
 
@@ -455,7 +452,6 @@ GROUP BY dc.tag_value, cs.tag_value
 ORDER BY classification, compliance_framework;
 ```
 
----
 
 ## Privacy Policy Automation Driven by Tags
 
@@ -556,7 +552,6 @@ $$;
 CALL governance.apply_privacy_policies_by_tags();
 ```
 
----
 
 ## Privacy Audit and Monitoring
 
@@ -671,7 +666,6 @@ WHERE tr.tag_name IN ('data_classification', 'compliance_scope')
   AND (tr.tag_value = 'restricted' OR tr.tag_value = 'gdpr');
 ```
 
----
 
 ## Integration with Compliance Frameworks
 
@@ -721,7 +715,6 @@ FROM (
 FILE_FORMAT = (TYPE = PARQUET COMPRESSION = SNAPPY);
 ```
 
----
 
 ## Best Practices and Common Pitfalls
 
@@ -750,7 +743,6 @@ FILE_FORMAT = (TYPE = PARQUET COMPRESSION = SNAPPY);
 | Replicating data without tags | DR or shared accounts lack classification context | Pre-stage tag definitions and apply tags during replication workflow |
 | Ignoring performance impact | Policies add latency to queries, especially at scale | Monitor query performance; optimize policy logic; cache results where possible |
 
----
 
 ## Decision Framework: Security and Privacy Design
 
@@ -786,7 +778,6 @@ flowchart TD
 | Is analytics use case important | Use hash-based masking to enable grouping without raw exposure | Full masking or column grants may be appropriate |
 | Do protection rules change frequently | Use tag-driven policy automation for scalable management | Manual policy updates may be acceptable for stable requirements |
 
----
 
 ## Key Principles to Remember
 
