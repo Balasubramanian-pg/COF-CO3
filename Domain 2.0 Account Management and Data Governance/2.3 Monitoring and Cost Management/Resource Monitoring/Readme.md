@@ -55,7 +55,6 @@ flowchart LR
   Log --> Continue
 ```
 
----
 
 ## Resource Monitor Configuration
 
@@ -140,7 +139,6 @@ ALTER RESOURCE MONITOR enterprise_monitor SET NOTIFY_USERS = (finance_admin, pla
 | `SUSPEND` | Suspends attached warehouses immediately | Hard limit for production (90% or 100%) |
 | `BLOCK` | Blocks new queries but allows running queries to complete | Absolute hard limit with graceful degradation |
 
----
 
 ## Trigger Thresholds and Actions Deep Dive
 
