@@ -13,7 +13,6 @@ graph LR
 
 Each edition includes everything from the edition below it plus additional features.
 
----
 
 ## Feature Comparison Table
 
@@ -30,7 +29,6 @@ Each edition includes everything from the edition below it plus additional featu
 | Dedicated isolated hardware | No | No | No | Yes |
 | Automated disaster recovery failover | No | No | Yes | Yes |
 
----
 
 ## Edition Use Cases
 
