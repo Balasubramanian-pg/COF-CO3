@@ -77,6 +77,8 @@
   - Snowflake leverages the concept of “workload isolation” as a first-class design principle, not an afterthought
 
 ## Serverless Compute
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/5301fb75-4b4d-48e0-8f1e-fb603786260f" />
+
   - Some features provision compute transparently without a user-defined virtual warehouse: serverless tasks, Snowpipe, automatic clustering, materialized view maintenance, search optimization service, etc.
   - These use Cloud Services compute resources that are billed as Serverless Credits separate from virtual warehouse credits
   - Serverless compute scales elastically and is fully managed; users do not need to configure warehouse size or concurrency
