@@ -303,7 +303,6 @@ GROUP BY table_catalog, DATE_TRUNC('month', last_updated)
 ORDER BY total_storage_gb DESC;
 ```
 
----
 
 ## Data Transfer Usage Tracking
 
@@ -390,7 +389,6 @@ WHERE replication_state = 'REPLICATING'
 ORDER BY replication_lag_minutes DESC;
 ```
 
----
 
 ## Usage Attribution Methods
 
@@ -571,7 +569,6 @@ FROM (
 FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 ```
 
----
 
 ## Reporting and Dashboard Integration
 
@@ -769,7 +766,6 @@ FULL OUTER JOIN SNOWFLAKE.ACCOUNT_USAGE.TABLE_STORAGE_METRICS tsm
 WHERE COALESCE(wmh.start_time, qh.start_time, tsm.last_updated) > DATEADD(month, -3, CURRENT_TIMESTAMP());
 ```
 
----
 
 ## Best Practices for Usage Tracking
 
@@ -803,7 +799,6 @@ WHERE COALESCE(wmh.start_time, qh.start_time, tsm.last_updated) > DATEADD(month,
 | Export to external systems for finance integration | `COPY INTO @finance_exports/...` | Enables chargeback and budget planning in existing tools |
 | Set up alerts for anomalies, not absolutes | Compare to baselines; alert on deviations | Reduces alert fatigue while catching real issues |
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -849,7 +844,6 @@ flowchart TD
   I --> J
 ```
 
----
 
 ## Decision Framework: Usage Tracking Implementation
 
@@ -887,7 +881,6 @@ flowchart TD
 | Compliance audit reporting | ACCESS_HISTORY + TAG_REFERENCES join | Filter by sensitivity tags; export to external system |
 | Real-time anomaly detection | ALERT objects with baseline comparison | Compare current usage to 7-day average |
 
----
 
 ## Key Principles to Remember
 
