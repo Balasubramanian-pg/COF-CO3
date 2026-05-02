@@ -1,6 +1,5 @@
 # **Snowflake Streams and Tasks: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Architecture & Execution Flow**
 
@@ -64,7 +63,6 @@ flowchart TD
     class P,Q,R,S monitoring;
 ```
 
----
 ### **Execution Flow Comparison Table**
 
 | **Component**               | **Streams (CDC)**                          | **Tasks (Scheduled)**                     |
@@ -274,7 +272,6 @@ flowchart TD
   │ │ │ ┌───────────── month (1 - 12)
   │ │ │ │ ┌───────────── day of week (0 - 6) (Sunday to Saturday)
   │ │ │ │ │
-  * * * * *
   ```
 - **Examples**:
   | Description | CRON Expression | Interval Equivalent |
