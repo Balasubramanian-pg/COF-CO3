@@ -55,7 +55,10 @@ FROM @raw_stage
 
 ### Production guidance
 
-Use named stages and named file formats for every governed pipeline. Use user stages only for ad hoc or single-user workflows. Keep stage parsing rules in the stage or file format object, not spread across ad hoc `COPY` statements. Treat `CUSTOM` as a special-case unstructured-data path, not a general stage type. For repeatable unloads, define a named file format and reuse it rather than relying on implicit defaults. ([Snowflake Docs][2])
+1. Use named stages and named file formats for every governed pipeline.
+2. Use user stages only for ad hoc or single-user workflows.
+3. Keep stage parsing rules in the stage or file format object, not spread across ad hoc `COPY` statements. Treat `CUSTOM` as a special-case unstructured-data path, not a general stage type.
+4. For repeatable unloads, define a named file format and reuse it rather than relying on implicit defaults. ([Snowflake Docs][2])
 
 ### Bottom line
 
