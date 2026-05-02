@@ -71,6 +71,8 @@
   - Understanding cache behavior is crucial for performance tuning and cost control; often one would run a "warm-up" query on a warehouse before benchmarking
 
 ## Resource Isolation and Concurrency
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/5328f6c2-6f93-4e87-bf33-c4b180907157" />
+
   - Each virtual warehouse is an isolated compute pool; queries in one warehouse never impact the performance of queries in another
   - Within a single warehouse, queries are queued if all available execution slots are occupied; maximum queries per warehouse depends on size and complexity, but no strict concurrency limit is enforced—queuing happens based on resource availability
   - For mixed workloads, best practice is to separate ETL/ELT and BI/reporting into different warehouses to prevent resource contention
