@@ -274,7 +274,7 @@ flowchart TD
 - Data lives in databases and schemas. Organize them to match how your team thinks about the business
 - Automation lives in tasks and pipes. Use them to reduce manual work, but monitor them closely
 
->[!Info]
+>[!NOTE]
 > Think of account objects like tools in a workshop:
 >- Users are the people who use the tools
 >- Roles are the permissions that say which tools each person can touch
