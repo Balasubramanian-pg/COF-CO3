@@ -110,7 +110,6 @@ quadrantChart
 - Dedicated metadata store and compute pool
 - Best for organizations requiring maximum isolation
 
----
 
 ## Pricing Overview (US East AWS On Demand)
 
@@ -125,7 +124,6 @@ Source: [[2]]
 
 Note: Credits are consumed by compute operations. You pay only for what you use [[6]].
 
----
 
 ## Security Feature Progression
 
@@ -156,7 +154,6 @@ flowchart TD
     end
 ```
 
----
 
 ## Time Travel and Data Recovery
 
@@ -171,7 +168,6 @@ Source: [[23]][[26]]
 
 Note: Fail-safe is automatic and cannot be disabled. It provides emergency recovery only [[26]].
 
----
 
 ## Selection Decision Flow
 
@@ -195,7 +191,6 @@ flowchart TD
     Q6 -->|No| C
 ```
 
----
 
 ## Common Selection Mistakes
 
@@ -204,7 +199,6 @@ flowchart TD
 - Overlooking storage costs. Compute credits get attention but storage is billed separately at 23 USD per TB per month [[2]].
 - Selecting VPS without confirming isolation requirements. VPS is for physical separation. If policy does not require it, Business Critical is usually sufficient [[5]].
 
----
 
 ## Key Points
 
