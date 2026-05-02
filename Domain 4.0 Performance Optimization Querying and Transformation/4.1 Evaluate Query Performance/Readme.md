@@ -90,7 +90,6 @@ flowchart TD
 | **Spill to Disk** | Amount of data spilled to disk (due to memory limits) | 0 | `QUERY_PROFILE.SPILL_TO_DISK` | High memory pressure, slow performance |
 | **Spill to Remote** | Amount of data spilled to remote storage | 0 | `QUERY_PROFILE.SPILL_TO_REMOTE` | Severe memory pressure, very slow performance |
 
----
 ### **Snowflake's Unique Architecture for Performance**
 
 Snowflake's **multi-cluster, shared-data architecture** enables **high performance** and **scalability** by separating **compute** (virtual warehouses) from **storage** (cloud storage). Key features that impact performance:
@@ -123,11 +122,8 @@ Snowflake's **multi-cluster, shared-data architecture** enables **high performan
    - **Metadata service**, **query optimization**, and **cloud services** run on **serverless compute**.
    - No warehouse required for these operations.
 
----
----
 ## **2. Query Execution Internals**
 
----
 ### **A. Query Lifecycle**
 
 ```mermaid
@@ -212,7 +208,6 @@ flowchart TD
 - **Metadata Cache**: Updates **statistics** and **metadata** (e.g., table size, row counts).
 - **Client Results**: Returns results to the **client** (JDBC, ODBC, REST API, etc.).
 
----
 ### **B. Query Plan Anatomy**
 
 #### **1. Query Plan Structure**
@@ -290,7 +285,6 @@ EXPLAIN SELECT * FROM my_table WHERE id = 1
 EXPLAIN LAST QUERY;
 ```
 
----
 ### **C. Execution Phases**
 
 | **Phase** | **Description** | **Duration** | **Resource Usage** | **Optimization Opportunities** |
@@ -302,11 +296,8 @@ EXPLAIN LAST QUERY;
 | **Execution** | Execute query on warehouse | 10ms-10min | CPU, Memory, I/O | Optimize **query design**, **clustering**, **warehouse size** |
 | **Result Materialization** | Collect and return results | 10-1000ms | CPU, Memory | Use **`LIMIT`**, **pagination** to reduce result size |
 
----
----
 ## **3. Monitoring and Profiling Tools**
 
----
 ### **A. Key Monitoring Views**
 
 | **View** | **Purpose** | **Retention** | **Key Columns** | **Example Query** |
@@ -320,7 +311,6 @@ EXPLAIN LAST QUERY;
 | `TABLE_STORAGE_METRICS` | Table storage metrics | 365 days | `table_name`, `storage_bytes`, `row_count`, `partition_count` | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.TABLE_STORAGE_METRICS WHERE table_name = 'MY_TABLE';` |
 | `MATERIALIZED_VIEW_REFRESH_HISTORY` | Materialized view refresh history | 365 days | `view_name`, `refresh_time`, `status`, `rows_refreshed`, `bytes_refreshed` | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.MATERIALIZED_VIEW_REFRESH_HISTORY WHERE view_name = 'MY_MV';` |
 
----
 ### **B. Query Profile Deep Dive**
 
 The **Query Profile** provides **detailed execution metrics** for a specific query, including:
@@ -394,7 +384,6 @@ SELECT * FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_PROFILE('01a2b3c4-d5e6-78
    - **Spill to disk/remote**: Increase **warehouse size**, **reduce data volume**.
    - **Low parallelism**: Check **warehouse concurrency**, **query complexity**.
 
----
 ### **C. Performance Metrics Dashboard**
 
 #### **1. Query Performance Dashboard**
@@ -505,11 +494,8 @@ ORDER BY
     storage_gb DESC;
 ```
 
----
----
 ## **4. Identifying Performance Bottlenecks**
 
----
 ### **A. Bottleneck Categories**
 
 | **Bottleneck Type** | **Symptoms** | **Root Causes** | **Diagnosis** | **Solutions** |
@@ -522,7 +508,6 @@ ORDER BY
 | **Compilation Bottleneck** | High `compilation_time`, low `execution_time` | Complex queries, many subqueries, large query plans | `QUERY_HISTORY.compilation_time` | Simplify queries, use cached plans, avoid dynamic SQL |
 | **Storage Bottleneck** | High `bytes_scanned`, high `execution_time` | Large tables, poor clustering, external tables | `QUERY_HISTORY.bytes_scanned`, `TABLE_STORAGE_METRICS.storage_bytes` | Use clustering, use materialized views, partition large tables |
 
----
 ### **B. Bottleneck Diagnosis Flowchart**
 
 ```mermaid
@@ -571,7 +556,6 @@ flowchart TD
     class M,N,O,P,Q,R solution;
 ```
 
----
 ### **C. Bottleneck-Specific Diagnosis**
 
 #### **1. I/O Bottleneck**
@@ -627,7 +611,6 @@ WHERE
 | **Use Materialized Views** | Pre-compute and store results | Repetitive queries on large tables | `CREATE MATERIALIZED VIEW my_mv AS SELECT * FROM my_table WHERE date > CURRENT_DATE()` |
 | **Use External Table Caching** | Cache external table metadata | Frequent queries on external tables | `ALTER EXTERNAL TABLE my_external_table SET AUTO_REFRESH = FALSE` |
 
----
 #### **2. CPU Bottleneck**
 **Symptoms**:
 - High `execution_time` with high CPU usage (check `WAREHOUSE_LOAD_HISTORY`).
@@ -684,7 +667,6 @@ ORDER BY
 | **Avoid Regex** | Replace `RLIKE` with simpler filters | Queries with regex | `SELECT * FROM my_table WHERE col LIKE '%pattern%'` |
 | **Use Materialized Views** | Pre-compute expensive operations | Repetitive aggregations | `CREATE MATERIALIZED VIEW my_mv AS SELECT col1, COUNT(*) FROM my_table GROUP BY col1` |
 
----
 #### **3. Memory Bottleneck**
 **Symptoms**:
 - **Spill to disk** (`spill_to_disk > 0` in `QUERY_PROFILE`).
@@ -742,7 +724,6 @@ ORDER BY
 | **Avoid ORDER BY** | Remove `ORDER BY` if not needed | Queries with large result sets | `SELECT * FROM my_table` (instead of `ORDER BY`) |
 | **Use Materialized Views** | Pre-compute and store results | Repetitive queries with large results | `CREATE MATERIALIZED VIEW my_mv AS SELECT * FROM my_table WHERE date > CURRENT_DATE()` |
 
----
 #### **4. Concurrency Bottleneck**
 **Symptoms**:
 - High `queue_time` in `QUERY_HISTORY`.
@@ -799,7 +780,6 @@ ORDER BY
 | **Use Query Timeouts** | Set timeouts for long-running queries | Prevent warehouse hogging | `ALTER WAREHOUSE MY_WH SET STATEMENT_TIMEOUT_IN_SECONDS = 300` |
 | **Use Resource Monitors** | Set limits on warehouse usage | Prevent runaway queries | `CREATE RESOURCE MONITOR MY_MONITOR WITH CREDIT_QUOTA = 1000` |
 
----
 #### **5. Network Bottleneck**
 **Symptoms**:
 - High `execution_time` but low `bytes_scanned` and low CPU usage.
@@ -845,7 +825,6 @@ traceroute myaccount.us-east-1.snowflakecomputing.com
 | **Use PrivateLink/PSC** | Use private connectivity to reduce latency | Production environments | Configure AWS PrivateLink, Azure Private Link, or GCP PSC |
 | **Use Regional Snowflake** | Use Snowflake in the same region as your clients | Global clients | Deploy Snowflake in `us-west-2` for US West clients |
 
----
 #### **6. Compilation Bottleneck**
 **Symptoms**:
 - High `compilation_time` in `QUERY_HISTORY`.
@@ -885,7 +864,6 @@ ORDER BY
 | **Use Materialized Views** | Pre-compute complex queries | Repetitive complex queries | `CREATE MATERIALIZED VIEW my_mv AS SELECT ...` |
 | **Use Stored Procedures** | Encapsulate complex logic in stored procedures | Complex workflows | `CREATE PROCEDURE my_proc() AS BEGIN ... END` |
 
----
 #### **7. Storage Bottleneck**
 **Symptoms**:
 - High `bytes_scanned` for external tables.
@@ -940,11 +918,8 @@ ORDER BY
 | **Optimize File Format** | Use efficient file formats (Parquet, ORC) | External tables with large files | `CREATE FILE FORMAT my_format TYPE = 'PARQUET'` |
 | **Partition External Tables** | Partition external tables by date or key | Large external tables | `CREATE EXTERNAL TABLE my_table PARTITION BY (date)` |
 
----
----
 ## **5. Performance Optimization Techniques**
 
----
 ### **A. Clustering**
 
 #### **1. Definition and Architecture**
@@ -1106,7 +1081,6 @@ ORDER BY
 | **Use Automatic Clustering for Hands-Off Optimization** | Let Snowflake manage clustering | `ALTER TABLE my_table CLUSTER BY AUTO` |
 | **Combine with Partitioning** | Use clustering with partitioning for large tables | `CREATE TABLE my_table (id INT, date DATE) PARTITION BY (date) CLUSTER BY (region)` |
 
----
 ### **B. Materialized Views**
 
 #### **1. Definition and Architecture**
@@ -1265,7 +1239,6 @@ WHERE
 | **Use MV for Star Schema Fact Tables** | Pre-compute fact tables for BI tools | `CREATE MATERIALIZED VIEW fact_sales AS SELECT * FROM sales JOIN dim_product ON ...` |
 | **Combine with Clustering** | Cluster MVs for better query performance | `CREATE MATERIALIZED VIEW my_mv CLUSTER BY (date) AS SELECT ...` |
 
----
 ### **C. Query Rewriting**
 
 #### **1. Definition**
@@ -1296,7 +1269,6 @@ Snowflake automatically applies the following rewrites:
 | **Use Semi-Join** | Use `EXISTS` or `IN` for filtering | `SELECT DISTINCT t1.* FROM table1 t1 JOIN table2 t2 ON t1.id = t2.id` | `SELECT * FROM table1 WHERE id IN (SELECT id FROM table2)` | ⬆️ Reduces duplicate rows |
 | **Use Anti-Join** | Use `NOT EXISTS` or `NOT IN` for exclusion | `SELECT t1.* FROM table1 t1 LEFT JOIN table2 t2 ON t1.id = t2.id WHERE t2.id IS NULL` | `SELECT * FROM table1 WHERE id NOT IN (SELECT id FROM table2)` | ⬆️ Simpler execution plan |
 
----
 ### **D. Warehouse Optimization**
 
 #### **1. Warehouse Sizing**
@@ -1367,7 +1339,6 @@ ALTER WAREHOUSE MY_MC_WH SET MAX_CLUSTER_COUNT = 8;
 | **Use Query Timeouts** | Prevent long-running queries from hogging resources | `ALTER WAREHOUSE MY_WH SET STATEMENT_TIMEOUT_IN_SECONDS = 300` |
 | **Use Resource Monitors** | Set limits on warehouse usage | `CREATE RESOURCE MONITOR MY_MONITOR WITH CREDIT_QUOTA = 1000` |
 
----
 ### **E. Result Caching**
 
 #### **1. Definition**
@@ -1436,7 +1407,6 @@ WHERE
 | **Use for Read-Only Workloads** | Cache works best for read-only workloads | BI tools, reporting |
 | **Disable for Unique Queries** | Disable caching for unique queries | `ALTER SESSION SET USE_CACHED_RESULTS = FALSE` |
 
----
 ### **F. Query Tagging**
 
 #### **1. Definition**
@@ -1491,11 +1461,8 @@ ORDER BY
 | **Use for Cost Allocation** | Track credits used by application/team | `SELECT query_tag, SUM(credits_used) FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY GROUP BY query_tag` |
 | **Use for Performance Monitoring** | Track performance by query type | `SELECT query_tag, AVG(execution_time) FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY GROUP BY query_tag` |
 
----
----
 ## **6. Best Practices for Query Performance**
 
----
 ### **A. SQL Style Guide for Performance**
 
 | **Guideline** | **Description** | **Bad Example** | **Good Example** | **Performance Impact** |
@@ -1516,7 +1483,6 @@ ORDER BY
 | **Use Approximate Functions** | Use `APPROX_COUNT_DISTINCT`, `APPROX_QUANTILE` | `SELECT COUNT(DISTINCT user_id) FROM my_table` | `SELECT APPROX_COUNT_DISTINCT(user_id) FROM my_table` | ⬆️ Faster for large datasets |
 | **Avoid OR Conditions** | Use `UNION ALL` instead of `OR` for indexed columns | `SELECT * FROM my_table WHERE col1 = 'A' OR col1 = 'B'` | `SELECT * FROM my_table WHERE col1 = 'A' UNION ALL SELECT * FROM my_table WHERE col1 = 'B'` | ⬆️ Better optimization |
 
----
 ### **B. Indexing Strategies (Snowflake-Specific)**
 
 Snowflake **does not use traditional indexes** (B-tree, hash). Instead, it relies on:
@@ -1558,7 +1524,6 @@ Snowflake **does not use traditional indexes** (B-tree, hash). Instead, it relie
 | **Clustering on Frequently Updated Columns** | Clustering on columns that change often | `CLUSTER BY (last_updated)` | Cluster on static columns |
 | **Clustering on Non-Selective Columns** | Clustering on columns with low selectivity | `CLUSTER BY (flag)` | Use selective columns |
 
----
 ### **C. Join Optimization**
 
 #### **1. Join Types in Snowflake**
@@ -1596,7 +1561,6 @@ Snowflake **does not use traditional indexes** (B-tree, hash). Instead, it relie
 | **Avoid Redundant Joins** | Remove unnecessary joins | `SELECT * FROM t1 JOIN t2 ON t1.id = t2.id JOIN t3 ON t1.id = t3.id` (if `t3` is not needed) |
 | **Use CTEs for Complex Joins** | Use CTEs to break down complex joins | `WITH cte AS (SELECT * FROM t1 JOIN t2 ON ...) SELECT * FROM cte JOIN t3 ON ...` |
 
----
 ### **D. Aggregation Optimization**
 
 #### **1. Aggregation Functions in Snowflake**
@@ -1629,7 +1593,6 @@ Snowflake **does not use traditional indexes** (B-tree, hash). Instead, it relie
 | **Use Materialized Views for Aggregations** | Pre-compute aggregations | `CREATE MATERIALIZED VIEW my_mv AS SELECT region, COUNT(*) FROM my_table GROUP BY region` |
 | **Use Window Functions for Running Aggregations** | Use `OVER()` for running totals, averages, etc. | `SELECT date, sales, SUM(sales) OVER (ORDER BY date) AS running_total FROM my_table` |
 
----
 ### **E. Subquery Optimization**
 
 #### **1. Subquery Types**
@@ -1652,7 +1615,6 @@ Snowflake **does not use traditional indexes** (B-tree, hash). Instead, it relie
 | **Use Materialized Subqueries** | Use `MATERIALIZED` hint for subqueries | `SELECT * FROM (SELECT * FROM t1) WHERE ...` | `SELECT * FROM MATERIALIZE((SELECT * FROM t1)) WHERE ...` |
 | **Limit Subquery Results** | Limit the number of rows returned by subqueries | `SELECT * FROM t1 WHERE id IN (SELECT id FROM t2)` | `SELECT * FROM t1 WHERE id IN (SELECT id FROM t2 LIMIT 1000)` |
 
----
 ### **F. Window Function Optimization**
 
 #### **1. Window Function Types**
@@ -1675,7 +1637,6 @@ Snowflake **does not use traditional indexes** (B-tree, hash). Instead, it relie
 | **Avoid Redundant Window Functions** | Remove window functions that are not needed | `SELECT *, ROW_NUMBER() OVER (ORDER BY id) AS rn FROM my_table` (if `rn` is not used) |
 | **Use INDEX OFF for Large Windows** | Disable index usage for large windows (Snowflake-specific) | `SELECT *, SUM(sales) OVER (PARTITION BY region ORDER BY date) FROM my_table /*+ INDEX(OFF) */` |
 
----
 ### **G. Sorting and Ordering Optimization**
 
 #### **1. Sorting Best Practices**
@@ -1700,7 +1661,6 @@ SELECT * FROM my_table ORDER BY sales DESC LIMIT 100;
 SELECT * FROM my_table SORT BY sales DESC LIMIT 100;
 ```
 
----
 ### **H. Pivoting and Unpivoting Optimization**
 
 #### **1. PIVOT**
@@ -1749,11 +1709,8 @@ UNPIVOT (
 | **Avoid Pivoting Large Tables** | Pivoting large tables can be expensive | Use `LIMIT` or filter before pivoting |
 | **Use Materialized Views for Pivoted Data** | Pre-compute pivoted results | `CREATE MATERIALIZED VIEW my_mv AS SELECT * FROM sales PIVOT ...` |
 
----
----
 ## **7. Advanced Performance Topics**
 
----
 ### **A. Micro-Partitioning Deep Dive**
 
 #### **1. What Are Micro-Partitions?**
@@ -1798,7 +1755,6 @@ UNPIVOT (
 | **Avoid Full Table Scans** | Use filters to reduce scanned partitions | `SELECT * FROM my_table WHERE region = 'US'` |
 | **Monitor Partition Scans** | Check `PARTITIONS_SCANNED` in `QUERY_HISTORY` | `SELECT PARTITIONS_SCANNED FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 
----
 ### **B. Columnar Storage Deep Dive**
 
 #### **1. What Is Columnar Storage?**
@@ -1846,7 +1802,6 @@ UNPIVOT (
 | **Partition Data** | Partition external tables for pruning | `CREATE EXTERNAL TABLE my_table PARTITION BY (date)` |
 | **Use Columnar Aggregations** | Use `APPROX_COUNT_DISTINCT`, `APPROX_QUANTILE` | `SELECT APPROX_COUNT_DISTINCT(col1) FROM my_table` |
 
----
 ### **C. Vectorized Execution Deep Dive**
 
 #### **1. What Is Vectorized Execution?**
@@ -1872,7 +1827,6 @@ UNPIVOT (
 | **Use Approximate Functions** | Approximate functions are vectorized | `SELECT APPROX_COUNT_DISTINCT(col1) FROM my_table` |
 | **Monitor Vectorization** | Check `QUERY_PROFILE` for vectorized operators | `SELECT operation, rows_produced FROM TABLE(SNOWFLAKE.INFORMATION_SCHEMA.QUERY_PROFILE('...'))` |
 
----
 ### **D. Query Compilation Deep Dive**
 
 #### **1. What Is Query Compilation?**
@@ -1920,7 +1874,6 @@ WHERE
 | **Avoid Nested Subqueries** | Nested subqueries are hard to optimize | Use CTEs or joins instead |
 | **Monitor Compilation Time** | Check `COMPILATION_TIME` in `QUERY_HISTORY` | `SELECT COMPILATION_TIME FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY` |
 
----
 ### **E. Statistics and Metadata**
 
 #### **1. Statistics in Snowflake**
@@ -1950,7 +1903,6 @@ Snowflake **automatically collects statistics** for:
 | **Use Clustering** | Clustering improves partition pruning | `ALTER TABLE my_table CLUSTER BY (date)` |
 | **Avoid Skewed Data** | Skewed data can lead to uneven partition sizes | Use `RECLUSTER` to rebalance data |
 
----
 ### **F. Workload Management**
 
 #### **1. Resource Monitors**
@@ -2023,11 +1975,8 @@ WHERE
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
----
 ## **8. Case Studies: Real-World Performance Tuning**
 
----
 ### **A. Case Study 1: Slow Dashboard Queries**
 
 #### **Problem**
@@ -2133,7 +2082,6 @@ WHERE
 | **Credit Usage** | 50 credits | 5 credits | **90% reduction** |
 | **User Satisfaction** | ❌ Poor | ✅ Excellent | **Significant improvement** |
 
----
 ### **B. Case Study 2: High Credit Usage**
 
 #### **Problem**
@@ -2250,7 +2198,6 @@ WHERE
 | **Spill to Remote** | 10GB | 0 | **Eliminated** |
 | **ETL Job Duration** | 2 hours | 30 minutes | **4x faster** |
 
----
 ### **C. Case Study 3: Slow JOIN Performance**
 
 #### **Problem**
