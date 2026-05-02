@@ -1,17 +1,21 @@
 # Cloud Services Layer
 
 ## Definition and Purpose
-  - The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinating all activities across the platform
-  - It is a globally distributed, stateless compute layer that is always on and managed entirely by Snowflake
-  - Never provisioned, scaled, or maintained by users; Snowflake guarantees high availability, durability, and security transparently
+The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinating all activities across the platform
+  - It is a globally distributed, stateless compute layer that is always on and _managed entirely by Snowflake_
+  - Never provisioned, scaled, or maintained by users
+  - Snowflake guarantees high availability, durability, and security transparently
   - Sits between client applications and the other architecture layers (Query Processing, Database Storage)
 
 ## Core Functions
-  - Authentication and Access Control
+
+### Authentication and Access Control
+
     - Validates user credentials via multi-factor authentication, SSO, OAuth, key pair, etc.
-    - Enforces role-based access control (RBAC) and discretionary access control (DAC)
+    - Enforces **role-based access control** (RBAC) and **discretionary access control** (DAC)
     - Manages network policies, session policies, and allowed IP lists
-  - Query Parsing and Optimization
+### Query Parsing and Optimization
+
     - Receives SQL statements from all clients (JDBC, ODBC, Python, SnowSQL, etc.)
     - Parses SQL, performs semantic analysis, resolves object names using metadata
     - Generates a cost-based optimized logical and physical query plan
