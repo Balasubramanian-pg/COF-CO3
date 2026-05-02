@@ -85,7 +85,6 @@ Snowflake virtual warehouses consist of clusters of homogenous EC2/VM instances.
 *   **Thread Pools**: A standard query uses multiple threads. However, Snowflake caps thread allocation per query to prevent noisy neighbor monopolization within the warehouse. By default, a warehouse runs up to 8 concurrent queries (`MAX_CONCURRENCY_LEVEL`).
 *   **I/O Pipeline**: Data is stream-read from remote blob storage $\rightarrow$ buffered to local ephemeral NVMe SSDs (Data Cache) $\rightarrow$ loaded into RAM for thread execution. 
 
----
 
 ### 3. Parameter/Configuration Deep Dive
 
@@ -99,7 +98,6 @@ Modifying execution parameters must be done with precision. The following table 
 | `CLIENT_PREFETCH_THREADS` | Number of concurrent threads fetching result sets to the client driver. | High numbers accelerate large `SELECT *` extractions but consume high client-side CPU/memory. | Default: `4`. Increase to `10` strictly for massive data exfiltration/Python ML dataframe loads. |
 | `ENABLE_UNLOAD_PHYSICAL_TYPE_OPTIMIZATION` | Allows Parquet/ORC unloads to bypass memory deserialization if physical types match. | Reduces CPU overhead and memory footprint by up to 60% during bulk `COPY INTO <location>` operations. | Default: `False`. **SRE Override: `True`** for massive data lake hydration pipelines. |
 
----
 
 ### 4. Performance & Resource Implications
 
@@ -122,7 +120,6 @@ Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spill
 *   **Cloud Services Layer (CSL) Billing**: CSL operations (compilation, metadata queries, result cache hits) cost credits. However, Snowflake waives CSL credits up to **10% of your daily compute credits**.
     *   *SRE Math*: If compute costs 100 credits/day, and CSL costs 8 credits, CSL billed = 0. If CSL costs 15 credits, CSL billed = 5. High CSL overhead usually indicates excessive micro-batching (`INSERT` single rows) or massive metadata queries.
 
----
 
 ### 5. Monitoring, Observability & Troubleshooting
 
@@ -168,7 +165,6 @@ ORDER BY remote_spill_gb DESC, queue_to_exec_ratio_pct DESC;
 3.  *Immediate fix*: Route the specific query to a larger warehouse size (e.g., L $\rightarrow$ XL) using session-level `ALTER SESSION SET USE_CACHED_RESULT = FALSE; USE WAREHOUSE <larger_wh>;` to validate memory threshold.
 4.  *Long-term fix*: Introduce `CLUSTER BY` on the underlying tables to reduce the number of micro-partitions scanned, reducing the working set size in memory.
 
----
 
 ### 6. Advanced Production Patterns
 
@@ -199,7 +195,6 @@ For strictly regulated environments (HIPAA/FedRAMP), utilize **Tri-Secret Secure
 *   **Internals**: Snowflake encrypts all micro-partitions with AES-256-GCM using key rotation (every 30 days). In Tri-Secret Secure, the final encryption key is a composite of a Snowflake-managed key and a Customer-Managed Key (CMK) residing in AWS KMS / Azure Key Vault.
 *   **Impact**: If the KMS key is revoked, the entire Snowflake account instantly cryptographically shreds—the CSL cannot decrypt the FDB metadata, effectively bricking the data until the key is restored.
 
----
 
 ### 7. Decision Matrix / Quick Reference Flowchart
 
@@ -211,7 +206,6 @@ For strictly regulated environments (HIPAA/FedRAMP), utilize **Tri-Secret Secure
 | **Zero-Copy Cloning** | Snapshot Isolation Metadata Clone | $0 compute cost. Instantly duplicates pointers in FoundationDB. Data storage billed only on delta changes. |
 | **Sub-second Point Lookups** | Query Acceleration Service / Search Optimization | FDB creates heavy background indexes (bloom filters/skip lists). Increases storage/compute costs during index build but drops lookup latency to <100ms. |
 
----
 
 ### 8. Key Engineering Principles & Bottom Line
 
