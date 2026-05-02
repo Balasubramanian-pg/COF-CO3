@@ -147,6 +147,8 @@ Native Apps are the application-layer object type in the hierarchy. They are how
 
 ## Stages and File Formats
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/f21bbcb6-d9fe-4468-9d56-6820d96fc460" />
+
 A stage is the object boundary for file ingress and egress. `CREATE STAGE` supports either a named file format reference or an inline file format type definition, and those are mutually exclusive. Snowflake documents `FORMAT_NAME` as the preferred route when you want the stage to inherit a reusable parsing contract, while `TYPE` defines the file type directly on the stage. Default stage file type is CSV if not specified. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-stage))
 
 Named file formats exist so the parsing contract is explicit and reusable. `CREATE FILE FORMAT` creates a named description of staged data for access or loading into Snowflake tables, and Snowflake also supports `CREATE OR ALTER FILE FORMAT` for idempotent configuration management. This is the correct abstraction when multiple stages or pipelines must share the same parsing semantics, especially for delimiter, quoting, null handling, and compression behavior. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-file-format))
