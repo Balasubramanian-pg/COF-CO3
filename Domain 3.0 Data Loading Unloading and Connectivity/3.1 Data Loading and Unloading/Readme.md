@@ -19,7 +19,6 @@ graph TD
   Flush --> MP
 ```
 
----
 
 ## 3.1.1 Internal Loading Architecture & Micro-Partition Generation
 
@@ -40,7 +39,6 @@ Snowflake does not append rows to a file-based storage system. It ingests flat o
 - Statistics are computed **at load time**. `ANALYZE TABLE` is unnecessary for fresh loads; pruning works immediately.
 - `COPY INTO` is **transactional per file**. Partial failures do not corrupt target tables; failed files remain in stage (unless `PURGE=TRUE` and `ON_ERROR=CONTINUE` with partial success).
 
----
 
 ## 3.1.2 Stage Architecture & Cloud Integration Mechanics
 
