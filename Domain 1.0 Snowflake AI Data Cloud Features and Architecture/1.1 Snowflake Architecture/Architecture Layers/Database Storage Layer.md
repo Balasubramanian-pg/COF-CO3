@@ -1,4 +1,6 @@
 # Database Storage Layer
+We Will narrow down on Database storage layer in this section
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/bf04354c-6d55-4788-8c38-191702d13dc3" />
 
 ## Definition and Purpose
   - The Database Storage Layer is the persistent, durable repository of all table data and metadata for user databases, schemas, and tables
