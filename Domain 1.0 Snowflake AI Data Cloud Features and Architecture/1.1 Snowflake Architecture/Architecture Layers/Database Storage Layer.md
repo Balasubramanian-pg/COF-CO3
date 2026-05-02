@@ -4,7 +4,9 @@
   - The Database Storage Layer is the persistent, durable repository of all table data and metadata for user databases, schemas, and tables
   - Built on cloud object storage services such as Amazon S3, Azure Blob Storage, and Google Cloud Storage
   - Data is stored in a highly compressed, encrypted, columnar format optimized for fast analytic queries
-  - Completely decoupled from compute; storage scales independently, automatically, and transparently, with no capacity management required by users
+  - Completely decoupled from compute;
+      - Storage scales independently, automatically, and transparently,
+      - With no capacity management required by users
   - Snowflake handles all aspects of data durability, availability, replication, and disaster recovery within this layer
 
 ## Core Storage Unit: Micro-Partitions
