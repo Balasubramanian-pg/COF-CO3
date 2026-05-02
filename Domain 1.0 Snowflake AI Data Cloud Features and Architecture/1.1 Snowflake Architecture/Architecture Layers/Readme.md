@@ -41,6 +41,8 @@ In this section we are going to look at the architecture layers of snowflake
   - Serverless compute: Background operations like Snowpipe and clustering use serverless credits without a user-managed warehouse
 
 ## Database Storage Layer
+<img width="1672" height="980" alt="image" src="https://github.com/user-attachments/assets/080e4b96-093f-418b-a19b-78845c3e6dd7" />
+
   - Core role: Persistent, durable repository for all table data
   - Data is stored as immutable, compressed, columnar micro-partitions in cloud object storage (S3, Azure Blob, GCS)
   - Key features
