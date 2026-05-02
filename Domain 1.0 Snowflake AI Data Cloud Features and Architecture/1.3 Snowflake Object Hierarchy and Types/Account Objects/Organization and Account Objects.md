@@ -29,9 +29,11 @@ flowchart LR
   D --> E[View Unified Billing]
 ```
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/af7c1481-f3db-4c72-aced-06d2cda2e791" />
+
 ## Organization Level Objects
 
-- Organization account: The master account that creates and manages other accounts
+- Organization account is The master account that creates and manages other accounts
 - Account listings: View all accounts under the organization with status and region
 - Organization roles: Roles that span multiple accounts for cross account administration
 - Policy templates: Define security, network, or data policies to apply across accounts
