@@ -169,6 +169,7 @@ CREATE OR REPLACE STAGE raw_stage
 For loading, `COPY INTO <table>` can consume all supported stage file types, while unloading to a stage has a narrower supported set. Snowflake documents that unloading to a stage supports CSV, JSON, or PARQUET. If you use `CUSTOM`, Snowflake treats the stage as unstructured and requires `FILE_PROCESSOR`. That is a hard boundary worth preserving in platform standards. ([docs.snowflake.com](https://docs.snowflake.com/en/sql-reference/sql/create-stage))
 
 ## Tables and Views
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/25d037b8-7de1-421a-bfb1-c689ffac8bc1" />
 
 Snowflake tables are not one thing. Permanent, temporary, and transient tables differ in durability and recovery semantics, external tables read from files in an external stage, dynamic tables automate refresh, materialized views persist query results for fast reuse, and hybrid tables are optimized for transactional workloads with row locking and integrity constraints. The practical consequence is that table type is an architectural choice, not a storage preference. ([docs.snowflake.com](https://docs.snowflake.com/en/guides-overview-db), [docs.snowflake.com](https://docs.snowflake.com/en/user-guide/tables-temp-transient))
 
