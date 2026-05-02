@@ -2,9 +2,7 @@
 
 *Production-Grade Technical Guide for Platform Engineers, SREs, and Architects*
 
----
 
----
 
 ## **1. Mermaid Execution Flow & Architecture Diagram**
 
