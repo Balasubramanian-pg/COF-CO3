@@ -2,7 +2,6 @@
 
 ## Domain 5.0 Data Collaboration / 5.2 Snowflake Data Sharing Capabilities / Sharing Methods
 
----
 
 ## 1. SHARING METHODS ARCHITECTURE OVERVIEW
 
@@ -82,7 +81,6 @@ sequenceDiagram
     end
 ```
 
----
 
 ## 2. METHOD 1: DIRECT SHARE
 
