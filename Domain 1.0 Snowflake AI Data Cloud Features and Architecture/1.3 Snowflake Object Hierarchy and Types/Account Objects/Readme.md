@@ -186,6 +186,18 @@ sequenceDiagram
 | Error handling | Retry logic, alerting via integrations | Dead letter queue, error table |
 | Monitoring | Task history view, system functions | Pipe status, load history |
 
+Below you would find a table of differences between tasks and pipes
+
+| Feature | Task | Pipe |
+| :--- | :--- | :--- |
+| Primary Purpose | Orchestration and scheduling of SQL workloads and data transformations. | Continuous and automated ingestion of raw data files into target tables. |
+| Supported Operations | Executes any single valid SQL statement, including calls to stored procedures. | Executes exactly one COPY INTO table statement. |
+| Trigger Mechanism | Runs on a predefined time interval, a CRON schedule, or upon completion of a parent task. | Runs in response to cloud storage event notifications or explicit REST API endpoint calls. |
+| Compute Resource | Utilizes either a user managed virtual warehouse or the Snowflake serverless compute model. | Exclusively utilizes Snowflake managed serverless compute resources dedicated to Snowpipe. |
+| Data Latency | Designed for batch processing with latency dictated by the defined execution schedule. | Designed for near real time micro batching with latency typically measured in seconds or minutes. |
+| State Tracking | Maintains detailed execution history, success rates, and failure logs in the task history views. | Maintains file load metadata for fourteen days to prevent duplicate data ingestion from identical files. |
+| Typical Use Case | Performing regular ELT transformations, periodic data aggregations, and automated database maintenance. | Ingesting streaming logs, IoT sensor data, or continuous file drops from external cloud storage. |
+
 ## Object Creation Flow
 
 ```mermaid
