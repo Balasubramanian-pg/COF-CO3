@@ -81,7 +81,6 @@ DESC STORAGE INTEGRATION s3_ext_int;
 - Cloud providers do **not** allow wildcard bucket access. Prefixes must be explicit.
 - Temporary credentials are generated via `GET_PRESIGNED_URL()` for direct client access. Tokens expire in 1–2 hours.
 
----
 
 ## 3.1.3 File Format Parsing & Encoding Internals
 
@@ -110,7 +109,6 @@ File formats define the byte-level deserialization rules. Misconfiguration is th
 - Invalid booleans (`'true'`, `'1'`, `'yes'`) → `TRUE`/`FALSE` per `PARSE_JSON` rules.
 - `VARIANT` storage: Uses **self-describing binary format** with type tags, length prefixes, and inline dictionary references.
 
----
 
 ## 3.1.4 COPY INTO Execution Engine & Parallelism Model
 
@@ -149,7 +147,6 @@ SIZE_LIMIT = 50000000000;  -- 50 GB test window
 **Copy History Tracking:**
 Snowflake tracks processed files using a **deterministic hash**: `(stage_path + file_name + last_modified_timestamp + file_size)`. Modifying any component triggers reprocessing.
 
----
 
 ## 3.1.5 Error Handling, Validation & Data Quality Controls
 
@@ -183,7 +180,6 @@ VALIDATION_MODE = 'RETURN_ALL_ERRORS';
 - Parseable via `COPY INTO error_table FROM @stage PATTERN='.*_error.csv'`
 - **Do not disable** `ENFORCE_LENGTH` or `TRUNCATECOLUMNS` without audit logging. Silent truncation breaks compliance.
 
----
 
 ## 3.1.6 Continuous Ingestion: Snowpipe & Streaming API Internals
 
@@ -235,7 +231,6 @@ client.flush(true);  // Force commit pending rows
 - Channel-level throttling: ~10k rows/sec/channel. Scale horizontally with multiple channels.
 - Memory-constrained: JVM heap limits apply. Use `BufferedChannelBuilder` for backpressure.
 
----
 
 ## 3.1.7 Data Unloading Mechanics & Partitioned Export Architecture
 
@@ -266,7 +261,6 @@ MAX_FILE_SIZE = 67108864;
 - Use **VPC endpoints / PrivateLink** to keep traffic within cloud backbone.
 - Schedule large unloads during off-peak hours. Monitor `COPY_HISTORY` for `BYTES_UNLOADED`.
 
----
 
 ## 3.1.8 Performance Tuning, Resource Allocation & Diagnostics
 
@@ -292,7 +286,6 @@ MAX_FILE_SIZE = 67108864;
 - Oversized warehouse for small loads → Wasted credits. Right-size based on `COPY_HISTORY` file count.
 - Disabling compression → 3–5x network/storage cost. Pre-compress or use `COMPRESSION='AUTO'`.
 
----
 
 ## 3.1.9 Security, Compliance & Audit Trails for Data Movement
 
@@ -305,7 +298,6 @@ MAX_FILE_SIZE = 67108864;
 | Compliance Validation | `VALIDATION_MODE`, `ENFORCE_LENGTH`, `ON_ERROR` | Error files, audit logs, schema drift reports |
 | Data Residency | Region-locked stages, explicit replication config | `REGION` parameter, cross-region transfer logs |
 
----
 
 ## Key Engineering Principles
 
