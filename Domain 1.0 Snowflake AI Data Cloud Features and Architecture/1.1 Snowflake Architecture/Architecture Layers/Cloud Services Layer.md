@@ -1,5 +1,7 @@
 # Cloud Services Layer
 
+![Uploading image.png…]()
+
 ## Definition and Purpose
 The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinating all activities across the platform
   - It is a globally distributed, stateless compute layer that is always on and _managed entirely by Snowflake_
