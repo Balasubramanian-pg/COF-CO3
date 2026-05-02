@@ -189,7 +189,7 @@ flowchart TD
 
 ## Common Selection Mistakes
 
-![Uploading image.png…]()
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/10011268-b58b-4b59-b0d5-45151d61a5b9" />
 
 - Choosing Standard for production workloads that need scaling. Multi-cluster warehouses require Enterprise or higher [[5]].
 - Assuming Business Critical is optional for regulated data. If HIPAA or PCI applies, the additional controls are required not optional [[5]].
