@@ -58,6 +58,8 @@ GROUP BY sale_date;
 ```
 
 ### Operational inventory and impact analysis
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/7dd17cfb-d093-4998-867a-afda71c62e86" />
+
 
 `INFORMATION_SCHEMA.TABLES` is the fastest low-latency way to classify table objects in a database. The documented columns include `IS_TEMPORARY`, `IS_ICEBERG`, `IS_DYNAMIC`, `IS_IMMUTABLE`, and `IS_HYBRID`, which lets you audit table families directly instead of relying on naming conventions or metadata in other systems. Snowflake also notes that `INFORMATION_SCHEMA` only shows objects visible to the current role and does not honor `MANAGE GRANTS` the way `SHOW` commands can. ([Snowflake Docs][5])
 
