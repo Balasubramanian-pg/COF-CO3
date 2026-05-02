@@ -1,12 +1,10 @@
 # **Snowflake Optimization Services: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Overview of Snowflake Optimization Services**
 
 Snowflake provides several **built-in optimization services** that **automatically improve query performance** without requiring manual intervention. These services leverage Snowflake's **unique architecture** (separation of compute and storage, micro-partitioning, columnar storage) to **optimize queries at runtime** or **pre-compute results** for faster access.
 
----
 
 ### **Mermaid: Snowflake Optimization Services Architecture**
 ```mermaid
