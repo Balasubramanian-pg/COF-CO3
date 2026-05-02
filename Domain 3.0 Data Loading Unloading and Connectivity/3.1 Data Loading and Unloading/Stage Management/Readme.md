@@ -71,7 +71,6 @@ flowchart TD
 | **Consistency Guarantee**   | Strong (ACID)                               | Eventual (client-side)                     | N/A                                 |
 
 ---
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 ### **A. Stage I/O Patterns**
@@ -114,7 +113,6 @@ flowchart TD
 | `UNLOAD`            | Query-level            | Serializable         | Temp files purged on query failure           | 0.02 credits per GB (compute)         |
 | `COPY INTO`         | Table-level            | Serializable         | Partial rollback (loaded rows only)           | 0.05 credits per GB (compute)         |
 
----
 ### **B. Error Buffering & Retry Mechanics**
 - **Retry Logic**:
   - **PUT/GET**: Exponential backoff (base: 1s, max: 60s, **3 retries**).
@@ -130,8 +128,6 @@ flowchart TD
   - **Retention**: 7 days (configurable via `DLQ_RETENTION_TIME`).
   - **Schema**: `SNOWFLAKE.DLQ.<stage_name>` (auto-created).
 
----
----
 ## **3. Parameter/Configuration Deep Dive**
 ### **A. Critical Stage Parameters**
 | **Parameter**                     | **Internal Behavior**                                                                 | **Performance Impact**                                                                 | **Compliance/Edge Cases**                                                                 | **Production Default** |
@@ -147,7 +143,6 @@ flowchart TD
 | `MAX_FILE_SIZE` (UNLOAD)          | Max size per output file (bytes).                                                    | Larger files: **fewer objects** but **longer single-threaded writes**.                | Max 10GB (Snowflake limit).                                                               | 16MB                    |
 | `SINGLE` (UNLOAD)                | Forces single output file.                                                           | **Disables parallelism** (slower for >1GB).                                           | Fails if data > warehouse memory.                                                       | `FALSE`                 |
 
----
 ### **B. Warehouse-Specific Tuning**
 | **Warehouse Size** | **Max PUT Threads** | **Max UNLOAD Threads** | **Memory per Thread** | **Spill Threshold** | **Credit Cost (PUT)**       | **Credit Cost (UNLOAD)**    |
 |--------------------|---------------------|-------------------------|-----------------------|--------------------|-----------------------------|-----------------------------|
@@ -159,8 +154,6 @@ flowchart TD
 | 2X-Large           | 256                 | 128                     | 8GB                   | 6.4GB              | 0.05 credits/GB             | 0.01 credits/GB              |
 | 4X-Large           | 512                 | 256                     | 16GB                  | 12.8GB             | 0.04 credits/GB             | 0.008 credits/GB            |
 
----
----
 ## **4. Performance & Resource Implications**
 ### **A. Memory & Spill Behavior**
 - **PUT Operation**:
@@ -175,7 +168,6 @@ flowchart TD
 - **GET Operation**:
   - **Client-Side Memory**: Pre-signed URL generation uses **1MB per URL** (throttled at 100 URLs/sec).
 
----
 ### **B. Concurrency & Scaling**
 - **PUT/GET Concurrency**:
   - **Per Stage**: 100 concurrent operations (soft limit; **200 for Enterprise Edition**).
@@ -190,7 +182,6 @@ flowchart TD
     - UNLOAD: **0.008–0.02 credits/GB** (scales with warehouse size).
     - GET: **0.01 credits per 10K API calls**.
 
----
 ### **C. Network & Latency**
 | **Operation**       | **Latency (Internal Stage)** | **Latency (External Stage)** | **Network Overhead**               |
 |---------------------|-------------------------------|-------------------------------|------------------------------------|
@@ -199,8 +190,6 @@ flowchart TD
 | UNLOAD (1GB)        | 20–40s                        | 20–40s                        | 15% (compression + partitioning)   |
 | LIST (1K files)     | 1–2s                          | 1–2s                          | 0% (metadata only)                 |
 
----
----
 ## **5. Monitoring, Observability & Troubleshooting**
 ### **A. Key Monitoring Views**
 | **View**                                      | **Purpose**                                                                 | **Example Query**                                                                                     |
@@ -212,7 +201,6 @@ flowchart TD
 | `SNOWFLAKE.ACCOUNT_USAGE.STAGE_STORAGE`       | Storage costs (internal stages).                                          | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.STAGE_STORAGE WHERE STAGE_NAME = 'MY_STAGE';`                 |
 | `SNOWFLAKE.INFORMATION_SCHEMA.FILE_FORMATS`   | File format definitions.                                                  | `SELECT * FROM INFORMATION_SCHEMA.FILE_FORMATS WHERE NAME = 'MY_FORMAT';`                            |
 
----
 ### **B. Error Categorization & Runbooks**
 #### **1. Common Errors & Fixes**
 | **Error Code**               | **Root Cause**                          | **Impact**                          | **Runbook**                                                                                     |
@@ -255,7 +243,6 @@ LIST @MY_STAGE;
 SELECT COUNT(*) FROM @MY_STAGE;
 ```
 
----
 ### **C. Proactive Alerts**
 ```sql
 -- Alert: Stage Storage > 90% Capacity
@@ -291,8 +278,6 @@ AS
     AND error_count > 0;
 ```
 
----
----
 ## **6. Advanced Production Patterns**
 ### **A. Idempotency Strategies**
 1. **PUT Idempotency**:
@@ -314,7 +299,6 @@ AS
      FORCE = FALSE;
      ```
 
----
 ### **B. DLQ Routing & Recovery**
 1. **DLQ Table Schema**:
    ```sql
@@ -339,7 +323,6 @@ AS
    ON_ERROR = 'CONTINUE';
    ```
 
----
 ### **C. CI/CD Validation**
 1. **Stage Schema Validation**:
    ```sql
@@ -354,7 +337,6 @@ AS
    snow sql -q "LIST @DEV_STAGE;"
    ```
 
----
 ### **D. Retry & Backpressure Logic**
 1. **Exponential Backoff (Python Example)**:
    ```python
@@ -389,7 +371,6 @@ AS
        ON_ERROR = 'CONTINUE';
      ```
 
----
 ### **E. Security & Compliance Controls**
 1. **Encryption**:
    - **CMK (Customer-Managed Keys)**:
@@ -415,8 +396,6 @@ AS
      SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.STAGE_ACCESS_HISTORY;
      ```
 
----
----
 ## **7. Decision Matrix / Quick Reference Flowchart**
 ### **Mermaid: Stage Selection Decision Tree**
 ```mermaid
@@ -440,7 +419,6 @@ flowchart TD
     O -->|No| Q[("Snowflake-Managed Keys\n(Default)")]
 ```
 
----
 ### **Quick Reference Table**
 | **Use Case**                          | **Stage Type**       | **File Format** | **Warehouse Size** | **Error Handling**          | **Monitoring Focus**                     |
 |---------------------------------------|----------------------|------------------|--------------------|-----------------------------|------------------------------------------|
@@ -450,8 +428,6 @@ flowchart TD
 | Compliance-sensitive data             | Internal             | Parquet          | Large              | `FORCE = FALSE`             | `ACCOUNT_USAGE.STAGE_STORAGE`           |
 | Cost-sensitive archives                | External (GCS)       | Snappy           | X-Small            | `ON_ERROR = 'SKIP_FILE'`    | `QUERY_HISTORY`                           |
 
----
----
 ## **8. Key Engineering Principles & Bottom Line**
 ### **A. Core Principles**
 1. **Atomicity Over Performance**:
@@ -469,7 +445,6 @@ flowchart TD
    - **PUT**: 0.04–0.1 credits/GB (scales with warehouse size).
    - **UNLOAD**: 0.008–0.02 credits/GB (compression reduces cost).
 
----
 ### **B. Production Checklist**
 - [ ] **Stage Sizing**: Partition stages at **1TB boundaries** (avoids hotspots).
 - [ ] **File Formats**: Use **Parquet/Snappy** for >100GB loads (30-50% cost savings).
@@ -486,7 +461,6 @@ flowchart TD
   - **Internal Stages**: Set `MAX_SIZE` to avoid runaway costs.
   - **External Stages**: Use **S3 Intelligent-Tiering** for cold data.
 
----
 ### **C. Bottom Line**
 | **Metric**               | **Internal Stage** | **External Stage** | **Named Stage** |
 |--------------------------|--------------------|--------------------|-----------------|
@@ -497,8 +471,6 @@ flowchart TD
 | **Compliance**           | ✅ Full Support     | ✅ Full Support     | ⚠️ Limited       |
 | **Best For**             | Batch loads, ACID  | Streaming, Custom  | References       |
 
----
----
 ## **Appendix: Production-Ready Snippets**
 ### **A. Stage Creation Templates**
 #### **Internal Stage (Encrypted, Partitioned)**
@@ -530,7 +502,6 @@ CREATE STAGE MY_NAMED_STAGE
   COMMENT = 'Named stage for historical data (no storage)';
 ```
 
----
 ### **B. High-Performance COPY INTO**
 ```sql
 -- Optimized for Parquet + Snappy
@@ -551,7 +522,6 @@ VALIDATION_MODE = RETURN_ROWS
 FORCE = FALSE;
 ```
 
----
 ### **C. UNLOAD with Partitioning**
 ```sql
 -- Split into 16MB files, Snappy compression
@@ -566,7 +536,6 @@ PARTITION BY = (DATE_TRUNC('day', created_at))
 OVERWRITE = TRUE;
 ```
 
----
 ### **D. Stage Cleanup Automation**
 ```sql
 -- Remove files older than 30 days
@@ -601,8 +570,6 @@ AS
   CALL CLEANUP_STAGE();
 ```
 
----
----
 ### **Final Notes**
 - **For Further Reading**:
   - [Snowflake Stage Documentation](https://docs.snowflake.com/en/user-guide/data-load-stage)
