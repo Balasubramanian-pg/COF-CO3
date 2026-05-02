@@ -28,7 +28,6 @@ graph TD
   Govern --> Compliance[Regional/Data Residency]
 ```
 
----
 
 ## 1. Marketplace Architecture & Fundamentals
 
@@ -97,7 +96,6 @@ CREATE OR REPLACE LISTING partner_finance_data
   APPROVER_ROLE = 'MARKETPLACE_ADMIN';
 ```
 
----
 
 ## 2. Provider Workflow: Creating & Publishing Listings
 
