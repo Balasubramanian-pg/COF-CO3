@@ -2,13 +2,11 @@
 
 *Comprehensive Guide for Snowflake Platform Engineers, SREs, and Architects*
 
----
 
 ### **📚 Table of Contents**
 
 *(Click on any section to navigate)*
 
----
 
 #### **🔹 Section 1: [Architecture & Internals Deep Dive](#section-1-architecture-internals)
 
