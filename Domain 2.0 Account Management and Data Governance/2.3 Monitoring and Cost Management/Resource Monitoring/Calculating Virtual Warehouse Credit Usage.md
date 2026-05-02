@@ -303,7 +303,6 @@ FROM (
 FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 ```
 
----
 
 ## Forecasting and Budget Planning
 
@@ -431,7 +430,6 @@ WHERE rm.deleted_on IS NULL
 ORDER BY projected_usage_pct DESC;
 ```
 
----
 
 ## Credit Optimization Strategies
 
@@ -594,7 +592,6 @@ GROUP BY cost_category
 ORDER BY total_credits DESC;
 ```
 
----
 
 ## Practical Calculation Examples
 
@@ -677,7 +674,6 @@ FROM growth_calc
 WHERE usage_month >= DATEADD(month, -3, CURRENT_DATE());
 ```
 
----
 
 ## Best Practices for Credit Calculation and Management
 
@@ -709,7 +705,6 @@ WHERE usage_month >= DATEADD(month, -3, CURRENT_DATE());
 | Optimize expensive queries first | Target queries with high bytes_scanned or credits_used | Maximum impact for optimization effort |
 | Review quarterly | Usage patterns evolve; re-analyze regularly | Catches drift before it becomes significant cost impact |
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -750,7 +745,6 @@ flowchart TD
   H --> I
 ```
 
----
 
 ## Decision Framework: Credit Calculation Strategy
 
@@ -785,7 +779,6 @@ flowchart TD
 | Warehouse optimization | Utilization analysis + p95 sizing | `PERCENTILE_CONT(0.95)` on credits_used |
 | Idle cost reduction | Auto-suspend analysis + idle credit calculation | Filter low-utilization hours; estimate waste |
 
----
 
 ## Key Principles to Remember
 
