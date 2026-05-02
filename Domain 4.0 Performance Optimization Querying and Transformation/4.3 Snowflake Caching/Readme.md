@@ -1,6 +1,5 @@
 # **Snowflake Caching: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Overview of Snowflake Caching**
 
@@ -64,7 +63,6 @@ flowchart TD
     class P,Q monitoring;
 ```
 
----
 
 ### **What is Caching in Snowflake?**
 
