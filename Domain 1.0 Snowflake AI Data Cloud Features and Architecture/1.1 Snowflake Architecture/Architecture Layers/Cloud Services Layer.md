@@ -58,14 +58,16 @@ The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinat
 
 Step-by-step flow from SQL submission to result: <br>
 1. User submits SQL to Cloud Services endpoint <br>
-2. Authentication, session validation, and role context determination
-    3. SQL parsing, object resolution against metadata store
-    4. Query optimizer generates execution plan using statistics and micro-partition metadata
-    5. Plan is dispatched to a virtual warehouse (or serverless compute) for execution
-    6. Virtual warehouse nodes retrieve micro-partition data directly from cloud object storage, apply filters, perform joins, aggregations, etc.
-    7. Intermediate or final results may be cached locally on warehouse nodes (warehouse cache) or in the result cache (holds last 24 hours; if identical query re-submitted, Cloud Services returns cached result without warehouse execution)
-    8. Cloud Services receives execution status and returns final result set to client
-  - Metadata-intensive operations (DDL, cloning, time travel queries, show commands) are executed entirely within the Cloud Services layer, without a virtual warehouse
+2. Authentication, session validation, and role context determination <br>
+3. SQL parsing, object resolution against metadata store
+4. Query optimizer generates execution plan using statistics and micro-partition metadata
+5. Plan is dispatched to a virtual warehouse (or serverless compute) for execution
+6. Virtual warehouse nodes retrieve micro-partition data directly from cloud object storage, apply filters, perform joins, aggregations, etc.
+7. Intermediate or final results may be cached locally on warehouse nodes (warehouse cache) or in the result cache (holds last 24 hours; if identical query re-submitted, Cloud Services returns cached result without warehouse execution)
+8. Cloud Services receives execution status and returns final result set to client
+
+>[!Note]
+>Metadata-intensive operations (DDL, cloning, time travel queries, show commands) are executed entirely within the Cloud Services layer, without a virtual warehouse
 
 ### Diagram: Three-Layer Architecture and Cloud Services Role
   ```mermaid
