@@ -1,6 +1,5 @@
 # **Snowflake Clustering Keys and Materialized Views: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Overview of Clustering Keys and Materialized Views**
 
@@ -71,7 +70,6 @@ flowchart TD
     class O,P,Q,R monitoring;
 ```
 
----
 
 ### **Key Concepts and Definitions**
 
