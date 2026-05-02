@@ -1,6 +1,5 @@
 # **Snowflake Query Acceleration and Search Optimization: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Overview of Query Acceleration and Search Optimization**
 
@@ -71,7 +70,6 @@ flowchart TD
     class S,T,U,V monitoring;
 ```
 
----
 
 ### **Key Concepts**
 
