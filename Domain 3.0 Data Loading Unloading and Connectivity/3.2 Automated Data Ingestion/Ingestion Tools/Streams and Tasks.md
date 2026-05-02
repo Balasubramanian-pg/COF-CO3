@@ -81,13 +81,10 @@ flowchart TD
 | **Serverless Option**       | No (requires warehouse for queries)       | No (requires warehouse for execution)    |
 | **Best For**                 | Change Data Capture, real-time pipelines   | Batch processing, scheduled workflows    |
 
----
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **A. Streams (Change Data Capture) Internals**
 
@@ -229,7 +226,6 @@ flowchart TD
 | Offset Tracking | 1MB | Per consumer | None |
 | Metadata | Shared | Vertical | None |
 
----
 ### **B. Tasks Internals**
 
 #### **1. Task Architecture**
@@ -427,11 +423,8 @@ flowchart TD
 | SQL Execution | Warehouse-dependent | Per task | Spills to SSD |
 | Metadata | Shared | Vertical | None |
 
----
----
 ## **3. Parameter/Configuration Deep Dive**
 
----
 
 ### **A. Streams Parameters**
 
@@ -458,7 +451,6 @@ CREATE STREAM MY_STREAM ON TABLE MY_SOURCE_TABLE RETENTION_TIME = 168;  -- 7 day
 CREATE STREAM MY_STREAM ON TABLE MY_SOURCE_TABLE COMMENT = 'Tracks changes for ETL pipeline';
 ```
 
----
 ### **B. Tasks Parameters**
 
 | **Parameter** | **Description** | **Internal Behavior** | **Performance Impact** | **Compliance/Edge Cases** | **Production Default** | **Valid Values** |
@@ -529,11 +521,8 @@ CREATE TASK MY_LONG_RUNNING_TASK
     CALL MY_LONG_RUNNING_PROCEDURE();
 ```
 
----
----
 ## **4. Performance & Resource Implications**
 
----
 ### **A. Streams Performance**
 
 #### **Throughput by Warehouse Size**
@@ -570,7 +559,6 @@ CREATE TASK MY_LONG_RUNNING_TASK
 | Offset Tracking | 1MB | 1KB | None |
 | Metadata | Shared | Shared | None |
 
----
 ### **B. Tasks Performance**
 
 #### **Throughput by Warehouse Size**
@@ -608,11 +596,8 @@ CREATE TASK MY_LONG_RUNNING_TASK
 | SQL Execution | Warehouse-dependent | Per task | Spills to SSD |
 | Metadata | Shared | Vertical | None |
 
----
----
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 ### **A. Key Monitoring Views**
 
 | **View** | **Purpose** | **Example Query** | **Retention** | **Applicable To** |
@@ -624,7 +609,6 @@ CREATE TASK MY_LONG_RUNNING_TASK
 | `TABLE(INFORMATION_SCHEMA.STREAM_HAS_DATA('stream_name'))` | Check if stream has data | `SELECT SYSTEM$STREAM_HAS_DATA('MY_STREAM');` | N/A | Streams |
 | `SNOWFLAKE.ACCOUNT_USAGE.TASK_EXECUTIONS` | Detailed task execution metrics | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.TASK_EXECUTIONS WHERE TASK_NAME = 'MY_TASK';` | 365 days | Tasks |
 
----
 ### **B. Error Categorization & Runbooks**
 
 #### **1. Streams Errors**
@@ -713,7 +697,6 @@ CREATE OR REPLACE STREAM MY_STREAM ON TABLE MY_SOURCE_TABLE;
 -- (Use initial load + CDC from last known good offset)
 ```
 
----
 #### **2. Tasks Errors**
 
 | **Error Code** | **Root Cause** | **Impact** | **Severity** | **Runbook** | **Monitoring View** |
@@ -843,7 +826,6 @@ ORDER BY
 ALTER TASK MY_TASK EXECUTE;
 ```
 
----
 ### **C. Proactive Alerts**
 
 #### **Streams Alerts**
@@ -933,11 +915,8 @@ AS
     AND DATEDIFF('minute', start_time, CURRENT_TIMESTAMP()) > 60;  -- >1 hour
 ```
 
----
----
 ## **6. Advanced Production Patterns**
 
----
 ### **A. CDC Pipelines with Streams**
 
 #### **1. Basic CDC Pipeline**
@@ -1188,7 +1167,6 @@ CREATE TASK PROCESS_APPEND_TASK
     CALL PROCESS_APPEND_ONLY_CDC();
 ```
 
----
 ### **B. Task-Based Workflows**
 
 #### **1. ETL Pipeline with Dependencies**
@@ -1482,7 +1460,6 @@ CREATE TASK RECOVERY_TASK
   END;
   ```
 
----
 ### **C. Hybrid Patterns (Streams + Tasks)**
 
 #### **1. Stream-Triggered Tasks**
@@ -1681,11 +1658,8 @@ CREATE TASK MASTER_CDC_TASK
   END;
 ```
 
----
----
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 ### **Mermaid: Streams vs. Tasks Decision Tree**
 ```mermaid
 %% Streams vs. Tasks Decision Tree
@@ -1720,7 +1694,6 @@ flowchart TD
     class E,O,P hybrid;
 ```
 
----
 ### **Quick Reference Table**
 
 | **Requirement** | **Streams (CDC)** | **Tasks (Scheduled)** | **Hybrid (Streams + Tasks)** | **Best Choice** |
@@ -1736,11 +1709,8 @@ flowchart TD
 | **Monitoring** | Stream-specific views | Task-specific views | Both | Both have good monitoring |
 | **Best For** | Real-time CDC, audit logging | Scheduled ETL, batch processing | Batch + CDC, event-driven | Depends on requirements |
 
----
----
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 ### **A. Core Principles**
 
 1. **Streams are for Change Tracking, Not Ingestion**:
@@ -1787,7 +1757,6 @@ flowchart TD
     - Design **idempotent operations** to handle duplicates (e.g., from retries or manual runs).
     - Use **MERGE** or **UPSERT** patterns for target tables.
 
----
 ### **B. Production Checklist**
 
 #### **Streams**
@@ -1820,7 +1789,6 @@ flowchart TD
 - [ ] Test **end-to-end workflows** (stream → task → target)
 - [ ] Document **data flow** and error handling
 
----
 ### **C. Bottom Line**
 
 | **Metric** | **Streams (CDC)** | **Tasks (Scheduled)** | **When to Use** |
@@ -1840,11 +1808,8 @@ flowchart TD
 - Use **Both** when you need **real-time change processing** combined with **scheduled workflows**.
 - Always **monitor**, **log errors**, and **test failover** for production pipelines.
 
----
----
 ## **Appendix: Production-Ready Snippets**
 
----
 ### **A. Streams Setup**
 
 #### **1. Basic Stream Creation**
@@ -1975,7 +1940,6 @@ VALUES ('MY_CONSUMER', 'MY_STREAM', NULL, NULL);
 CALL PROCESS_STREAM_CHANGES('MY_CONSUMER', 'MY_STREAM');
 ```
 
----
 ### **B. Tasks Setup**
 
 #### **1. Basic Task Creation**
@@ -2052,7 +2016,6 @@ CREATE TASK MY_LONG_RUNNING_TASK
     CALL MY_LONG_RUNNING_PROCEDURE();
 ```
 
----
 ### **C. Hybrid Setup (Streams + Tasks)**
 
 #### **1. Stream-Triggered Task**
@@ -2136,7 +2099,6 @@ CREATE TASK INCREMENTAL_LOAD_TASK
   END;
 ```
 
----
 ### **D. Monitoring and Alerting Setup**
 
 #### **1. Streams Monitoring Dashboard**
@@ -2212,7 +2174,6 @@ ORDER BY
     hour DESC;
 ```
 
----
 ### **Final Notes**
 
 For Further Reading:
