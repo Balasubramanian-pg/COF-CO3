@@ -95,8 +95,11 @@ We Will narrow down on Database storage layer in this section
   - No storage duplication means shares are always up-to-date and low cost
 
 ## Automatic Clustering and Optimization
-  - Clustering Keys can be defined on a table to co-locate related rows in the same micro-partitions, improving partition pruning
-  - Without a clustering key, data is naturally ordered by ingestion time; Snowflake may still perform well due to automatic micro-partition metadata pruning, but large tables with heavy filter-based queries benefit from clustering
+
+>[!Important]
+>Clustering Keys can be defined on a table to co-locate related rows in the same micro-partitions, improving partition pruning
+  - Without a clustering key, data is **_naturally ordered by ingestion time_**;
+  - Snowflake may still perform well due to **automatic micro-partition metadata pruning**, but large tables with _heavy filter-based queries benefit from clustering_
   - Automatic Clustering service (serverless) re-organizes micro-partitions in the background to maintain clustering ratio and order, ensuring consistent query performance even with frequent DML
   - Background compaction coalesces small micro-partitions into optimal larger ones, reducing the number of files scanned and metadata overhead
   - Both are fully managed and operate transparently
