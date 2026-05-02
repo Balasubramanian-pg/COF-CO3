@@ -4,7 +4,12 @@
 
 ## Stages and File Formats
 
-Stages and file formats are the ingestion and egress contract for file-based data movement in Snowflake. A stage is the named object that points to a file location or internal storage area, while a file format object is the reusable parsing contract that defines how Snowflake reads or writes those files. Snowflake explicitly recommends named file formats when you repeatedly load or unload similarly formatted data because the format object centralizes the parsing behavior. ([Snowflake Docs][1])
+Stages and file formats are the ingestion and egress contract for file-based data movement in Snowflake. 
+
+>[!Tip]
+>A stage is the named object that points to a file location or internal storage area, while a file format object is the reusable parsing contract that defines how Snowflake reads or writes those files. 
+
+Snowflake explicitly recommends named file formats when you repeatedly load or unload similarly formatted data because the format object centralizes the parsing behavior. ([Snowflake Docs][1])
 
 ### Stage object behavior
 
