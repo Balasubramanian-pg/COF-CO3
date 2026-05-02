@@ -140,7 +140,6 @@ Reader accounts inherit the standard system role hierarchy but with **critical r
 
 **Critical Reader Account Role Limitation:** Reader account roles **cannot** create `SHARE`, `STAGE`, `PIPE`, `MASKING POLICY`, `ROW ACCESS POLICY`, `STREAM`, `TASK`, `SERVICE`, `STREAMLIT`, or `IMAGE REPOSITORY` objects . The `ACCOUNTADMIN` role in a reader account is fundamentally a "query administrator," not a platform administrator.
 
----
 
 ## 3. CUSTOM ROLE DESIGN PATTERNS FOR DATA SHARING
 
@@ -290,7 +289,6 @@ CREATE RESOURCE MONITOR reader_account_rm
 ALTER WAREHOUSE shared_query_wh SET RESOURCE_MONITOR = reader_account_rm;
 ```
 
----
 
 ## 4. PRIVILEGE REQUIREMENTS MATRIX
 
@@ -321,7 +319,6 @@ ALTER WAREHOUSE shared_query_wh SET RESOURCE_MONITOR = reader_account_rm;
 | `SELECT FROM <shared_db>.<schema>.<table>` | `USAGE` on DB + schema, `SELECT` on table | Yes | Consumer pays compute credits for query execution. |
 | `CREATE VIEW <local_db>.<view> AS SELECT FROM <shared_db>...` | `CREATE VIEW` on local schema, `SELECT` on shared object | Yes | Common pattern — create local abstractions over shared data. |
 
----
 
 ## 5. ROLE OWNERSHIP & SHARE LIFECYCLE GOVERNANCE
 
@@ -376,7 +373,6 @@ USE ROLE share_admin;
 DROP SHARE prod_sales_share;
 ```
 
----
 
 ## 6. MONITORING & AUDITING ROLE ACTIVITY ON SHARES
 
@@ -459,7 +455,6 @@ GROUP BY 1, 2
 ORDER BY gb_scanned DESC;
 ```
 
----
 
 ## 7. ADVANCED PRODUCTION PATTERNS
 
@@ -587,7 +582,6 @@ ALTER SHARE prod_sales_share ADD ACCOUNTS = ('AUTH_ACCT1', 'AUTH_ACCT2');
 -- Consumers must execute: USE DATABASE prod_sales_shared; -- reconnects
 ```
 
----
 
 ## 8. DECISION MATRIX: ROLE SELECTION FOR SHARE SCENARIOS
 
@@ -602,7 +596,6 @@ ALTER SHARE prod_sales_share ADD ACCOUNTS = ('AUTH_ACCT1', 'AUTH_ACCT2');
 | **Consumer delegating shared data access** | SECURITYADMIN or custom with `MANAGE GRANTS` | Standard RBAC delegation | Direct grants by ACCOUNTADMIN create unmaintainable ACLs |
 | **Reader account user management** | USERADMIN in reader account | Principle of least privilege | ACCOUNTADMIN in reader account doing user mgmt = over-privilege |
 
----
 
 ## 9. KEY ENGINEERING PRINCIPLES & BOTTOM LINE
 
@@ -633,12 +626,10 @@ Role design in Snowflake Data Sharing is the **governance foundation** of your e
 
 **Final Verdict:** Treat share roles as infrastructure-as-code. Define them in Terraform/Snowflake-CLI, version control the grants, and audit every `GRANT ... TO SHARE` via `ACCOUNT_USAGE.QUERY_HISTORY`. The role that owns the share owns the data contract — make sure that role is a service role, not a human.
 
----
 
 *Document Version: 2026.05.02*
 *Classification: Production Engineering Reference — Account Roles Subdomain*
 *Applicable Editions: Standard, Enterprise, Business Critical*
 
----
 
 **[Download Complete Technical Deep Dive](sandbox:///mnt/agents/output/snowflake_data_sharing_account_roles.md)**
