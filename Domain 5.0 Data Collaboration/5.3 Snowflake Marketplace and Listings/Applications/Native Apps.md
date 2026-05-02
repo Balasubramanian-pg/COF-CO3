@@ -117,7 +117,6 @@ SELECT customer_id, predict_risk(...) AS risk_level FROM ...;
 | `APPLICATION_GRANTS` | `TO APPLICATION <name>` not `TO ROLE`; scoped to app instance only | Enforces zero-trust boundary; prevents cross-app data leakage |
 | `manifest.yml` | Declares setup script, default role, post-install hooks | Required for Marketplace publication; versioned alongside code |
 
----
 
 ## 3. Consumer Installation & Execution
 
@@ -148,7 +147,6 @@ ORDER BY last_scored DESC;
 
 **Execution Reality**: Apps consume **consumer warehouse credits** unless explicitly configured for provider-managed compute. Right-size the warehouse attached to app tasks. Under-provision = timeouts. Over-provision = budget bleed.
 
----
 
 ## 4. Security, Isolation & Data Boundaries
 
@@ -180,7 +178,6 @@ WHERE query_text ILIKE '%churn_analytics%'
   AND object_name ILIKE '%analytics_db%'; -- Verify only granted objects touched
 ```
 
----
 
 ## 5. Versioning, Lifecycle & Upgrade Paths
 
@@ -212,7 +209,6 @@ ALTER APPLICATION PACKAGE churn_prediction_pkg
 ALTER APPLICATION churn_analytics UPGRADE TO VERSION v2_0;
 ```
 
----
 
 ## 6. Telemetry, Monetization & ROI Tracking
 
@@ -258,7 +254,6 @@ GROUP BY warehouse_name;
 - `SUBSCRIPTION`: Fixed monthly fee via Snowflake billing. Predictable OPEX.
 - `CREDIT-BASED`: Pay-per-execution via telemetry tracking. Aligns cost with ROI.
 
----
 
 ## 7. Performance & Resource Optimization
 
@@ -300,7 +295,6 @@ END;
 $$;
 ```
 
----
 
 ## 8. Monitoring, Troubleshooting & Cost Attribution
 
@@ -347,7 +341,6 @@ ORDER BY execution_time DESC;
 | **Schedule off-peak execution** | `ALTER APPLICATION ... SET SCHEDULE = 'USING CRON 0 2 * * *'` | 20–40% credit reduction |
 | **Limit data scan scope** | Grant `SELECT` only on filtered views, not raw tables | 10–100x reduction in bytes scanned |
 
----
 
 ## 9. Anti-Patterns & Pitfalls
 
@@ -359,7 +352,6 @@ ORDER BY execution_time DESC;
 | **Ignoring compute sizing** | App tasks fail OOM or timeout | Default `XSMALL` for heavy UDF batches | Document requirements; expose `WAREHOUSE` parameter | 30% install abandonment |
 | **Telemetry spam** | High cloud services credits; app throttling | Emitting per-row telemetry | Aggregate metrics; emit at completion | 2–3x credit waste |
 
----
 
 ## 10. Decision Frameworks & Quick Reference
 
@@ -411,7 +403,6 @@ SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.APP_USAGE WHERE app_name = 'my_app';
 | `400001` | `Insufficient warehouse credits` | Consumer warehouse suspended; attach resource monitor or resume |
 | `500012` | `Telemetry payload exceeds size limit` | Batch telemetry; reduce JSON payload; avoid nested arrays |
 
----
 
 ## Key Principles & Bottom Line
 
