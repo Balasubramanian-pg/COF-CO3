@@ -17,6 +17,8 @@
 >[!Tip]
 >Snowflake also states you cannot create hybrid tables as temporary or transient, and you cannot place them inside transient schemas or databases. ([Snowflake Docs][2])
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/e9b3eb2c-937c-4b5c-80d3-caf73a8f740f" />
+
 ### External Tables
 External tables are read-only tables over files in an external stage. Snowflake stores metadata for those files inside Snowflake, but the stage itself is external. External tables can be queried and joined, but DML is not supported. Snowflake also says query performance can be slower than native tables, and materialized views can be used to improve performance over external tables. ([Snowflake Docs][3])
 
