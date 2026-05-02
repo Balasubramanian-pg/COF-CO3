@@ -3,10 +3,13 @@
 In this section we are going to look at the architecture layers of snowflake
 
 ## Overview
-  - Snowflake’s architecture is built on three distinct, decoupled layers: Cloud Services, Compute, and Database Storage
-  - Each layer scales independently, ensuring elasticity, cost efficiency, and workload isolation
+  - Snowflake’s architecture is built on three distinct, decoupled layers:
+      - **Cloud Services**,
+      - **Compute**,
+      - and **Database Storage**
+  - Each layer _scales independently_, _ensuring elasticity_, _cost efficiency_, and workload isolation
   - This separation of concerns allows users to pay only for storage used and compute consumed, with the intelligence of the platform centralized in the Cloud Services layer
-  - The architecture is consistent across Amazon Web Services, Microsoft Azure, and Google Cloud Platform
+  - The architecture is **consistent** across Amazon Web Services, Microsoft Azure, and Google Cloud Platform
 
 ## Cloud Services Layer
   - Core role: The central nervous system that coordinates every operation across the platform
