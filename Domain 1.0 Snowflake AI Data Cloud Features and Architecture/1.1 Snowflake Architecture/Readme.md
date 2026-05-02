@@ -2,7 +2,7 @@
 
 This document provides a production-grade, expert-level technical analysis of the Snowflake Data Cloud architecture. It strictly focuses on distributed execution internals, transactional boundaries, memory/I/O mechanics, and platform reliability engineering.
 
-### 1. Execution Flow, Component Interactions, and Failure Paths
+## 1. Execution Flow, Component Interactions, and Failure Paths
 
 The following Mermaid diagram maps the end-to-end execution lifecycle of a query, detailing metadata consensus, vectorized execution, cache hit/miss paths, and memory exhaustion failovers.
 
@@ -60,26 +60,28 @@ graph TD
     FDB -.->|Metadata Conflict| TxnRetry[Txn Rollback/Retry]:::fail
 ```
 
-### 2. Execution Internals & Transactional Boundaries
+## 2. Execution Internals & Transactional Boundaries
 
-#### 2.1 Metadata Consensus and Transaction Control (FoundationDB)
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/fcce1e86-f136-416e-a429-5a852f89f113" />
+
+### 2.1 Metadata Consensus and Transaction Control (FoundationDB)
 Snowflake does not use locking on actual data files. It employs Multi-Version Concurrency Control (MVCC) with **Snapshot Isolation (SI)** via FoundationDB (a globally distributed, ACID-compliant key-value store).
 *   **Micro-Partition Immutability**: All DML operations (INSERT, UPDATE, DELETE, MERGE) write entirely *new* micro-partitions (immutable 16MB–64MB uncompressed columnar files). 
 *   **The Commit Protocol**: A "commit" is strictly a metadata pointer swap in FoundationDB. FDB operates as the single source of truth. When a transaction commits, the active table version pointer is atomically updated to include the new micro-partitions and exclude the old ones. 
 *   **Failure Recovery**: If a compute node dies mid-query, the uncommitted micro-partitions written to cloud storage are orphaned and eventually garbage-collected by a background CSL process. There is zero risk of dirty reads.
 
-#### 2.2 Query Compilation and Optimizer Mechanics
+### 2.2 Query Compilation and Optimizer Mechanics
 The Cost-Based Optimizer (CBO) relies exclusively on micro-partition metadata (Min/Max values, NULL counts, distinct counts). 
 *   **Pruning**: Pushed-down predicates (e.g., `WHERE date = '2026-05-02'`) eliminate partition scans entirely at the CSL layer before compute nodes are even engaged.
 *   **Join Reordering**: The CBO utilizes Cascades optimization to determine join order based on table cardinalities cached in FDB.
 
-#### 2.3 Compute Thread Allocation and Memory Model
+### 2.3 Compute Thread Allocation and Memory Model
 Snowflake virtual warehouses consist of clusters of homogenous EC2/VM instances. Execution is **vectorized** and **columnar**.
 *   **Thread Pools**: A standard query uses multiple threads. However, Snowflake caps thread allocation per query to prevent noisy neighbor monopolization within the warehouse. By default, a warehouse runs up to 8 concurrent queries (`MAX_CONCURRENCY_LEVEL`).
 *   **I/O Pipeline**: Data is stream-read from remote blob storage $\rightarrow$ buffered to local ephemeral NVMe SSDs (Data Cache) $\rightarrow$ loaded into RAM for thread execution. 
 
 
-### 3. Parameter/Configuration Deep Dive
+## 3. Parameter/Configuration Deep Dive
 
 Modifying execution parameters must be done with precision. The following table details the core platform configurations.
 
@@ -91,9 +93,9 @@ Modifying execution parameters must be done with precision. The following table 
 | `CLIENT_PREFETCH_THREADS` | Number of concurrent threads fetching result sets to the client driver. | High numbers accelerate large `SELECT *` extractions but consume high client-side CPU/memory. | Default: `4`. Increase to `10` strictly for massive data exfiltration/Python ML dataframe loads. |
 | `ENABLE_UNLOAD_PHYSICAL_TYPE_OPTIMIZATION` | Allows Parquet/ORC unloads to bypass memory deserialization if physical types match. | Reduces CPU overhead and memory footprint by up to 60% during bulk `COPY INTO <location>` operations. | Default: `False`. **SRE Override: `True`** for massive data lake hydration pipelines. |
 
-### 4. Performance & Resource Implications
+## 4. Performance & Resource Implications
 
-#### 4.1 Memory Exhaustion and Spill-to-Disk Mechanics
+### 4.1 Memory Exhaustion and Spill-to-Disk Mechanics
 Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spilling is the primary cause of non-linear performance degradation.
 *   **Local SSD Spill (`BYTES_SPILLED_TO_LOCAL_STORAGE`)**: Occurs when thread-allocated RAM is exhausted (typical in large Hash Joins or `ORDER BY` without `LIMIT`). Memory is swapped to the instance's ephemeral NVMe SSD.
     *   *Latency Impact*: ~1.5x - 2.5x query duration increase.
@@ -101,7 +103,7 @@ Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spill
     *   *Latency Impact*: ~5x - 10x query duration increase. I/O wait becomes the dominant bottleneck.
     *   *Resolution*: Scale *UP* the warehouse (e.g., M to L) to double the RAM and SSD per node, or rewrite the query to utilize window functions and bloom filters to reduce join explosion.
 
-#### 4.2 Multi-Cluster Warehouse (MCW) Scaling & Queuing
+### 4.2 Multi-Cluster Warehouse (MCW) Scaling & Queuing
 *   **Standard vs. Economy Policies**: 
     *   `STANDARD`: Starts a new cluster immediately when a query queues or the system estimates queue time > 1 second.
     *   `ECONOMY`: Will *only* start a new cluster if the system calculates there is enough queued work to keep the new cluster busy for a full **6 minutes**. Use *only* for asynchronous background batch processing where strict SLAs do not exist.
@@ -113,9 +115,9 @@ Snowflake does not OOM (Out of Memory) crash typical queries; it *spills*. Spill
     *   *SRE Math*: If compute costs 100 credits/day, and CSL costs 8 credits, CSL billed = 0. If CSL costs 15 credits, CSL billed = 5. High CSL overhead usually indicates excessive micro-batching (`INSERT` single rows) or massive metadata queries.
 
 
-### 5. Monitoring, Observability & Troubleshooting
+## 5. Monitoring, Observability & Troubleshooting
 
-#### 5.1 System-Wide Resource Bottleneck Identification
+### 5.1 System-Wide Resource Bottleneck Identification
 Deploy this query to `SNOWFLAKE.ACCOUNT_USAGE` to identify warehouse pressure, spill, and queueing across the enterprise.
 
 ```sql
@@ -148,7 +150,7 @@ FROM warehouse_metrics
 ORDER BY remote_spill_gb DESC, queue_to_exec_ratio_pct DESC;
 ```
 
-#### 5.2 Incident Runbook: Remote Storage Spill Degradation
+### 5.2 Incident Runbook: Remote Storage Spill Degradation
 **Symptom**: P95 query latencies spike by >500%; `remote_spill_gb` alerts fire.
 **Root Cause**: Memory pressure pushing intermediate data structures (hash tables, sort states) out of RAM and SSD into Blob.
 **Mitigation Steps**:
@@ -157,15 +159,15 @@ ORDER BY remote_spill_gb DESC, queue_to_exec_ratio_pct DESC;
 3.  *Immediate fix*: Route the specific query to a larger warehouse size (e.g., L $\rightarrow$ XL) using session-level `ALTER SESSION SET USE_CACHED_RESULT = FALSE; USE WAREHOUSE <larger_wh>;` to validate memory threshold.
 4.  *Long-term fix*: Introduce `CLUSTER BY` on the underlying tables to reduce the number of micro-partitions scanned, reducing the working set size in memory.
 
-### 6. Advanced Production Patterns
+## 6. Advanced Production Patterns
 
-#### 6.1 Idempotency & Concurrency: MERGE vs. INSERT OVERWRITE
+### 6.1 Idempotency & Concurrency: MERGE vs. INSERT OVERWRITE
 To ensure exact-once execution semantics in CI/CD (dbt, Airflow) and avoid race conditions:
 *   **`INSERT OVERWRITE`**: Completely drops and replaces the table/partition. Under the hood, FDB swaps the entire metadata pointer array. High performance, zero concurrency issues, but removes historical state.
 *   **`MERGE`**: FDB locks the target micro-partitions for writing. If two concurrent jobs attempt to `MERGE` into the same target micro-partitions, Snowflake throws a `ConcurrentModificationException` to prevent data corruption. 
 *   **SRE Pattern**: For concurrent micro-batch ingestion (e.g., Kafka to Snowflake), always land data into append-only raw tables (`INSERT`), then run a scheduled asynchronous `MERGE` using a `STREAM` and `TASK` to aggregate into the final modeled table.
 
-#### 6.2 Dead Letter Queue (DLQ) Routing via Snowpipe
+### 6.2 Dead Letter Queue (DLQ) Routing via Snowpipe
 When utilizing Snowpipe for continuous ingestion, standard `COPY INTO` errors fail the entire batch.
 *   **Implementation**: Use `ON_ERROR = CONTINUE` coupled with the metadata functions.
 ```sql
@@ -181,12 +183,12 @@ WHERE ... -- validation logic
 ```
 Query `VALIDATE(<table_name>, JOB_ID => '<query_id>')` immediately post-ingestion to route malformed rows to a DLQ table asynchronously.
 
-#### 6.3 Security: Tri-Secret Secure
+### 6.3 Security: Tri-Secret Secure
 For strictly regulated environments (HIPAA/FedRAMP), utilize **Tri-Secret Secure**. 
 *   **Internals**: Snowflake encrypts all micro-partitions with AES-256-GCM using key rotation (every 30 days). In Tri-Secret Secure, the final encryption key is a composite of a Snowflake-managed key and a Customer-Managed Key (CMK) residing in AWS KMS / Azure Key Vault.
 *   **Impact**: If the KMS key is revoked, the entire Snowflake account instantly cryptographically shreds—the CSL cannot decrypt the FDB metadata, effectively bricking the data until the key is restored.
 
-### 7. Decision Matrix / Quick Reference Flowchart
+## 7. Decision Matrix / Quick Reference Flowchart
 
 | Objective | Architectural Decision | Execution Impact |
 | :--- | :--- | :--- |
@@ -196,7 +198,7 @@ For strictly regulated environments (HIPAA/FedRAMP), utilize **Tri-Secret Secure
 | **Zero-Copy Cloning** | Snapshot Isolation Metadata Clone | $0 compute cost. Instantly duplicates pointers in FoundationDB. Data storage billed only on delta changes. |
 | **Sub-second Point Lookups** | Query Acceleration Service / Search Optimization | FDB creates heavy background indexes (bloom filters/skip lists). Increases storage/compute costs during index build but drops lookup latency to <100ms. |
 
-### 8. Key Engineering Principles & Bottom Line
+## 8. Key Engineering Principles & Bottom Line
 
 1.  **Metadata is the Bottleneck, Storage is Cheap**: Operations that manipulate large numbers of objects (e.g., creating 10,000 tables, micro-batching 1 row per transaction) will overload the Cloud Services Layer and trigger 10% penalty billing. **Batch heavy, batch often.**
 2.  **Concurrency vs. Complexity Decoupling**: Never run heavy ETL (`dbt run`) and ad-hoc BI on the same warehouse. They compete for local SSD cache. Decouple into `WH_ETL_PROD` (Scaled UP) and `WH_BI_PROD` (Scaled OUT).
