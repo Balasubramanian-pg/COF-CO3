@@ -1,6 +1,5 @@
 # **Snowflake Connectors and Integrations: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Architecture & Integration Landscape**
 
@@ -90,7 +89,6 @@ flowchart TD
     class AB,AC,AD monitoring;
 ```
 
----
 ### **Connectors and Integrations Comparison Table**
 
 | **Category** | **Type** | **Purpose** | **Data Flow** | **Latency** | **Throughput** | **Serverless** | **Managed** | **Cost Model** |
