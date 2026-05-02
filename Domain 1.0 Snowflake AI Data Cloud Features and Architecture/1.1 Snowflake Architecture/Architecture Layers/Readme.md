@@ -1,6 +1,7 @@
 # Architecture Layers
 
 In this section we are going to look at the architecture layers of snowflake
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/fa32fd56-2ccd-4b02-82c7-9e479715907f" />
 
 ## Overview
   - Snowflake’s architecture is built on three distinct, decoupled layers:
