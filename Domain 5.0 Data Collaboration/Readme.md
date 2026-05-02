@@ -175,7 +175,6 @@ SELECT COUNT(*) FROM shared_db.secure.order_metrics WHERE order_date > '2024-01-
 -- Compare: bytes_scanned, compilation_time, execution_time
 ```
 
----
 
 ## 3. Reader Accounts & Managed Collaboration
 
@@ -234,7 +233,6 @@ ALTER ACCOUNT SET NETWORK_POLICY = partner_access_policy;
 | Provider-billed compute | Unexpected spikes hit provider budget | Attach `RESOURCE MONITOR` to reader warehouses; set credit quotas |
 | Cross-region latency | 50–200ms added hop for non-local readers | Enable cross-region replication; share from regional replica |
 
----
 
 ## 4. Data Exchange & Marketplace Collaboration
 
@@ -301,7 +299,6 @@ CALL SYSTEM$PUBLISH_LISTING('partner_data_listing');
 - Usage tracked via `MARKETPLACE_USAGE` views; revenue settled monthly.
 - Free listings still incur provider storage/compute costs; monitor `SHARE_USAGE`.
 
----
 
 ## 5. Governance & Access Control in Collaboration
 
@@ -378,7 +375,6 @@ FROM TABLE(INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS(
 WHERE tag_name = 'data_classification';
 ```
 
----
 
 ## 6. Cross-Account Replication & Disaster Recovery
 
@@ -439,7 +435,6 @@ SELECT CURRENT_ACCOUNT(), CURRENT_ROLE();
 - Replicated objects are **read-only** in replica; DML must target primary.
 - Storage cost: Replica incurs full storage charges in target account.
 
----
 
 ## 7. Monitoring, Troubleshooting & Cost Attribution
 
@@ -541,7 +536,6 @@ WHERE (
 ) > 0;
 ```
 
----
 
 ## 8. Performance Optimization & Best Practices
 
@@ -583,7 +577,6 @@ CLUSTER BY (region, created_date); -- Clustering aligns with policy
 | Overusing Reader accounts for internal teams | Unnecessary provider billing; compute isolation overhead | Use direct sharing for internal Snowflake accounts |
 | Disabling policy evaluation for "performance" | Data exposure, audit failures | Optimize policies instead; use `SEARCH OPTIMIZATION` on filtered columns |
 
----
 
 ## 9. Decision Frameworks & Quick Reference
 
@@ -639,7 +632,6 @@ SHOW GRANTS TO SHARE provider_org.partner_share;
 | `400001` | `Insufficient privileges` | Grant `USAGE` on database/schema to share; verify consumer role context |
 | `500012` | `Row access policy evaluation failed` | Check policy logic for NULL handling; test with `EXPLAIN` |
 
----
 
 ## Key Principles to Remember
 1. **Zero-copy is not zero-governance.** Sharing metadata still requires explicit access control, policy enforcement, and audit trails.
