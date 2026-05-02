@@ -191,7 +191,6 @@ GROUP BY project, team, environment
 ORDER BY total_credits DESC;
 ```
 
----
 
 ## Component 2: Warehouse Metering and Usage Views
 
@@ -269,7 +268,6 @@ WHERE start_time BETWEEN
 GROUP BY warehouse_name;
 ```
 
----
 
 ## Component 3: ALERT Objects for Proactive Notification
 
@@ -388,7 +386,6 @@ CREATE OR REPLACE ALERT ops.long_query_alert
   );
 ```
 
----
 
 ## Component 4: Automated Tasks for Reporting and Cleanup
 
@@ -522,7 +519,6 @@ AS
   );
 ```
 
----
 
 ## Component 5: External Integrations for Notifications
 
@@ -633,7 +629,6 @@ CREATE OR REPLACE ALERT cost.monitor_threshold_detailed
   );
 ```
 
----
 
 ## Component 6: Cost Attribution and Chargeback Mechanisms
 
@@ -735,7 +730,6 @@ WHERE billing_month = DATE_TRUNC('month', CURRENT_DATE())
 FILE_FORMAT = (TYPE = CSV HEADER = TRUE);
 ```
 
----
 
 ## Integration Patterns: Combining Components
 
@@ -914,7 +908,6 @@ AS
   );
 ```
 
----
 
 ## Best Practices Summary
 
@@ -954,7 +947,6 @@ AS
 | Use tasks for automated reporting | Schedule weekly/monthly cost reports | Ensures consistent, timely reporting without manual effort |
 | Monitor the monitors | Track `RESOURCE_MONITOR_EVENTS` for threshold breaches | Ensures guardrails are working as intended |
 
----
 
 ## Common Pitfalls and Mitigations
 
@@ -1004,7 +996,6 @@ flowchart TD
   K --> L
 ```
 
----
 
 ## Decision Framework: Cost Management Component Selection
 
@@ -1045,7 +1036,6 @@ flowchart TD
 | Real-time notifications | Slack/PagerDuty Integrations | Low: After core monitoring is stable |
 | Optimize costs | Warehouse analysis + Query optimization tasks | Ongoing: After baseline monitoring established |
 
----
 
 ## Key Principles to Remember
 
