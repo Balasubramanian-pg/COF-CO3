@@ -104,7 +104,6 @@ flowchart TD
     class HH,II,JJ,KK observability;
 ```
 
----
 
 ### **File Format Execution Path Comparison**
 | **File Format** | **Parsing Model**               | **Storage Model**       | **Error Granularity**       | **Compression Support**               | **Schema Evolution** | **Predicate Pushdown** | **Best For**                          |
@@ -117,7 +116,6 @@ flowchart TD
 | **XML**         | DOM/SAX (tree-based)             | Row-based                | Element-level               | None (plaintext)                        | ❌ No                | ❌ No                  | Hierarchical data, legacy systems     |
 | **ORC**         | Columnar (stripe-based)          | Columnar                 | Stripe-level                | Snappy, Zlib, LZO, LZ4, Uncompressed     | ✅ Yes               | ✅ Yes                 | Hive workloads, big data               |
 
----
 
 
 ## **2. Execution Internals & Transactional Boundaries**
