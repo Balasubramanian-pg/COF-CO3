@@ -13,10 +13,18 @@ Dynamic tables are managed table objects that Snowflake refreshes automatically 
 Apache Iceberg tables also appear in the table family, but they are a separate table type with their own lifecycle and storage semantics. The `INFORMATION_SCHEMA.TABLES` view exposes `IS_ICEBERG`, `IS_DYNAMIC`, `IS_IMMUTABLE`, and `IS_HYBRID` flags so you can distinguish these variants programmatically instead of guessing from naming conventions. ([Snowflake Docs][5])
 
 ### Creation patterns that matter in production
+>[!Note]
+>`CREATE TABLE` supports the practical deployment patterns you actually use: CTAS, `LIKE`, `CLONE`, and `USING TEMPLATE`. 
 
-`CREATE TABLE` supports the practical deployment patterns you actually use: CTAS, `LIKE`, `CLONE`, and `USING TEMPLATE`. CTAS can copy data into a new table, `LIKE` copies only the column definitions, `CLONE` creates a zero-copy clone, and `USING TEMPLATE` derives schema from staged files through `INFER_SCHEMA`. Snowflake also documents that `CREATE OR REPLACE <object>` is atomic, so queries concurrent with the operation see either the old version or the new version, not a half-built object. ([Snowflake Docs][1])
+1. CTAS can copy data into a new table,
+2. `LIKE` copies only the column definitions,
+3. `CLONE` creates a zero-copy clone,
+4. And `USING TEMPLATE` derives schema from staged files through `INFER_SCHEMA`. 
 
-For table replacement, `COPY GRANTS` preserves privileges on the replaced table rather than inheriting from source tables in the query. Snowflake also notes that `COPY TAGS` can propagate tags during `CREATE OR REPLACE TABLE`, `LIKE`, and `CLONE` workflows, with precedence rules if the same tag exists in multiple sources. That matters for controlled promotion because governance metadata may survive replacement if you design for it, or disappear if you do not. ([Snowflake Docs][1])
+Snowflake also documents that `CREATE OR REPLACE <object>` is atomic, so queries concurrent with the operation see either the old version or the new version, not a half-built object. ([Snowflake Docs][1])
+
+>[!Note]
+>For table replacement, `COPY GRANTS` preserves privileges on the replaced table rather than inheriting from source tables in the query. Snowflake also notes that `COPY TAGS` can propagate tags during `CREATE OR REPLACE TABLE`, `LIKE`, and `CLONE` workflows, with precedence rules if the same tag exists in multiple sources. That matters for controlled promotion because governance metadata may survive replacement if you design for it, or disappear if you do not. ([Snowflake Docs][1])
 
 ```sql
 CREATE OR REPLACE TABLE analytics.fact_sales
