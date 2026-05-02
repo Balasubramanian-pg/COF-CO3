@@ -62,7 +62,6 @@ flowchart TD
     class M,N,O,P workflows;
 ```
 
----
 
 ### **Storage API vs. Git Integrations Comparison Table**
 
@@ -80,15 +79,12 @@ flowchart TD
 | **Security**              | IAM, CMK, PrivateLink                    | SSH, HTTPS, OAuth, PATs                  |
 | **Authentication**        | JWT, OAuth, Cloud Credentials             | SSH keys, HTTPS, OAuth tokens            |
 
----
 
----
 
 ## **2. Storage API Integrations Deep Dive**
 
 Storage API integrations enable **programmatic access** to Snowflake's **cloud storage** (stages) and **external cloud storage** (S3, Azure Blob, GCS). These APIs allow you to **automate data loading/unloading**, **manage files**, and **integrate Snowflake with external systems**.
 
----
 
 ### **A. Snowflake Storage API (Preview)**
 
@@ -216,7 +212,6 @@ flowchart TD
 - **No Transaction Support**: Operations are **not atomic** (no rollback on failure).
 - **No Resumable Uploads**: Large file uploads **cannot be resumed** if interrupted.
 
----
 #### **9. Configuration and Usage**
 
 ##### **Authentication Setup**
@@ -342,7 +337,6 @@ def generate_presigned_url(account, session_token, stage_name, file_path, expiry
     return response.json()['data']['presignedUrl']
 ```
 
----
 ### **B. PUT/GET Commands**
 
 #### **1. Definition and Architecture**
@@ -459,7 +453,6 @@ flowchart TD
 - **No Transaction Support**: PUT/GET operations are **not atomic** (no rollback on failure).
 - **No Partial Downloads**: GET downloads the **entire file** (no range requests).
 
----
 #### **8. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -470,7 +463,6 @@ flowchart TD
 | `PARALLEL` | Number of parallel threads | 4 | 1-100 | Higher = faster uploads/downloads |
 | `PRESERVE_FILE_METADATA` | Preserve file metadata (e.g., timestamps) | `FALSE` | `TRUE`, `FALSE` | `TRUE` = retains original metadata |
 
----
 #### **9. Production-Ready Setup**
 
 ##### **Basic PUT/GET Commands**
@@ -542,7 +534,6 @@ PUT file:///local/path/data.parquet @MY_S3_STAGE
 GET @MY_S3_STAGE/data.parquet file:///local/path/;
 ```
 
----
 ### **C. Cloud Storage SDK Integrations**
 
 While Snowflake's **PUT/GET** commands and **Storage API** provide direct file transfer capabilities, you can also use **cloud storage SDKs** (AWS S3, Azure Blob, GCS) to **directly interact with external stages**. This approach is useful for **high-volume file operations**, **resumable uploads**, and **advanced cloud storage features**.
@@ -668,7 +659,6 @@ def multipart_upload(file_path, bucket_name, s3_key):
 multipart_upload(file_path, bucket_name, s3_key)
 ```
 
----
 #### **2. Azure Blob Storage SDK Integration**
 ##### **When to Use**
 ✅ **High-volume file transfers** (>1TB/day)
@@ -768,7 +758,6 @@ def block_blob_upload(file_path, container_name, blob_name):
 block_blob_upload(file_path, container_name, blob_name)
 ```
 
----
 #### **3. Google Cloud Storage SDK Integration**
 ##### **When to Use**
 ✅ **High-volume file transfers** (>1TB/day)
@@ -844,7 +833,6 @@ def resumable_upload(file_path, bucket_name, blob_name):
 resumable_upload(file_path, bucket_name, blob_name)
 ```
 
----
 ### **D. External Stage API**
 
 The **External Stage API** allows you to **programmatically create, manage, and query** external stages in Snowflake. This is useful for **automating stage management** in CI/CD pipelines, **dynamic stage creation**, and **integration with external systems**.
@@ -946,13 +934,10 @@ LIST @MY_S3_STAGE;
 LIST @MY_S3_STAGE PATTERN = '.*\\.parquet';
 ```
 
----
----
 ## **3. Git Integrations Deep Dive**
 
 Git integrations enable **version control** and **collaboration** for Snowflake objects (e.g., **stored procedures, functions, views, SQL scripts**). These integrations are critical for **CI/CD pipelines**, **code reviews**, and **audit trails** in modern data environments.
 
----
 
 ### **A. Snowsight Git Integration (Native)**
 
@@ -1063,7 +1048,6 @@ flowchart TD
 - **No Offline Mode**: Requires **internet connectivity** to push/pull.
 - **No Partial Commits**: **All changes** in a worksheet are committed together.
 
----
 #### **8. Configuration Steps**
 
 ##### **Step 1: Set Up Git Provider**
@@ -1109,7 +1093,6 @@ flowchart TD
 3. Create a **new branch** for feature development.
 4. Merge changes via **pull requests/merge requests** in your Git provider.
 
----
 #### **9. Production-Ready Setup**
 
 ##### **Example: Snowsight + GitHub Workflow**
@@ -1181,7 +1164,6 @@ flowchart TD
    - Submit **pull requests** for code reviews.
    - Merge changes into `main` after approval.
 
----
 ### **B. CI/CD with Git**
 
 CI/CD (Continuous Integration/Continuous Deployment) pipelines automate the **testing, validation, and deployment** of Snowflake code. By integrating **Git repositories** with **CI/CD tools** (GitHub Actions, GitLab CI, Azure DevOps, Jenkins), you can ensure **code quality**, **security**, and **reliability** in production.
@@ -1255,7 +1237,6 @@ flowchart TD
 ❌ **High-frequency changes** (>100 changes/day; may overwhelm CI/CD)
 ❌ **Non-code objects** (e.g., tables with data; use data pipelines instead)
 
----
 #### **5. CI/CD Tools Comparison**
 
 | **Tool** | **Hosted** | **Free Tier** | **Snowflake Integration** | **Best For** | **Limitations** |
@@ -1267,7 +1248,6 @@ flowchart TD
 | **CircleCI** | ✅ Yes | 6000 build minutes/month | Custom scripts | Custom workflows | Limited free tier |
 | **Bitbucket Pipelines** | ✅ Yes | 50 build minutes/month | Custom scripts | Bitbucket users | Limited free tier |
 
----
 #### **6. Production-Ready CI/CD Examples**
 
 ##### **Example 1: GitHub Actions for Snowflake SQL Linting**
@@ -1574,7 +1554,6 @@ resource "snowflake_table" "my_table" {
 }
 ```
 
----
 ### **C. Snowflake CLI + Git**
 
 The **Snowflake CLI** (`snowflake` or `snowsql`) can be **integrated with Git** to enable **scripted workflows** for Snowflake operations. This is useful for **automating repetitive tasks**, **running scripts in CI/CD pipelines**, and **managing Snowflake objects as code**.
@@ -1610,7 +1589,6 @@ The **Snowflake CLI** (`snowflake` or `snowsql`) can be **integrated with Git** 
 ❌ **High-frequency operations** (>100 operations/sec; use Storage API)
 ❌ **Complex transformations** (use stored procedures or Spark)
 
----
 #### **4. Production-Ready Setup**
 
 ##### **Install Snowflake CLI**
@@ -1701,7 +1679,6 @@ jobs:
           ./scripts/load_data.sh
 ```
 
----
 ### **D. Third-Party Git Tools Integration**
 
 #### **1. GitHub Integration**
@@ -1739,7 +1716,6 @@ jobs:
 3. **Set Up GitHub Actions**:
    - Create `.github/workflows/snowflake.yml` (see examples above).
 
----
 #### **2. GitLab Integration**
 ##### **Features**
 - **Merge Requests**: Review Snowflake SQL code before merging.
@@ -1776,7 +1752,6 @@ jobs:
 3. **Set Up GitLab CI**:
    - Create `.gitlab-ci.yml` (see examples above).
 
----
 #### **3. Bitbucket Integration**
 ##### **Features**
 - **Pull Requests**: Review Snowflake SQL code before merging.
@@ -1823,8 +1798,6 @@ jobs:
                - sqlfluff lint --dialect snowflake .
      ```
 
----
----
 ## **4. Comparison Matrix**
 
 ### **Storage API vs. Git Integrations Comparison**
@@ -1842,7 +1815,6 @@ jobs:
 | **Authentication** | JWT, OAuth, Cloud Credentials | Snowflake credentials | Cloud credentials | OAuth, PAT, SSH | OAuth, PAT, SSH | Snowflake credentials |
 | **Use Cases** | Programmatic file access, cloud storage integration | Manual file transfers, batch loading | High-volume file operations, advanced cloud features | Team collaboration, code reviews | CI/CD pipelines, automated testing | Scripted workflows, local development |
 
----
 ### **Storage API Operations Comparison**
 
 | **Operation** | **Snowflake Storage API** | **PUT/GET Commands** | **Cloud Storage SDKs** |
@@ -1859,7 +1831,6 @@ jobs:
 | **Encryption** | ✅ Yes (TLS) | ✅ Yes (TLS) | ✅ Yes (TLS + CMK) |
 | **Compression** | ✅ Yes | ✅ Yes (`AUTO_COMPRESS`) | ✅ Yes |
 
----
 ### **Git Integrations Comparison**
 
 | **Feature** | **Snowsight Git** | **CI/CD with Git** | **Snowflake CLI + Git** | **Third-Party Git Tools** |
@@ -1877,8 +1848,6 @@ jobs:
 | **Hosted** | ✅ Yes (Snowflake) | ✅ Yes (Git Provider) | ❌ No (Client) | ✅ Yes (Git Provider) |
 | **Best For** | Code versioning, collaboration | Automated testing/deployment | Scripted workflows, local development | Team collaboration, CI/CD |
 
----
----
 ## **5. Decision Flowchart**
 
 ### **Mermaid: Storage API and Git Integrations Decision Tree**
@@ -1956,8 +1925,6 @@ flowchart TD
     class AI,AJ,AK,AL provider;
 ```
 
----
----
 ## **6. Key Engineering Principles**
 
 ### **A. Core Principles for Storage API Integrations**
@@ -1994,7 +1961,6 @@ flowchart TD
    - Design **idempotent operations** to handle retries safely.
    - Use **unique identifiers** for files to avoid duplicates.
 
----
 ### **B. Core Principles for Git Integrations**
 
 1. **Version Everything**:
@@ -2031,7 +1997,6 @@ flowchart TD
    - Use **Git tags** to mark stable releases.
    - **Document recovery procedures** for Snowflake objects.
 
----
 ### **C. Combined Principles for Storage API + Git**
 
 1. **End-to-End Automation**:
@@ -2059,11 +2024,8 @@ flowchart TD
    - Use **CI/CD pipelines** to scale testing and deployment.
    - **Partition data** in cloud storage for efficient access.
 
----
----
 ## **7. Production Checklist**
 
----
 ### **A. Storage API Integrations**
 
 #### **General**
@@ -2146,7 +2108,6 @@ flowchart TD
   - Use **RBAC** to restrict stage access.
   - Use **network policies** to restrict IP access.
 
----
 ### **B. Git Integrations**
 
 #### **General**
@@ -2233,11 +2194,8 @@ flowchart TD
   - Track **Git operations** (pushes, pulls, merges).
   - Set up **alerts** for failed operations.
 
----
----
 ## **8. Production-Ready Snippets**
 
----
 ### **A. Storage API Snippets**
 
 #### **1. Python: Full Storage API Workflow**
@@ -2384,7 +2342,6 @@ if __name__ == '__main__':
     main()
 ```
 
----
 #### **2. Bash: PUT/GET Workflow with Error Handling**
 ```bash
 #!/bin/bash
@@ -2450,7 +2407,6 @@ main() {
 main
 ```
 
----
 #### **3. Python: AWS S3 SDK with Resumable Uploads**
 ```python
 import boto3
@@ -2576,7 +2532,6 @@ if __name__ == '__main__':
         exit(1)
 ```
 
----
 #### **4. Python: External Stage API Workflow**
 ```python
 import snowflake.connector
@@ -2724,7 +2679,6 @@ if __name__ == '__main__':
     main()
 ```
 
----
 ### **B. Git Integrations Snippets**
 
 #### **1. Snowsight Git Workflow**
@@ -2789,7 +2743,6 @@ if __name__ == '__main__':
 - **Document changes** in commit messages and pull request descriptions.
 ```
 
----
 #### **2. GitHub Actions: Snowflake SQL Linting + Testing + Deployment**
 ```yaml
 # .github/workflows/snowflake-ci-cd.yml
@@ -3014,7 +2967,6 @@ if __name__ == '__main__':
     main()
 ```
 
----
 #### **3. GitLab CI: Snowflake Testing + Deployment**
 ```yaml
 # .gitlab-ci.yml
@@ -3081,7 +3033,6 @@ deploy-prod:
     - main
 ```
 
----
 #### **4. Snowflake CLI + Git: Automated Data Loading**
 ```bash
 #!/bin/bash
@@ -3155,7 +3106,6 @@ main() {
 main
 ```
 
----
 #### **5. Terraform + GitHub Actions: Infrastructure as Code**
 ```yaml
 # .github/workflows/terraform.yml
@@ -3355,7 +3305,6 @@ output "table_name" {
 }
 ```
 
----
 #### **6. Pre-Commit Hook for SQL Linting**
 ```bash
 #!/bin/sh
@@ -3388,8 +3337,6 @@ fi
 exit 0
 ```
 
----
----
 ## **9. Final Notes**
 
 ### **For Further Reading**
