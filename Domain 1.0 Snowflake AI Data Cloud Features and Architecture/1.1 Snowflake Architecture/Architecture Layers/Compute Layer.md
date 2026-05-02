@@ -56,6 +56,8 @@
   - Enables cost optimization by eliminating idle compute time, a core tenet of the platform’s separation of compute and storage
 
 ## Scaling Strategies
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/854487c3-4bcc-4947-8f9e-7bb111ec5ba5" />
+
   - Scale-Up (Sizing): Increase the warehouse size to add more nodes to a single cluster, giving each query more compute power and reducing execution time for large, complex queries
   - Scale-Out (Multi-cluster): Increase MAX_CLUSTERS to handle more concurrent queries without impacting individual query performance; clusters are independent so no inter-query interference
   - Not mutually exclusive: can have a Large multi-cluster warehouse with up to, say, 3 clusters to speed up heavy ETL jobs and still absorb concurrency spikes
