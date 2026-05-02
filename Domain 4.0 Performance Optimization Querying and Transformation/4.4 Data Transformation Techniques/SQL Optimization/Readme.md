@@ -59,13 +59,10 @@ flowchart TD
     style Z fill:#9f9,stroke:#333
 ```
 
----
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **2.1 Query Execution Lifecycle**
 
@@ -81,7 +78,6 @@ flowchart TD
 | **Commit/Rollback**        | **2-Phase Commit**: Prepare (validate) → Commit (persist). **WAL:** Write-Ahead Log (metadata).                       | **Durability**: Metadata persisted to **Snowflake’s metadata store** (S3-backed).                                     | Conflict → `1020: Transaction conflict` (retry or `ABORT`).                                                     | 0                 |
 
 
----
 
 ### **2.2 Snowflake-Specific Query Execution Deviations**
 
@@ -98,7 +94,6 @@ flowchart TD
 | **Error Handling**        | Rollback on error                     | **Partial Results** (e.g., `ON_ERROR=CONTINUE` for COPY). **Retry Logic:** 3x default.                   | **More resilient** to failures (e.g., malformed rows in COPY).       |
 
 
----
 
 ### **2.3 Operator-Level Internals**
 
@@ -153,7 +148,6 @@ flowchart TD
   - **Spill Behavior**: **No spill** (streaming).
 - **Credit Impact**: **+10-15% credits** vs. equivalent `GROUP BY`.
 
----
 
 ### **2.4 Transactional Boundaries & Guarantees**
 
@@ -167,13 +161,10 @@ flowchart TD
 | **UPDATE/DELETE**          | Full                                 | Snapshot Isolation | MVCC            | Metadata + Data (S3-backed) | Rollback on error.            |
 
 
----
 
----
 
 ## **3. Parameter/Configuration Deep Dive**
 
----
 
 ### **3.1 Warehouse-Level Parameters**
 
@@ -189,7 +180,6 @@ flowchart TD
 | `MAX_CONCURRENCY_LEVEL`        | **Max concurrent queries** per warehouse.                                                                 | Controls **resource contention**.                                                                        | Default: `8 * warehouse_size`.                                                    | `8` (for `X-SMALL`)             |
 
 
----
 
 ### **3.2 Session-Level Parameters**
 
@@ -206,7 +196,6 @@ flowchart TD
 | `TIMESTAMP_FORMAT`         | **Default timestamp format**.                                                                      | Affects **timestamp parsing** in `TO_TIMESTAMP`.                                | **Default:** `YYYY-MM-DD HH:MI:SS.FF3`.                                   | `YYYY-MM-DD HH:MI:SS.FF3` |
 
 
----
 
 ### **3.3 Query-Level Parameters (Hints)**
 
@@ -225,13 +214,10 @@ flowchart TD
 | `NO_PARALLEL`  | `/*+ NO_PARALLEL */`              | **Disable parallelism**.                         | **Forces single-threaded** (debugging only).                        | **Debugging**.                        |
 
 
----
 
----
 
 ## **4. Performance & Resource Implications**
 
----
 
 ### **4.1 Memory Model & Spill Behavior**
 
@@ -262,7 +248,6 @@ Spill Overhead (credits) =
 - Query Duration: 600 sec.
 - **Overhead**: `(200 / 128) * 2 * (600 / 3600) = 0.52 credits`.
 
----
 
 ### **4.2 I/O Patterns & Stage Interactions**
 
@@ -276,7 +261,6 @@ Spill Overhead (credits) =
 | **Spill-to-Disk**       | Local SSD (NVMe)                | None.                        | **+2x credits**.               | **Increase warehouse size**.               |
 
 
----
 
 ### **4.3 Concurrency & Warehouse Scaling Rules**
 
@@ -293,7 +277,6 @@ Spill Overhead (credits) =
 **Concurrency Formula**:  
 `Max Concurrency = 8 * warehouse_size * max_clusters`
 
----
 
 ### **4.4 Credit Calculation Deep Dive**
 
@@ -310,13 +293,10 @@ Spill Overhead (credits) =
 | **Dynamic Sampling**       | `Credits = (Data Scanned for Sampling in GB) * 0.0005`                          | 1GB sampled = **0.0005 credits**.                                  |
 
 
----
 
----
 
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 
 ### **5.1 Key Monitoring Views**
 
@@ -333,11 +313,9 @@ Spill Overhead (credits) =
 | `INFORMATION_SCHEMA.EXTERNAL_TABLE_FILES`   | **External stage file metadata**.                      | `TABLE_NAME`, `FILE_NAME`, `FILE_SIZE`, `LAST_MODIFIED`                                               | Session-scoped           |
 
 
----
 
 ### **5.2 Production-Grade Monitoring Queries**
 
----
 
 #### **5.2.1 Query Performance Monitoring**
 
@@ -399,7 +377,6 @@ ORDER BY
     MEMORY_USAGE DESC;
 ```
 
----
 
 #### **5.2.2 Warehouse Utilization Monitoring**
 
@@ -450,7 +427,6 @@ ORDER BY
     START_TIME DESC;
 ```
 
----
 
 #### **5.2.3 Operator-Level Profiling**
 
@@ -487,7 +463,6 @@ ORDER BY
     join_time_sec DESC;
 ```
 
----
 
 #### **5.2.4 Storage & Clustering Monitoring**
 
@@ -539,7 +514,6 @@ WHERE
     TABLE_NAME = 'my_table';
 ```
 
----
 
 #### **5.2.5 Result Cache Monitoring**
 
@@ -579,11 +553,9 @@ ORDER BY
     cache_hits DESC;
 ```
 
----
 
 ### **5.3 Error Categorization & Incident Runbooks**
 
----
 
 #### **5.3.1 Error Code Classification**
 
@@ -602,11 +574,9 @@ ORDER BY
 | `100083`       | **Column Mismatch**       | Source file has wrong column count.  | Load failure.           | **Medium**   |
 
 
----
 
 #### **5.3.2 Incident Runbooks**
 
----
 
 ##### **Runbook: Memory Limit Exceeded (`2003`)**
 
@@ -642,7 +612,6 @@ ORDER BY
   - **Monitor `MEMORY_USAGE**` in `QUERY_HISTORY`.
   - **Use `EXPLAIN**` to estimate memory usage before execution.
 
----
 
 ##### **Runbook: Transaction Conflict (`1020`)**
 
@@ -673,7 +642,6 @@ ORDER BY
   - **Reduce transaction scope**: Break large transactions into smaller batches.
   - **Use `SERIALIZABLE` isolation** for high-contention workloads (accept **+20-30% latency**).
 
----
 
 ##### **Runbook: Warehouse Busy (`002008`)**
 
@@ -700,7 +668,6 @@ ORDER BY
   - **Monitor `WAREHOUSE_USAGE**` for queueing.
   - **Set `MAX_CONCURRENCY_LEVEL**` to limit resource contention.
 
----
 
 ##### **Runbook: Slow Query (High `TOTAL_ELAPSED_TIME`)**
 
@@ -739,7 +706,6 @@ ORDER BY
   - **Use `EXPLAIN**` to analyze query plans before execution.
   - **Monitor `QUERY_PROFILE**` for operator-level bottlenecks.
 
----
 
 ##### **Runbook: High Credit Usage**
 
@@ -775,13 +741,10 @@ ORDER BY
   - **Set `STATEMENT_TIMEOUT_IN_SECONDS**` to kill expensive queries.
   - **Monitor `WAREHOUSE_METERING_HISTORY**` for credit spikes.
 
----
 
----
 
 ## **6. Advanced Production Patterns**
 
----
 
 ### **6.1 Query Optimization Patterns**
 
@@ -800,7 +763,6 @@ ORDER BY
 | **Batch Processing**   | Large transformations                 | Break into **smaller batches** (e.g., `LIMIT 10000`).                                     | **Avoids OOM**.                       | **+10% credits** (overhead).    |
 
 
----
 
 ### **6.2 Idempotency & Retry Patterns**
 
@@ -814,7 +776,6 @@ ORDER BY
 | **Exponential Backoff** | Transient errors            | Retry with **2^n seconds delay** (max 3 retries).                                     | Handles temporary failures. | Adds latency.                      |
 
 
----
 
 **Example: Idempotent COPY with DLQ**
 
@@ -869,7 +830,6 @@ WHERE file_name IN (
 );
 ```
 
----
 
 **Example: Merge for UPSERT**
 
@@ -894,7 +854,6 @@ WHEN NOT MATCHED THEN
     VALUES (source.id, source.name, source.value, source.last_updated);
 ```
 
----
 
 **Example: Transaction Log for Idempotency**
 
@@ -951,7 +910,6 @@ BEGIN;
 COMMIT;
 ```
 
----
 
 ### **6.3 CI/CD Validation Patterns**
 
@@ -965,7 +923,6 @@ COMMIT;
 | **Credit Cost**            | `WAREHOUSE_METERING_HISTORY`             | [Cost Validation Query](#cost-validation-query)           |
 
 
----
 
 **Example: Schema Comparison for CI/CD**
 
@@ -999,7 +956,6 @@ ORDER BY
     environment, TABLE_NAME, COLUMN_NAME;
 ```
 
----
 
 **Example: Performance Test for CI/CD**
 
@@ -1039,7 +995,6 @@ WHERE
     h.QUERY_TEXT LIKE '%SELECT * FROM my_table%';
 ```
 
----
 
 **Example: Great Expectations for Data Quality**
 
@@ -1083,7 +1038,6 @@ datasources:
 }
 ```
 
----
 
 ### **6.4 Retry & Backpressure Patterns**
 
@@ -1097,7 +1051,6 @@ datasources:
 | **Transaction Conflicts** | Exponential backoff + `ABORT`     | [Conflict Retry Example](#conflict-retry-example) |
 
 
----
 
 **Example: Python Retry Logic**
 
@@ -1128,7 +1081,6 @@ def execute_with_retry(query, max_retries=3, initial_delay=1):
 execute_with_retry("SELECT * FROM my_table WHERE date = '2026-01-01'");
 ```
 
----
 
 **Example: Stage Retry with Jitter (Snowflake Scripting)**
 
@@ -1173,7 +1125,6 @@ $$;
 CALL retry_copy_with_jitter('my_stage', 'my_table', 3, 1);
 ```
 
----
 
 **Example: Memory Retry (Increase Warehouse Size)**
 
@@ -1201,7 +1152,6 @@ BEGIN;
 END;
 ```
 
----
 
 ### **6.5 Security & Compliance Patterns**
 
@@ -1216,7 +1166,6 @@ END;
 | **Network Policies**         | IP whitelisting     | `CREATE NETWORK POLICY ...` + `ALTER ACCOUNT SET NETWORK_POLICY ...`                       |
 
 
----
 
 **Example: Row-Level Security (RLS)**
 
@@ -1239,7 +1188,6 @@ ALTER TABLE sensitive_data ADD ROW ACCESS POLICY rap_filter ON (user_role, objec
 SELECT * FROM sensitive_data; -- Only rows matching policy are returned
 ```
 
----
 
 **Example: Masking Policy**
 
@@ -1258,7 +1206,6 @@ ALTER TABLE users ALTER COLUMN email SET MASKING POLICY email_mask;
 SELECT email FROM users; -- Non-admin sees masked values
 ```
 
----
 
 **Example: Audit Query**
 
@@ -1280,13 +1227,10 @@ ORDER BY
     EVENT_TIME DESC;
 ```
 
----
 
----
 
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffd700', 'edgeLabelBackground':'#fff'}}}%%
@@ -1344,13 +1288,10 @@ flowchart TD
     AC --> AD
 ```
 
----
 
----
 
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 
 ### **8.1 Core Principles for SQL Optimization**
 
@@ -1367,11 +1308,9 @@ flowchart TD
 | **Failure Isolation**             | **Micro-partitioning** + **automatic retry**.                              | **No single point of failure**.                               |
 
 
----
 
 ### **8.2 Bottom Line for Production Engineers**
 
----
 
 #### **8.2.1 Query Optimization Checklist**
 
@@ -1401,7 +1340,6 @@ flowchart TD
   - **Monitor `QUERY_PROFILE`** for operator-level bottlenecks.
   - **Monitor `WAREHOUSE_METERING_HISTORY`** for credit usage.
 
----
 
 #### **8.2.2 Performance Tuning Rules of Thumb**
 
@@ -1420,7 +1358,6 @@ flowchart TD
 | **Use Hints Sparingly**       | Only when CBO makes poor choices.                       | **Overrides can hurt performance**.   |
 
 
----
 
 #### **8.2.3 Credit Savings Cheat Sheet**
 
@@ -1438,7 +1375,6 @@ flowchart TD
 | **Batch Processing**      | **+10% credits** (overhead)              | Break into `LIMIT 10000` batches. |
 
 
----
 
 #### **8.2.4 Anti-Patterns to Avoid**
 
@@ -1457,13 +1393,10 @@ flowchart TD
 | **No Monitoring**          | **Undetected failures** (e.g., silent truncation).       | Monitor `QUERY_HISTORY`, `COPY_HISTORY`, `WAREHOUSE_METERING_HISTORY`.   |
 
 
----
 
----
 
 ## **9. Quick Reference Commands**
 
----
 
 ### **9.1 Query Optimization Commands**
 
@@ -1482,7 +1415,6 @@ flowchart TD
 | **Enable Result Cache**      | `SET USE_CACHED_RESULT = TRUE;`                                                          |
 
 
----
 
 ### **9.2 Monitoring Commands**
 
@@ -1500,7 +1432,6 @@ flowchart TD
 | **Query Profile**         | `SELECT * FROM TABLE(INFORMATION_SCHEMA.QUERY_PROFILE('QUERY_ID'));`                                                                        |
 
 
----
 
 ### **9.3 Error Handling Commands**
 
@@ -1514,9 +1445,7 @@ flowchart TD
 | **Monitor Stage I/O**           | `SELECT * FROM INFORMATION_SCHEMA.STAGE_FILE_METADATA WHERE STAGE_NAME = 'my_stage';`   |
 
 
----
 
----
 
 ## **10. Further Reading**
 
