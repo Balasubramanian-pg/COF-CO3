@@ -137,10 +137,15 @@
   When queuing exceeds threshold, additional clusters are provisioned automatically. Each cluster operates independently, reading from the same shared storage.
 
 ## Metering and Considerations
-  - Virtual warehouses consume Snowflake credits based on size and uptime; billing is per-second with a 60-second minimum upon start
-  - Suspended warehouses incur zero compute costs; storage costs are separate and constant
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/5f328b76-ad0c-4058-922c-b25fe189ee49" />
+
+  - Virtual warehouses consume Snowflake credits based on size and uptime;
+  - Billing is per-second with a 60-second minimum upon start
+  - Suspended warehouses incur **zero compute costs**
+  - Storage costs are separate and constant
   - Multi-cluster warehouses bill for each running cluster independently
-  - Query complexity, data volume, and cache hit ratio directly influence credit consumption; careless warehouse sizing leads to cost overruns
+  - Query complexity, data volume, and cache hit ratio directly influence credit consumption
+  - Careless warehouse sizing leads to cost overruns
   - Resource monitors can enforce credit limits per warehouse or account, suspending them to stop further charges
 
 ## Summary
