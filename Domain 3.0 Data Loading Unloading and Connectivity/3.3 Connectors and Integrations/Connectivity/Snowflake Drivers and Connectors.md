@@ -92,7 +92,6 @@ flowchart TD
 | **Managed By**            | Client                              | Snowflake or Partner              |
 | **Best For**              | **Application integration**          | **Data pipelines**, **ETL**        |
 
----
 
 ### **Comparison Table: All Snowflake Drivers and Connectors**
 
@@ -111,13 +110,10 @@ flowchart TD
 | **CDC Connector** | Connector | JDBC | Databases (Postgres, MySQL, etc.) | Database replication | 1-5 min | 10-500 MB/min | ✅ Yes | Snowflake | Database to Snowflake |
 | **External Tables** | Connector | Cloud Storage APIs | Cloud Storage (S3, Azure Blob, GCS) | Query external data | 100-500ms | 200-2000 MB/min | ✅ Yes | Snowflake | Data lakes, external queries |
 
----
 
----
 
 ## **2. Native Snowflake Drivers Deep Dive**
 
----
 
 ### **A. JDBC Driver**
 
@@ -244,7 +240,6 @@ flowchart TD
 - **Single-Threaded**: No built-in parallelism (use connection pooling).
 - **No Streaming**: Requires polling for real-time data (use Kafka Connector for streaming).
 
----
 #### **8. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -268,7 +263,6 @@ flowchart TD
 | `useSessionTimezone` | Use client timezone | `false` | `true`, `false` | Affects timestamp handling |
 | `includeResultMetadata` | Include result metadata | `false` | `true`, `false` | Adds overhead for metadata |
 
----
 #### **9. Production-Ready Setup**
 
 ##### **Maven Dependency**
@@ -483,7 +477,6 @@ public class SnowflakeJdbcKeyPairExample {
 }
 ```
 
----
 ### **B. ODBC Driver**
 
 #### **1. Architecture**
@@ -609,7 +602,6 @@ flowchart TD
 - **Single-Threaded**: No built-in parallelism (use connection pooling in the application).
 - **No Streaming**: Requires polling for real-time data (use Kafka Connector for streaming).
 
----
 #### **8. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -629,7 +621,6 @@ flowchart TD
 | `ConnectionTimeout` | Connection timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `QueryTimeout` | Query timeout (seconds) | None | 1-3600 | Prevents long-running queries |
 
----
 #### **9. Production-Ready Setup**
 
 ##### **DSN Configuration (Windows)**
@@ -721,7 +712,6 @@ for row in rows:
 conn.close()
 ```
 
----
 ### **C. .NET Driver**
 
 #### **1. Architecture**
@@ -845,7 +835,6 @@ flowchart TD
 - **Single-Threaded**: No built-in parallelism (use connection pooling).
 - **No Streaming**: Requires polling for real-time data (use Kafka Connector for streaming).
 
----
 #### **8. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -865,7 +854,6 @@ flowchart TD
 | `ConnectionTimeout` | Connection timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `CommandTimeout` | Command timeout (seconds) | 60 | 1-3600 | Prevents long-running queries |
 
----
 #### **9. Production-Ready Setup**
 
 ##### **NuGet Package**
@@ -1059,7 +1047,6 @@ using (var pool = new SnowflakeConnectionPool(connectionStringBuilder, 10))
 }
 ```
 
----
 ### **D. Python Connector**
 
 #### **1. Architecture**
@@ -1183,7 +1170,6 @@ flowchart TD
 - **No Streaming**: Requires polling for real-time data (use Kafka Connector for streaming).
 - **Python Dependency**: Requires **Python 3.6+**.
 
----
 #### **8. Configuration Parameters**
 
 | **Parameter** | **Description** | **Default** | **Valid Values** | **Performance Impact** |
@@ -1205,7 +1191,6 @@ flowchart TD
 | `login_timeout` | Login timeout (seconds) | 60 | 1-3600 | Higher = more resilient |
 | `retries` | Number of retries for transient errors | 1 | 0-10 | Higher = more resilient |
 
----
 #### **9. Production-Ready Setup**
 
 ##### **Installation**
@@ -1406,7 +1391,6 @@ write_pandas(
 )
 ```
 
----
 ### **E. Go Driver**
 
 #### **1. Architecture**
