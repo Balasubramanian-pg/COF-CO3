@@ -1,12 +1,10 @@
 # **Snowflake Cache Types: Comprehensive Technical Reference**
 
----
 
 ## **1. Overview of Snowflake Cache Types**
 
 Snowflake implements **six distinct caching mechanisms**, each optimized for different workload patterns and data access scenarios. These caches work **together** to minimize computation, reduce I/O operations, and deliver sub-second response times for repetitive operations.
 
----
 
 ### **Mermaid: Snowflake Cache Type Architecture**
 ```mermaid
