@@ -59,7 +59,6 @@ flowchart TD
     class A,B,C,D observability;
 ```
 
----
 ### **Key Execution Paths**
 | **Operation**               | **Internal Stage**                          | **External Stage**                          | **Named Stage**                     |
 |-----------------------------|--------------------------------------------|--------------------------------------------|-------------------------------------|
@@ -70,7 +69,6 @@ flowchart TD
 | **Transaction Boundary**    | Atomic (metadata + data)                   | Best-effort (metadata only)                | Metadata-only                       |
 | **Consistency Guarantee**   | Strong (ACID)                               | Eventual (client-side)                     | N/A                                 |
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 ### **A. Stage I/O Patterns**
