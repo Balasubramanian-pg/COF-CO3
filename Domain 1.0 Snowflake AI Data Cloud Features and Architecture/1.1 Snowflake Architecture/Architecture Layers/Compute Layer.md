@@ -34,6 +34,8 @@
 <img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/0091e08e-c2ac-47b6-9cb8-6007f366b39b" />
 
 ## Multi-cluster Warehouses and Concurrency
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/7157da24-b28c-4131-ad9c-a3f6bda01704" />
+
   - Configured in MAX_CLUSTERS mode, a warehouse can automatically spawn additional clusters (each of the defined size) when the number of queued queries exceeds thresholds
   - MIN_CLUSTERS and MAX_CLUSTERS define the scaling range; when demand drops, clusters are automatically shut down
   - Each cluster is an independent, identical set of nodes providing computational isolation; multiple queries run concurrently on different clusters without resource contention
