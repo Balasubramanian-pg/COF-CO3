@@ -24,7 +24,6 @@ graph TD
   Optimization --> Edge[Edge Compute Integration]
 ```
 
----
 
 ## 1. Distribution Architecture & Fundamentals
 
@@ -99,7 +98,6 @@ CREATE REPLICATION GROUP global_analytics_dist
 ALTER REPLICATION GROUP global_analytics_dist ENABLE;
 ```
 
----
 
 ## 2. Regional Distribution Strategies
 
