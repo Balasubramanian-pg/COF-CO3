@@ -33,10 +33,13 @@ We Will narrow down on Database storage layer in this section
 ## Separation of Storage and Compute
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/25ebcb1f-af30-42b7-9895-977fa34aa5d8" />
 
-  - Compute (virtual warehouses) and storage are independent and communicate only via network; compute nodes fetch micro-partitions directly from cloud object storage
-  - Multiple virtual warehouses can operate on the same data simultaneously without contention, each with its own cache
-  - Storage persists indefinitely even when all warehouses are suspended; dropping a table or database is the only way to remove data (subject to time travel and fail-safe)
-  - Because storage is decoupled, workloads can be isolated while accessing the same underlying data, enabling use cases like production, development, and QA environments sharing data via zero-copy cloning
+>[!Tip]
+>Compute (virtual warehouses) and storage are independent and communicate only via network; compute nodes fetch micro-partitions directly from cloud object storage
+  - Multiple virtual warehouses can operate on the **same data simultaneously without contention**, each with its own cache
+  - Storage **_persists indefinitely_** even when all warehouses are suspended;
+>[!Important]
+>Dropping a table or database is the only way to remove data (subject to time travel and fail-safe)
+  - Because storage is decoupled, **workloads can be isolated** while accessing the same underlying data, enabling use cases like production, development, and QA environments sharing data via zero-copy cloning
 
 ## Time Travel and Data Retention
   - Time Travel allows querying and recovering data as it existed at any point within a configurable retention period (up to 90 days for Snowflake Enterprise Edition and higher)
