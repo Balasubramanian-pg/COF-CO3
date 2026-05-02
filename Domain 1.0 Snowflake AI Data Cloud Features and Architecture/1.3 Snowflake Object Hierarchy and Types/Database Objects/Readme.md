@@ -1,5 +1,8 @@
 ## Database Objects
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/8075c334-f7c1-42de-a665-54bec09de75b" />
+
+
 A Snowflake database is the namespace boundary between account-level objects and schema-level objects. 
 
 >[!Note]
