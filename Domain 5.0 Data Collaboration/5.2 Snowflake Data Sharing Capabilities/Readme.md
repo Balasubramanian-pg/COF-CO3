@@ -119,7 +119,6 @@ WHERE order_date BETWEEN '2024-01-01' AND '2024-01-31';
 
 **Performance Impact:** Cross-account metadata retrieval adds **~50-200ms latency** to query compilation phase for the first query against a shared table in a session. Subsequent queries leverage the consumer's metadata cache. For a table with 1M micro-partitions, metadata transfer is ~20-50MB compressed and completes in <1s on modern warehouse sizes.
 
----
 
 ## 3. PARAMETER / CONFIGURATION DEEP DIVE
 
@@ -150,7 +149,6 @@ WHERE order_date BETWEEN '2024-01-01' AND '2024-01-31';
 | `AUTO_RESUME` | Warehouse restarts on query submission | Adds 1-3s cold start latency; no impact on query execution time | Reader accounts: provider pays for all resume costs | Enable for all consumer-facing warehouses |
 | `MULTI_CLUSTER_WAREHOUSE` | Scales out to N clusters for concurrency | Each cluster is independent; no resource contention between clusters | Max 10 clusters (Standard) / 200 (Enterprise+) | Use for >20 concurrent consumers |
 
----
 
 ## 4. PERFORMANCE & RESOURCE IMPLICATIONS
 
@@ -226,7 +224,6 @@ Where:
 - Rebate capped at provider's own consumption = 8,000 credits (not triggered)
 - **Net provider benefit:** 5,000 credit rebate applied to their bill
 
----
 
 ## 5. MONITORING, OBSERVABILITY & TROUBLESHOOTING
 
@@ -415,7 +412,6 @@ ALTER WAREHOUSE READER_WH SET RESOURCE_MONITOR = READER_RM;
 -- Step 5: Contact consumer to optimize queries (e.g., add filters, reduce SELECT *)
 ```
 
----
 
 ## 6. ADVANCED PRODUCTION PATTERNS
 
@@ -688,7 +684,6 @@ AS
     HAVING COUNT(*) > 1000 OR SUM(bytes_scanned) > 1e12;  -- 1TB threshold
 ```
 
----
 
 ## 7. DECISION MATRIX / QUICK REFERENCE FLOWCHART
 
@@ -733,7 +728,6 @@ flowchart TD
     K --> R["Private Exchange<br/>Invite-only consumer accounts"]
 ```
 
----
 
 ## 8. KEY ENGINEERING PRINCIPLES & BOTTOM LINE
 
