@@ -169,6 +169,7 @@ sequenceDiagram
 ```
 
 ## Tasks and Pipes
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/819f7626-1ff2-45ef-a235-c56e32ec9a2d" />
 
 >[!Note]
 >In the Snowflake architecture, a task is a database object designed to schedule and automate the execution of a single SQL statement, a stored procedure, or procedural logic. Tasks enable the orchestration of recurring data pipelines and administrative operations by executing either on a predefined time based schedule or sequentially as a dependent node within a directed acyclic graph triggered by the successful completion of a predecessor task.
