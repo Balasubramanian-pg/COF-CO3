@@ -80,10 +80,13 @@ We Will narrow down on Database storage layer in this section
 >[!Note]
 > Zero-Copy Cloning creates a new database, schema, or table that shares the **same underlying micro-partitions** as the source
 
-  - Clone operations are purely metadata-only; no data is physically copied at creation time
-  - New data (inserts/updates) to the cloned or source object results in new micro-partitions, while the shared micro-partitions remain intact for the unchanged portion
+  - Clone operations are purely metadata-only;
+  - No data is physically copied at creation time
+  - New data (inserts/updates) to the cloned or source object results in new micro-partitions, while the shared micro-partitions **remain intact** for the unchanged portion
   - Enables instant, storage-efficient environment creation for development, testing, and data science
-  - Works in conjunction with Time Travel: can clone an object as it existed at a past point in time
+
+>[!Tip]
+>Works in conjunction with Time Travel: can clone an object as it existed at a past point in time
 
 ## Data Sharing
   - Secure data sharing allows live, read-only access to a shared database from another Snowflake account without physically copying data
