@@ -2,7 +2,6 @@
 
 ## Domain 5.0 Data Collaboration / 5.2 Snowflake Data Sharing Capabilities
 
----
 
 ## 1. EXECUTION ARCHITECTURE & COMPONENT INTERACTIONS
 
@@ -69,7 +68,6 @@ flowchart LR
     end
 ```
 
----
 
 ## 2. EXECUTION INTERNALS & TRANSACTIONAL BOUNDARIES
 
