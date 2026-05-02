@@ -55,7 +55,6 @@ flowchart LR
   Q6 --> Q7[Automate reporting and alerting]
 ```
 
----
 
 ## Usage Monitoring: ACCOUNT_USAGE and INFORMATION_SCHEMA
 
@@ -185,7 +184,6 @@ WHERE start_time BETWEEN
 GROUP BY warehouse_name;
 ```
 
----
 
 ## Cost Management: Resource Monitors and Warehouse Configuration
 
