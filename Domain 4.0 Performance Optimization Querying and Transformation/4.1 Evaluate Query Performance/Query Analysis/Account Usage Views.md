@@ -227,7 +227,6 @@ ORDER BY
 4. Combine with other views (e.g., WAREHOUSE_LOAD_HISTORY) for comprehensive analysis.
 5. Consider creating materialized views for frequently run queries against QUERY_HISTORY.
 
----
 
 ### 2. WAREHOUSE_LOAD_HISTORY
 
@@ -337,7 +336,6 @@ ORDER BY
 4. Monitor queued_queries to identify resource contention.
 5. Set up alerts for warehouses that frequently have queued queries.
 
----
 
 ### 3. WAREHOUSE_METERING_HISTORY
 
