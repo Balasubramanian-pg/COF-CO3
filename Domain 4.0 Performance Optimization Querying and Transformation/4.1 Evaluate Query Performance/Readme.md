@@ -1,6 +1,5 @@
 # **Snowflake Query Performance Evaluation: Production-Grade Technical Deep Dive**
 
----
 
 ## **1. Query Performance Fundamentals**
 
@@ -70,7 +69,6 @@ flowchart TD
     class T,U,V,W monitoring;
 ```
 
----
 ### **Key Query Performance Metrics**
 
 | **Metric** | **Definition** | **Target Value** | **Measurement Method** | **Impact of Poor Performance** |
