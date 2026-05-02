@@ -106,7 +106,6 @@ flowchart TD
     class AQ,K;
 ```
 
----
 
 ### **Key Concepts in Snowflake Data Transformation**
 
@@ -151,7 +150,6 @@ Snowflake transformations can occur at **multiple layers**:
 5. **Data Consumption**:
    - Consume transformed data via **queries, reports, dashboards, applications**
 
----
 ### **Transformation Technique Selection Matrix**
 
 | **Technique** | **Best For** | **Performance** | **Scalability** | **Complexity** | **Cost** | **Real-Time** | **Data Volume** | **Use Case Examples** |
@@ -178,7 +176,6 @@ Snowflake transformations can occur at **multiple layers**:
 | **Materialized Views** | Pre-computed transformations | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐ | ⭐⭐ | ❌ No | Small - Large | Pre-computed aggregations, star schema fact tables, dashboard data |
 | **External Functions** | Custom transformations in external systems | ⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐ | ✅ Yes | Small | Custom business logic, external API calls, specialized processing |
 
----
 ### **Transformation Decision Tree**
 
 ```mermaid
@@ -230,13 +227,10 @@ flowchart TD
     class O,P,Q,R,S,T,U,V,W high;
 ```
 
----
----
 ## **2. SQL-Based Transformation Techniques**
 
 SQL is the **primary transformation language** in Snowflake. Snowflake's **SQL engine** is highly optimized for **data transformation operations**, offering **excellent performance** and **scalability**.
 
----
 ### **A. SELECT Statements**
 
 #### **1. Basic SELECT Transformations**
@@ -410,7 +404,6 @@ WHERE
     signup_date > '2023-01-01';
 ```
 
----
 ### **B. JOIN Operations**
 
 #### **1. JOIN Types in Snowflake**
@@ -648,7 +641,6 @@ WHERE
     );
 ```
 
----
 ### **C. GROUP BY Aggregations**
 
 #### **1. Basic GROUP BY Syntax**
@@ -839,7 +831,6 @@ ORDER BY
     unique_customers DESC;
 ```
 
----
 ### **D. Window Functions**
 
 #### **1. Window Function Overview**
@@ -1074,7 +1065,6 @@ ORDER BY
     region, product_category, date;
 ```
 
----
 ### **D. PIVOT and UNPIVOT**
 
 #### **1. PIVOT: Reshaping Data from Rows to Columns**
@@ -1288,7 +1278,6 @@ INSERT INTO target_sales_report
 SELECT * FROM temp_pivoted_sales;
 ```
 
----
 ### **E. JSON and Semi-Structured Data Transformation**
 
 #### **1. JSON Data in Snowflake**
@@ -1540,7 +1529,6 @@ ORDER BY
     total_sales DESC;
 ```
 
----
 ### **F. CTEs (Common Table Expressions) and Subqueries**
 
 #### **1. CTEs (WITH Clause)**
@@ -1881,11 +1869,8 @@ ORDER BY
     rs.region, rs.total_sales DESC;
 ```
 
----
----
 ## **3. Programmatic Transformation Techniques**
 
----
 ### **A. Stored Procedures**
 
 #### **1. Stored Procedure Overview**
