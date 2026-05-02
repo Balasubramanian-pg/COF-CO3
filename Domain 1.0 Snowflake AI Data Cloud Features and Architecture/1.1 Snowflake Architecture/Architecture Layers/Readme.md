@@ -50,9 +50,11 @@ In this section we are going to look at the architecture layers of snowflake
     - Billed monthly based on compressed data size; no capacity management needed
   - Micro-partition metadata (min/max values, distinct counts) enables partition pruning without scanning files
   - Supports time travel (user-configurable up to 90 days) and fail-safe (additional 7 days) for data recovery
-  - Zero-copy cloning creates instant, metadata-only copies sharing the same underlying micro-partitions
-  - Automatic clustering and background compaction optimize physical layout transparently
-  - Storage access: Only via Snowflake compute, never direct file system access; passes pre-signed URLs to warehouse nodes
+  - Zero-copy cloning creates **instant, metadata-only copies** sharing the same underlying micro-partitions
+  - Automatic clustering and background compaction _**optimize physical layout transparently**_
+  - Storage access: Only via Snowflake compute,
+      - never direct file system access;
+      - passes pre-signed URLs to warehouse nodes
 
 ## How the Layers Interact (Query Lifecycle)
   1. User submits SQL to the Cloud Services endpoint
