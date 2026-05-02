@@ -98,6 +98,7 @@ flowchart TD
 ```
 
 ## Databases and Schemas
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/cf9b6051-db40-48e0-bd67-52bacc672bf0" />
 
 >[!Tip]
 >In the Snowflake architecture, a database is the top level logical container within an account. It functions as the primary namespace and administrative boundary used to manage and organize one or more schemas. The database level establishes the broadest domain for role based access control, data sharing capabilities, and replication policies across the Snowflake environment.
