@@ -87,6 +87,8 @@
   - Allows running background maintenance tasks without dedicating a virtual warehouse, simplifying operations
 
 ## Interaction with Other Layers
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/f4f32a7b-6b1c-417a-a172-7532f25cb6f7" />
+
   - Cloud Services Layer: Sends execution plans to the virtual warehouse; warehouse nodes execute the plan and return results; all metadata lookups are handled by Cloud Services, never by the warehouse
   - Database Storage Layer: Warehouse nodes read micro-partitions directly from cloud object storage; they never write permanent data to local disk—all persistent data is stored remotely; locally cached data is volatile and complementary
   - Query Lifecycle within Compute:
