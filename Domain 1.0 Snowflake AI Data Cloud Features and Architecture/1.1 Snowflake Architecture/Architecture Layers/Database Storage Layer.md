@@ -52,7 +52,9 @@ We Will narrow down on Database storage layer in this section
       - Per schema, or
       - Per table; **a minimum of 1 day (0 for transient databases)**
   - Enables easy data recovery from accidental modifications, analysis of historical data, and **point-in-time cloning**
-  - Fail-safe is an additional 7-day period of recoverability after Time Travel expires (not user-queryable, but Snowflake can recover data via support); provides a final safety net
+
+>[!Note]
+>Fail-safe is an additional 7-day period of recoverability after Time Travel expires (not user-queryable, but Snowflake can recover data via support); provides a final safety net
   - The diagram below shows the data lifecycle with time travel and fail-safe
 
 ### Diagram: Data Lifecycle with Time Travel and Fail-safe
