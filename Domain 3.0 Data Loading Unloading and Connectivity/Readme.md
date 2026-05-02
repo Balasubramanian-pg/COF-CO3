@@ -21,7 +21,6 @@ graph TD
   Connect --> APIs[REST API Integrations]
 ```
 
----
 
 ## 1. Data Loading Architecture & Fundamentals
 
@@ -76,7 +75,6 @@ CREATE OR REPLACE EXTERNAL STAGE s3_raw_stage
   FILE_FORMAT = (TYPE = PARQUET);
 ```
 
----
 
 ## 2. Bulk Data Loading (COPY INTO)
 
