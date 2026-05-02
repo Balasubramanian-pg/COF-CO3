@@ -119,20 +119,20 @@
 ### Diagram: Multi-cluster Warehouse Scaling
   ```mermaid
   graph LR
-    Client[Client Queries] --> LB[Logical Warehouse Name]
-    
-    subgraph Cluster1[Cluster 1 (active)]
-      N1[Node1] --- N2[Node2] --- N3[...]
-    end
-    
-    subgraph Cluster2[Cluster 2 (auto-scaled)]
-      C1[Node1] --- C2[Node2] --- C3[...]
-    end
-    
-    LB --> Cluster1
-    LB --> Cluster2
-    Cluster1 --> Storage[(Cloud Storage)]
-    Cluster2 --> Storage
+  Client[Client Queries] --> LB[Logical Warehouse Name]
+  
+  subgraph Cluster1["Cluster 1 (active)"]
+    N1[Node1] --- N2[Node2] --- N3[...]
+  end
+  
+  subgraph Cluster2["Cluster 2 (auto-scaled)"]
+    C1[Node1] --- C2[Node2] --- C3[...]
+  end
+  
+  LB --> Cluster1
+  LB --> Cluster2
+  Cluster1 --> Storage[(Cloud Storage)]
+  Cluster2 --> Storage
   ```
   When queuing exceeds threshold, additional clusters are provisioned automatically. Each cluster operates independently, reading from the same shared storage.
 
