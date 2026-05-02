@@ -1,5 +1,7 @@
 # Snowflake Editions Overview
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/20e28a3c-33ac-4288-97c0-e9e183c60308" />
+
 ## Edition Hierarchy
 
 ```mermaid
