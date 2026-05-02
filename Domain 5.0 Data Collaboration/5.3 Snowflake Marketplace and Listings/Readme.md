@@ -199,7 +199,6 @@ WHERE listing_name = 'partner_finance_data'
   AND status = 'PENDING';
 ```
 
----
 
 ## 3. Consumer Workflow: Discovery to Consumption
 
@@ -268,7 +267,6 @@ GROUP BY 1, 2
 ORDER BY hour_bucket DESC;
 ```
 
----
 
 ## 4. Monetization Models & Billing Architecture
 
@@ -325,7 +323,6 @@ WHERE usage_date >= DATEADD(day, -30, CURRENT_DATE())
 GROUP BY listing_name;
 ```
 
----
 
 ## 5. Security, Governance & Compliance
 
@@ -394,7 +391,6 @@ WHERE query_start_time >= DATEADD(day, -7, CURRENT_TIMESTAMP())
 ORDER BY query_start_time DESC;
 ```
 
----
 
 ## 6. Performance Optimization for Marketplace Listings
 
@@ -450,7 +446,6 @@ PREPARE stmt FROM
 EXECUTE stmt USING '2024-01-15'; -- Reuses cache key across executions
 ```
 
----
 
 ## 7. Monitoring, Troubleshooting & Cost Attribution
 
@@ -552,7 +547,6 @@ WHERE (
 ) > 0;
 ```
 
----
 
 ## 8. Anti-Patterns & Pitfalls
 
@@ -564,7 +558,6 @@ WHERE (
 | **No usage monitoring** | Unexpected credit spikes; revenue leakage | Missing `MARKETPLACE_USAGE` tracking; no alerts | Implement daily revenue/usage dashboards; set credit quotas per consumer | 3x billing disputes; 15% revenue leakage from untracked usage |
 | **Free listings without conversion path** | High discovery, low monetization | No upgrade path from free to paid tiers | Implement tiered listings (`FREE` → `TRIAL` → `PREMIUM`); document feature differences | 80% of consumers never convert; wasted acquisition cost |
 
----
 
 ## 9. Decision Frameworks & Quick Reference
 
@@ -630,7 +623,6 @@ WHERE listing_name = 'my_product';
 | `400001` | `Insufficient privileges` | Consumer role needs `IMPORTED PRIVILEGES` on database created from listing |
 | `500012` | `Row access policy blocked query` | Review policy logic; test with `EXPLAIN` to verify filter pushdown |
 
----
 
 ## Key Principles to Remember
 1. **Marketplace is a product, not a feature.** Treat listings like SaaS products: versioning, SLAs, support, and iteration.
