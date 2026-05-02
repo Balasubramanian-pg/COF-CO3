@@ -53,8 +53,10 @@ The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinat
   - Separated from compute (virtual warehouses): query compilation and optimization consume Cloud Services resources, not warehouse credits (except for certain serverless features)
   - Provides a single global endpoint for each account: the Cloud Services URL (e.g., `<account>.snowflakecomputing.com`)
   - Stateless compute nodes backed by a persistent metadata store; cloud services nodes can be added or removed without impact
-- **Query Lifecycle and Cloud Services Interaction**
-  - Step-by-step flow from SQL submission to result:
+
+## Query Lifecycle and Cloud Services Interaction
+
+Step-by-step flow from SQL submission to result:
     1. User submits SQL to Cloud Services endpoint
     2. Authentication, session validation, and role context determination
     3. SQL parsing, object resolution against metadata store
