@@ -33,7 +33,6 @@ graph TD
 | Security does not auto-replicate | Network policies, resource monitors, alerts stay in primary account | Cross-account governance requires explicit sync |
 | Measure before you architect | RPO, RTO, and compliance needs drive configuration | Over-engineering wastes credits. Under-engineering risks downtime |
 
----
 
 ## Data Replication: Governance & Compliance
 
@@ -97,7 +96,6 @@ WHERE tag_name IN ('data_classification', 'data_owner')
 ORDER BY object_name;
 ```
 
----
 
 ## Failover & Disaster Recovery: Governance & Continuity
 
