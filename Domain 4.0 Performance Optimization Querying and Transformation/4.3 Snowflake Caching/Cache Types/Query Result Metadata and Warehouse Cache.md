@@ -95,7 +95,6 @@ flowchart TD
     class AB,AC,AD monitoring;
 ```
 
----
 
 ### **Key Concepts and Definitions**
 
@@ -134,7 +133,6 @@ flowchart TD
 - Complex queries with CTEs or subqueries
 - Workloads with data locality patterns
 
----
 ### **Comparison: Query Result Cache vs. Warehouse Cache**
 
 | **Feature** | **Query Result Cache** | **Warehouse Cache** | **Notes** |
@@ -152,7 +150,6 @@ flowchart TD
 | **Monitoring** | `QUERY_HISTORY.used_cached_result` | `QUERY_PROFILE` (indirect) | Different monitoring approaches |
 | **Storage Overhead** | Medium (result sets) | High (micro-partitions) | Warehouse cache can consume significant SSD storage |
 
----
 ### **When to Use Each Cache Type**
 
 | **Use Case** | **Query Result Cache** | **Warehouse Cache** | **Combined Approach** |
@@ -175,11 +172,8 @@ flowchart TD
 - ⚠️ = Limited benefit
 - ❌ = Not applicable
 
----
----
 ## **2. Query Result Cache Deep Dive**
 
----
 ### **A. Architecture and Workflow**
 
 ```mermaid
@@ -230,7 +224,6 @@ flowchart TD
     class P monitoring;
 ```
 
----
 ### **B. Technical Deep Dive**
 
 #### **1. Cache Key Generation**
@@ -297,7 +290,6 @@ The query result cache is **automatically invalidated** when:
 | **SHOW commands** | ❌ No | Metadata queries are not cached | `SHOW TABLES` |
 | **DESCRIBE commands** | ❌ No | Metadata queries are not cached | `DESCRIBE TABLE my_table` |
 
----
 ### **C. Configuration**
 
 #### **1. Enable/Disable Query Result Cache**
@@ -366,7 +358,6 @@ WHERE
     role_name = 'MY_ROLE';
 ```
 
----
 ### **D. Monitoring and Metrics**
 
 #### **1. Check Cache Usage in Query History**
@@ -475,7 +466,6 @@ ORDER BY
     total_credits_saved DESC;
 ```
 
----
 ### **E. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -521,7 +511,6 @@ ORDER BY
 - **Credits Used**: Infinite reduction
 - **Network Traffic**: 450x reduction
 
----
 
 **Example 2: Complex Aggregation Query**
 ```sql
@@ -554,7 +543,6 @@ ORDER BY
 
 **Improvement**: **1000x faster** with cache hit
 
----
 ### **F. Best Practices**
 
 #### **1. When to Use Query Result Cache**
@@ -606,7 +594,6 @@ ORDER BY
 | **Cache Not Working with Different Roles** | Cache misses for same query with different roles | Different permissions = different cache entry | Use consistent roles for repetitive queries |
 | **Cache Not Working with Different Timezones** | Cache misses for same query with different timezones | Different session parameters = different cache entry | Set timezone explicitly |
 
----
 ### **G. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -625,7 +612,6 @@ ORDER BY
 | **No Direct Cache Management** | Cannot manually manage cache contents | Use TTL and query patterns to influence cache |
 | **No Cache for External Tables** | Limited caching for external tables | Use internal tables or materialized views for hot external data |
 
----
 ### **H. Practical Examples**
 
 #### **Example 1: Dashboard Optimization**
@@ -842,11 +828,8 @@ AS
     AND SUM(CASE WHEN used_cached_result = TRUE THEN 1 ELSE 0 END) = 0;  -- No cache hits
 ```
 
----
----
 ## **3. Warehouse Cache Deep Dive**
 
----
 ### **A. Architecture and Workflow**
 
 ```mermaid
@@ -916,7 +899,6 @@ flowchart TD
     class W,X monitoring;
 ```
 
----
 ### **B. Technical Deep Dive**
 
 #### **1. How Warehouse Cache Works**
@@ -991,7 +973,6 @@ Warehouse cache is **automatically invalidated** when:
 
 **Important**: Unlike result cache, warehouse cache is **not invalidated by DML operations** because Snowflake uses **Multi-Version Concurrency Control (MVCC)**. However, queries will always see the **latest committed version** of the data.
 
----
 ### **C. Configuration**
 
 **Note**: Warehouse cache is **automatic** and **requires no configuration**. However, you can **influence** the cache by:
@@ -1049,7 +1030,6 @@ FROM temp_sales
 GROUP BY region;
 ```
 
----
 ### **D. Monitoring and Metrics**
 
 #### **1. Monitor Temporary Table Performance**
@@ -1224,7 +1204,6 @@ ORDER BY
     bytes_scanned DESC;
 ```
 
----
 ### **E. Performance Characteristics**
 
 #### **1. Performance Impact**
@@ -1275,7 +1254,6 @@ SELECT * FROM temp_customer_orders;
 
 **Note**: The first access to each temporary table is not cached, but subsequent accesses benefit from the warehouse cache.
 
----
 
 **Example 2: Complex Query with CTEs**
 ```sql
@@ -1318,7 +1296,6 @@ JOIN
 
 **Improvement**: **10x faster** with warehouse cache
 
----
 ### **F. Best Practices**
 
 #### **1. When to Use Warehouse Cache**
@@ -1373,7 +1350,6 @@ JOIN
 | **Temporary Tables Not Reused** | Temporary tables not providing benefit | Temporary tables not queried multiple times | Reuse temporary tables in subsequent queries |
 | **CTEs Not Reused** | CTEs not providing benefit | CTEs not referenced multiple times | Reference CTEs multiple times in the same query |
 
----
 ### **G. Limitations**
 
 | **Limitation** | **Description** | **Workaround** |
@@ -1390,7 +1366,6 @@ JOIN
 | **No Cache for All Data Types** | Some data types may not be cached effectively | Use internal tables for hot data |
 | **No Direct Cache Size Monitoring** | Cannot directly monitor cache size | Estimate based on warehouse size and usage patterns |
 
----
 ### **H. Practical Examples**
 
 #### **Example 1: Hot Table Caching**
@@ -1687,11 +1662,8 @@ AS
     io_latency_per_gb DESC;
 ```
 
----
----
 ## **4. Combined Architecture and Interaction**
 
----
 ### **Mermaid: Combined Query Result Cache and Warehouse Cache Architecture**
 ```mermaid
 %% Combined Query Result Cache and Warehouse Cache Architecture
@@ -1768,7 +1740,6 @@ flowchart TD
     class Y,Z,AA monitoring;
 ```
 
----
 ### **How the Caches Work Together**
 
 1. **Query Submission**:
@@ -1794,7 +1765,6 @@ flowchart TD
    - **Query Result Cache**: Final results are cached for future identical queries
    - **Warehouse Cache**: Micro-partitions, temporary tables, CTEs, and intermediate results are cached for future access
 
----
 ### **Cache Interaction Examples**
 
 #### **Example 1: Dashboard Query with Both Caches**
@@ -1957,11 +1927,8 @@ SELECT * FROM region_sales ORDER BY total_sales DESC;
 -- 3. Returns results from warehouse cache (faster than full execution)
 ```
 
----
----
 ## **5. Performance Comparison and Benchmarks**
 
----
 ### **Performance Comparison Matrix**
 
 | **Scenario** | **Without Caching** | **With Query Result Cache** | **With Warehouse Cache** | **With Both Caches** |
@@ -1974,7 +1941,6 @@ SELECT * FROM region_sales ORDER BY total_sales DESC;
 | **Network Traffic** | Baseline | Minimal | Baseline | Minimal |
 | **Warehouse Load** | Baseline | None (for cache hits) | Reduced | None (for result cache hits) |
 
----
 ### **Benchmark Examples**
 
 #### **Benchmark 1: Dashboard Query Performance**
@@ -2007,7 +1973,6 @@ ORDER BY
 - **Warehouse Cache** provides **good performance** even after data changes (1.2s vs 8.5s)
 - **Combined** approach provides **optimal performance** in all scenarios
 
----
 
 #### **Benchmark 2: ETL Pipeline Performance**
 **ETL Pipeline**:
@@ -2046,7 +2011,6 @@ SELECT * FROM temp_customer_orders;
 - **Query Result Cache** provides **no benefit** for ETL pipelines (queries are unique)
 - **Warehouse Cache** is the **primary optimization** for ETL workloads
 
----
 #### **Benchmark 3: Complex Query with CTEs**
 **Query**:
 ```sql
@@ -2093,11 +2057,8 @@ JOIN
 - **Warehouse Cache** provides **good performance** for subsequent executions (2.5s vs 12.8s)
 - **Combined** approach provides **optimal performance** in all scenarios
 
----
----
 ## **6. Best Practices for Combined Usage**
 
----
 ### **A. When to Use Both Caches Together**
 
 Use **both Query Result Cache and Warehouse Cache** for:
@@ -2108,7 +2069,6 @@ Use **both Query Result Cache and Warehouse Cache** for:
 5. **Complex Queries with CTEs**: Queries with CTEs that are executed multiple times
 6. **Hot Data Workloads**: Workloads that access the same data repeatedly
 
----
 ### **B. Configuration Recommendations**
 
 | **Workload Type** | **Query Result Cache** | **Warehouse Cache** | **Warehouse Size** | **Auto-Suspend** | **RESULT_CACHE_TTL** |
@@ -2120,7 +2080,6 @@ Use **both Query Result Cache and Warehouse Cache** for:
 | **Real-Time Analytics** | ❌ Disable | ✅ Automatic | Large - X-Large | 5 minutes | N/A |
 | **Batch Processing** | ❌ Disable | ✅ Automatic | X-Large - 4X-Large | 60+ minutes | N/A |
 
----
 ### **C. Optimization Strategies**
 
 | **Strategy** | **Description** | **Implementation** |
@@ -2138,7 +2097,6 @@ Use **both Query Result Cache and Warehouse Cache** for:
 | **Combine with Other Optimizations** | Use with materialized views, result caching, etc. | `CLUSTER BY (date) + USE_CACHED_RESULTS = TRUE + larger warehouse` |
 | **Document Cache Strategies** | Document which caches are used and why | Internal wiki or Confluence page |
 
----
 ### **D. Common Anti-Patterns and Solutions**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -2154,11 +2112,8 @@ Use **both Query Result Cache and Warehouse Cache** for:
 | **Not Combining Cache Types** | Using only one cache type | ❌ Suboptimal performance | Combine cache types for maximum benefit |
 | **Not Updating Statistics** | Poor query optimization | ❌ Cache inefficiency | Update statistics for large tables |
 
----
----
 ## **7. Monitoring and Troubleshooting**
 
----
 ### **A. Monitoring Query Result Cache**
 
 #### **1. Check Cache Usage**
@@ -2267,7 +2222,6 @@ ORDER BY
     total_credits_saved DESC;
 ```
 
----
 ### **B. Monitoring Warehouse Cache**
 
 #### **1. Monitor Temporary Table Performance**
@@ -2406,7 +2360,6 @@ ORDER BY
     execution_time;
 ```
 
----
 ### **C. Monitoring Cache Eviction**
 
 #### **1. Check for Warehouse Restarts**
@@ -2447,7 +2400,6 @@ ORDER BY
     bytes_scanned DESC;
 ```
 
----
 ### **D. Troubleshooting Common Issues**
 
 #### **Issue 1: Query Result Cache Not Working**
@@ -2505,7 +2457,6 @@ ORDER BY
    UPDATE my_table SET col1 = 1 WHERE id IN (1, 2, 3, ..., 1000);
    ```
 
----
 
 #### **Issue 2: Warehouse Cache Not Improving Performance**
 **Symptoms**:
