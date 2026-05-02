@@ -1,6 +1,6 @@
 # Cloud Services Layer
 
-![Uploading image.png…]()
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/7daade8d-6208-4090-9108-0a7d370c22c7" />
 
 ## Definition and Purpose
 The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinating all activities across the platform
@@ -10,6 +10,8 @@ The Cloud Services layer is the "brain" of Snowflake’s architecture, coordinat
   - Sits between client applications and the other architecture layers (Query Processing, Database Storage)
 
 ## Core Functions
+
+![Uploading image.png…]()
 
 ### Authentication and Access Control
 
