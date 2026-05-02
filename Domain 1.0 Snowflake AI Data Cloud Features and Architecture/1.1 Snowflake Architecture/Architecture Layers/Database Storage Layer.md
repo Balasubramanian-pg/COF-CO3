@@ -110,6 +110,8 @@ We Will narrow down on Database storage layer in this section
   - Both are fully managed and operate transparently
 
 ## Storage Lifecycle and Operations
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/ae41e475-059a-4868-9c8d-c0c9f98d1877" />
+
 There are 4 different aspects that we will zoom into here, but will understand in depth later
 
 ### Ingestion 
