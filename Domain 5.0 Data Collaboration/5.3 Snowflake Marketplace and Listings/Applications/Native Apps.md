@@ -33,7 +33,6 @@ graph TD
 
 Trust in data systems isn’t granted by permission toggles. It’s engineered through boundaries. Native Applications don’t ask for access; they prove they don’t need it. The code travels to the data, executes in isolation, and returns only what it was contracted to return. If you’re treating apps as shared schemas or relying on implicit trust, you’re building a liability. Architect the boundary first. The logic follows.
 
----
 
 ## 1. Architecture & First Principles
 
@@ -64,7 +63,6 @@ graph LR
   style ConsumerRole fill:#2196F3,stroke:#333
 ```
 
----
 
 ## 2. Provider Development & Packaging
 
