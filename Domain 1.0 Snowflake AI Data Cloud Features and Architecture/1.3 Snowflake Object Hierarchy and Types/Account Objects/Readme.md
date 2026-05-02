@@ -275,7 +275,7 @@ flowchart TD
 - Automation lives in tasks and pipes. Use them to reduce manual work, but monitor them closely
 
 >[!Info]
->Think of account objects like tools in a workshop:
+> Think of account objects like tools in a workshop:
 >- Users are the people who use the tools
 >- Roles are the permissions that say which tools each person can touch
 >- Warehouses are the power sources that run the tools
@@ -283,4 +283,4 @@ flowchart TD
 >- Integrations are the doors that connect your workshop to the outside
 >- Shares are the windows that let others see your work without entering
 >- Tasks and pipes are the timers and conveyors that keep things moving
->Pick the right tool for the job. Use each one for what it does best.
+> Pick the right tool for the job. Use each one for what it does best.
