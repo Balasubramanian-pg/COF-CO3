@@ -20,7 +20,6 @@
 
 ---
 
----
 
 ## **1. Introduction to Workload Management Best Practices**
 
@@ -33,7 +32,6 @@ Effective workload management in Snowflake ensures:
 ✅ **Scalability** – Handles concurrent workloads without manual intervention
 ✅ **Operational Excellence** – Provides visibility and control over data platform operations
 
----
 
 ### **🏗️ Core Principles of Workload Management**
 
@@ -48,7 +46,6 @@ Effective workload management in Snowflake ensures:
 | **Automation** | Automate routine workload management tasks | Use stored procedures, tasks, and scripts |
 | **Documentation** | Document workload policies and configurations | Maintain runbooks and architecture diagrams |
 
----
 
 ### **📊 Workload Management Maturity Model**
 
@@ -68,13 +65,10 @@ Effective workload management in Snowflake ensures:
 - [ ] We use multi-cluster warehouses for high concurrency
 - [ ] We have automated workload management processes
 
----
 
----
 
 ## **2. Warehouse Configuration Best Practices**
 
----
 
 ### **🏭 Warehouse Types and Use Cases**
 
@@ -84,7 +78,6 @@ Effective workload management in Snowflake ensures:
 | **Multi-Cluster** | High concurrency workloads, production ETL, reporting dashboards | High concurrency (>8 queries), variable workloads, production environments | Low concurrency workloads, development environments, cost-sensitive workloads | Medium-High | High (10-100+ queries) |
 | **Serverless** | Snowpipe, Ingestion Service, Replication, Search Optimization | File ingestion, row ingestion, data replication, search operations | Traditional query workloads, interactive queries | Pay-per-use | Very High (1000+ operations) |
 
----
 
 ### **📈 Warehouse Sizing Guidelines**
 
@@ -108,7 +101,6 @@ Effective workload management in Snowflake ensures:
 > - Memory pressure (spill to disk/remote)
 > - High CPU utilization (>80%)
 
----
 
 ### **⚙️ Warehouse Configuration Best Practices**
 
@@ -127,7 +119,6 @@ Effective workload management in Snowflake ensures:
 > - Using a smaller warehouse size
 > - Implementing query scheduling to batch operations
 
----
 
 #### **2. Auto-Resume Settings**
 | **Workload Type** | **Recommended Auto-Resume** | **Rationale** | **Example** |
@@ -139,7 +130,6 @@ Effective workload management in Snowflake ensures:
 **💡 Pro Tip:**
 > **Combine with Query Prioritization:** For mixed workloads, enable auto-resume but use query prioritization to ensure critical queries get resources first.
 
----
 
 #### **3. Multi-Cluster Warehouse Configuration**
 
@@ -173,7 +163,6 @@ Effective workload management in Snowflake ensures:
 **🚨 Warning:**
 > **Avoid Over-Provisioning:** Setting `MIN_CLUSTER_COUNT` too high can lead to unnecessary costs. Only increase if you have consistent workloads that require the extra capacity.
 
----
 
 #### **4. Query Timeout Settings**
 
@@ -188,7 +177,6 @@ Effective workload management in Snowflake ensures:
 **💡 Pro Tip:**
 > **Combine with Query Prioritization:** Set shorter timeouts for LOW priority queries and longer timeouts for HIGH priority queries.
 
----
 #### **5. Queue Timeout Settings**
 
 | **Workload Type** | **Recommended Queue Timeout** | **Rationale** | **Example** |
@@ -201,7 +189,6 @@ Effective workload management in Snowflake ensures:
 **🚨 Warning:**
 > **Avoid Indefinite Queueing:** Setting queue timeout to 0 (no timeout) can lead to queries waiting indefinitely if the warehouse is overloaded. Use with caution.
 
----
 
 ### **🔄 Warehouse Lifecycle Management**
 
@@ -239,7 +226,6 @@ flowchart TD
 4. **Set Queue Timeouts** to prevent indefinite waiting
 5. **Monitor Warehouse State** using `WAREHOUSE_MONITOR`
 
----
 
 ### **📋 Warehouse Configuration Checklist**
 
@@ -254,13 +240,10 @@ flowchart TD
 - [ ] **Set Query Priority**: Configure default priority based on workload importance
 - [ ] **Document Configuration**: Maintain a record of all warehouse configurations
 
----
 
----
 
 ## **3. Resource Monitor Best Practices**
 
----
 
 ### **💰 Resource Monitor Overview**
 
@@ -270,7 +253,6 @@ flowchart TD
 - **Suspend warehouses** when credit limits are exceeded
 - Support **daily, weekly, monthly, or custom** quota periods
 
----
 
 ### **🎯 Resource Monitor Use Cases**
 
@@ -283,7 +265,6 @@ flowchart TD
 | **User-Level Limits** | User | Daily | 10-100 | 50% warn, 100% suspend | Email |
 | **Project-Based Budgeting** | Warehouse | Custom (project timeline) | Varies | 75% warn, 95% suspend | Email + Slack |
 
----
 
 ### **⚙️ Resource Monitor Configuration Best Practices**
 
@@ -302,7 +283,6 @@ flowchart TD
 **💡 Pro Tip:**
 > **Start with a Conservative Quota:** Begin with a quota slightly above your expected usage, then adjust based on actual consumption. Use the `ACCOUNT_USAGE.QUERY_HISTORY` view to analyze historical usage.
 
----
 #### **2. Threshold Settings**
 
 | **Threshold** | **Recommended Value** | **Purpose** | **Action** |
@@ -317,7 +297,6 @@ flowchart TD
 - Set **SUSPEND_IMMEDIATELY = FALSE** to allow current queries to complete
 - **Test thresholds** in a non-production environment
 
----
 #### **3. Notification Configuration**
 
 | **Notification Method** | **Use Case** | **Recipients** | **Example** |
@@ -334,7 +313,6 @@ flowchart TD
 - **Include relevant information** in notifications (monitor name, current usage, quota, threshold)
 - **Test notifications** regularly to ensure they're working
 
----
 #### **4. Quota Period Selection**
 
 | **Quota Period** | **Use Case** | **Pros** | **Cons** | **Example** |
@@ -347,7 +325,6 @@ flowchart TD
 **💡 Pro Tip:**
 > **Align with Budget Cycles:** For departmental chargeback, use **monthly** quotas to align with budget periods. For project-based workloads, use **custom** quotas to match project timelines.
 
----
 ### **📊 Resource Monitor Implementation Patterns**
 
 #### **Pattern 1: Account-Level Budget Control**
@@ -372,7 +349,6 @@ ALTER ACCOUNT SET RESOURCE_MONITOR = account_monthly_monitor;
 
 **Use Case:** Global budget control for the entire Snowflake account.
 
----
 #### **Pattern 2: Departmental Chargeback**
 ```sql
 -- Create resource monitors for each department
@@ -405,7 +381,6 @@ ALTER WAREHOUSE marketing_wh SET RESOURCE_MONITOR = marketing_monitor;
 
 **Use Case:** Allocate costs to specific departments and enforce budget limits.
 
----
 #### **Pattern 3: Environment-Based Isolation**
 ```sql
 -- Production resource monitor
@@ -441,7 +416,6 @@ ALTER WAREHOUSE test_wh SET RESOURCE_MONITOR = test_monitor;
 
 **Use Case:** Separate budgets for production, development, and testing environments.
 
----
 #### **Pattern 4: Workload-Type Isolation**
 ```sql
 -- ETL resource monitor
@@ -476,7 +450,6 @@ ALTER WAREHOUSE adhoc_wh SET RESOURCE_MONITOR = adhoc_monitor;
 
 **Use Case:** Separate budgets and controls for different types of workloads (ETL, reporting, ad-hoc).
 
----
 #### **Pattern 5: User-Level Limits**
 ```sql
 -- Create user-level resource monitors
@@ -501,7 +474,6 @@ ALTER USER user2 SET RESOURCE_MONITOR = user2_monitor;
 
 **Use Case:** Limit individual user credit usage to prevent runaway queries.
 
----
 ### **🔍 Resource Monitor Monitoring Best Practices**
 
 #### **1. Monitor Resource Monitor Usage**
@@ -586,7 +558,6 @@ ORDER BY
     resource_monitor;
 ```
 
----
 ### **⚠️ Resource Monitor Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -599,7 +570,6 @@ ORDER BY
 | **Daily Quotas for Batch Workloads** | Daily quotas for workloads that run weekly | ❌ Unused credits at end of day, ❌ Inflexible | Use weekly or custom quotas for batch workloads |
 | **No Historical Analysis** | Not analyzing historical usage | ❌ Quotas not based on actual usage, ❌ Frequent adjustments needed | Analyze `QUERY_HISTORY` to set realistic quotas |
 
----
 ### **📋 Resource Monitor Checklist**
 
 - [ ] **Create Resource Monitors** for all production workloads
@@ -613,13 +583,10 @@ ORDER BY
 - [ ] **Document Monitor Configurations** and policies
 - [ ] **Implement Webhook Notifications** for real-time alerts
 
----
 
----
 
 ## **4. Query Prioritization Best Practices**
 
----
 
 ### **🚦 Query Prioritization Overview**
 
@@ -635,7 +602,6 @@ Snowflake supports **three priority levels** for queries:
 
 Within each priority level, queries are executed in **FIFO (First-In-First-Out)** order.
 
----
 
 ### **🎯 Query Prioritization Use Cases**
 
@@ -645,7 +611,6 @@ Within each priority level, queries are executed in **FIFO (First-In-First-Out)*
 | **MEDIUM** | General production queries | Reporting, ad-hoc analysis, internal dashboards | Default |
 | **LOW** | Non-critical queries | Development, testing, background jobs | `ALTER WAREHOUSE dev_wh SET QUERY_PRIORITY = 'LOW'` |
 
----
 ### **⚙️ Query Prioritization Configuration Best Practices**
 
 #### **1. Warehouse-Level Priority**
@@ -661,7 +626,6 @@ ALTER WAREHOUSE dev_wh SET QUERY_PRIORITY = 'LOW';
 - Set **MEDIUM priority** for **production reporting warehouses**
 - Set **LOW priority** for **development and testing warehouses**
 
----
 #### **2. Session-Level Priority**
 ```sql
 -- Set priority for the current session
@@ -676,7 +640,6 @@ ALTER SESSION SET QUERY_PRIORITY = 'HIGH';
 - Use session-level priority for **specific users or applications** that need temporary priority boosts
 - Override warehouse-level priority when needed for **specific workloads**
 
----
 #### **3. Query-Level Priority (Hint)**
 ```sql
 -- Set priority for a specific query using hint
@@ -699,7 +662,6 @@ GROUP BY
 - Use query-level priority for **individual critical queries** within a session
 - Combine with **query tagging** for better tracking
 
----
 #### **4. Role-Level Priority**
 ```sql
 -- Create a role with high priority
@@ -721,7 +683,6 @@ GRANT ROLE low_priority_role TO USER analyst1, analyst2;
 - Use role-level priority for **user groups** with consistent priority needs
 - Combine with **warehouse assignments** for comprehensive workload management
 
----
 ### **📊 Query Prioritization Implementation Patterns**
 
 #### **Pattern 1: Production vs. Development Prioritization**
@@ -737,7 +698,6 @@ ALTER WAREHOUSE test_wh SET QUERY_PRIORITY = 'LOW';
 
 **Use Case:** Ensure production workloads always have priority over development workloads.
 
----
 #### **Pattern 2: Workload-Type Prioritization**
 ```sql
 -- ETL warehouse (HIGH priority)
@@ -752,7 +712,6 @@ ALTER WAREHOUSE adhoc_wh SET QUERY_PRIORITY = 'LOW';
 
 **Use Case:** Prioritize ETL workloads over reporting and ad-hoc queries.
 
----
 #### **Pattern 3: Time-Based Prioritization**
 ```sql
 -- Create a stored procedure to adjust priority based on time
@@ -786,7 +745,6 @@ AS
 
 **Use Case:** Adjust priority based on time of day (HIGH during business hours, MEDIUM during off-hours).
 
----
 #### **Pattern 4: User-Group Prioritization**
 ```sql
 -- Create roles for different user groups
@@ -812,7 +770,6 @@ GRANT USAGE ON WAREHOUSE adhoc_wh TO ROLE analyst_team;
 
 **Use Case:** Prioritize queries based on user groups (ETL team > Reporting team > Analysts).
 
----
 ### **🔍 Query Prioritization Monitoring Best Practices**
 
 #### **1. Monitor Query Priority**
@@ -900,7 +857,6 @@ ORDER BY
     q1.start_time DESC;
 ```
 
----
 ### **⚠️ Query Prioritization Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -912,7 +868,6 @@ ORDER BY
 | **Ignoring Queue Times** | Not monitoring queue times for LOW priority queries | ❌ LOW priority queries may never run | Monitor queue times and adjust priorities as needed |
 | **No Queue Timeout for LOW Priority** | No timeout for LOW priority queries | ❌ LOW priority queries may wait indefinitely | Set `STATEMENT_QUEUE_TIMEOUT_IN_SECONDS` for LOW priority queries |
 
----
 ### **📋 Query Prioritization Checklist**
 
 - [ ] **Set Warehouse-Level Priority** based on workload type
@@ -926,13 +881,10 @@ ORDER BY
 - [ ] **Document Priority Policies** and communicate to users
 - [ ] **Test Priority Changes** in non-production first
 
----
 
----
 
 ## **5. Workload Isolation Best Practices**
 
----
 
 ### **🏝️ Workload Isolation Overview**
 
@@ -943,7 +895,6 @@ ORDER BY
 - Simplify **troubleshooting** (isolate issues to specific workloads)
 - Improve **security** (limit access to sensitive workloads)
 
----
 ### **🎯 Workload Isolation Strategies**
 
 | **Strategy** | **Description** | **Isolation Level** | **Complexity** | **Cost** | **Best For** |
@@ -955,7 +906,6 @@ ORDER BY
 | **Query Tagging** | Tag queries for monitoring and cost allocation | ⭐ Information | Low | Low | Cost allocation, monitoring |
 | **Serverless Operations** | Use serverless for specific workloads | ⭐⭐⭐⭐ Full | Low | Pay-per-use | File ingestion, row ingestion |
 
----
 ### **🏗️ Workload Isolation Architecture**
 
 ```mermaid
@@ -1023,7 +973,6 @@ flowchart TD
     class S,T,U monitoring;
 ```
 
----
 ### **📊 Workload Isolation Implementation Patterns**
 
 #### **Pattern 1: Environment-Based Isolation**
@@ -1094,7 +1043,6 @@ CREATE RESOURCE MONITOR test_monitor
 
 **Use Case:** Complete separation between production and development environments.
 
----
 #### **Pattern 2: Workload-Type Isolation**
 ```sql
 -- ETL warehouse
@@ -1150,7 +1098,6 @@ CREATE RESOURCE MONITOR adhoc_monitor
 
 **Use Case:** Separate warehouses for different types of workloads (ETL, reporting, ad-hoc).
 
----
 #### **Pattern 3: Team-Based Isolation**
 ```sql
 -- Data Engineering warehouse
@@ -1211,7 +1158,6 @@ GRANT USAGE ON WAREHOUSE marketing_wh TO ROLE marketing_role;
 
 **Use Case:** Dedicated warehouses for each team with separate budgets.
 
----
 #### **Pattern 4: Hybrid Isolation (Warehouses + Multi-Cluster)**
 ```sql
 -- Production warehouse (multi-cluster for high concurrency)
@@ -1258,7 +1204,6 @@ GRANT ROLE etl_high_priority TO USER etl_user1, etl_user2;
 
 **Use Case:** Multi-cluster warehouse for production with query prioritization for critical workloads, separate warehouse for development.
 
----
 #### **Pattern 5: Serverless + Warehouse Isolation**
 ```sql
 -- Production warehouse for traditional queries
@@ -1290,7 +1235,6 @@ CREATE RESOURCE MONITOR prod_monitor
 
 **Use Case:** Traditional query workloads on dedicated warehouses, serverless operations for ingestion.
 
----
 ### **🔍 Workload Isolation Monitoring Best Practices**
 
 #### **1. Monitor Warehouse Performance by Workload**
@@ -1373,7 +1317,6 @@ ORDER BY
     avg_execution_time DESC;
 ```
 
----
 ### **⚠️ Workload Isolation Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -1386,7 +1329,6 @@ ORDER BY
 | **Static Configurations** | Not adjusting configurations based on usage | ❌ Inefficient resource usage, ❌ Poor performance | Regularly review and adjust configurations |
 | **No Documentation** | Not documenting workload configurations | ❌ Hard to troubleshoot, ❌ Knowledge loss | Document all warehouse and monitor configurations |
 
----
 ### **📋 Workload Isolation Checklist**
 
 - [ ] **Identify Workload Types** (ETL, reporting, ad-hoc, development, etc.)
@@ -1404,13 +1346,10 @@ ORDER BY
 - [ ] **Document Workload Configurations** and policies
 - [ ] **Review and Adjust Configurations** monthly
 
----
 
----
 
 ## **6. Monitoring and Alerting Best Practices**
 
----
 
 ### **📊 Monitoring Overview**
 
@@ -1422,7 +1361,6 @@ Effective **monitoring** is critical for:
 ✅ **SLA Compliance** – Ensure performance meets agreed-upon SLAs
 ✅ **Security** – Detect and investigate suspicious activity
 
----
 ### **🎯 Monitoring Strategy**
 
 #### **1. What to Monitor**
@@ -1435,7 +1373,6 @@ Effective **monitoring** is critical for:
 | **Cost** | Daily credit usage, monthly spend, cost by warehouse | `WAREHOUSE_METERING_HISTORY`, `ACCOUNT_USAGE` | Daily |
 | **Security** | Login attempts, failed authentications, RBAC changes | `LOGIN_HISTORY`, `ACCOUNT_USAGE` | Real-time |
 
----
 #### **2. Monitoring Tools**
 | **Tool** | **Purpose** | **Use Case** | **Example** |
 |----------|------------|--------------|-------------|
@@ -1446,7 +1383,6 @@ Effective **monitoring** is critical for:
 | **Third-Party Tools** | Advanced monitoring and visualization | Enterprise monitoring, dashboards | Datadog, Grafana, New Relic |
 | **Custom Scripts** | Custom monitoring and automation | Tailored monitoring, automation | Python, Bash, etc. |
 
----
 ### **📈 Key Monitoring Views**
 
 #### **1. Warehouse Monitoring**
@@ -1499,7 +1435,6 @@ ORDER BY
     start_time DESC;
 ```
 
----
 #### **2. Query Monitoring**
 ```sql
 -- Recent query history
@@ -1562,7 +1497,6 @@ ORDER BY
     queue_time DESC;
 ```
 
----
 #### **3. Resource Monitor Monitoring**
 ```sql
 -- Current resource monitor usage
@@ -1597,7 +1531,6 @@ ORDER BY
     notification_time DESC;
 ```
 
----
 #### **4. Cost Monitoring**
 ```sql
 -- Daily credit usage by warehouse
@@ -1648,7 +1581,6 @@ ORDER BY
     estimated_cost_usd DESC;
 ```
 
----
 #### **5. Performance Monitoring**
 ```sql
 -- Performance by warehouse
@@ -1707,7 +1639,6 @@ ORDER BY
     hour_of_day;
 ```
 
----
 ### **🔔 Alerting Best Practices**
 
 #### **1. Alert Types and Thresholds**
@@ -1724,7 +1655,6 @@ ORDER BY
 | **Failed Logins** | Failed login attempts > 5 in 5 minutes | High | Email + Slack + PagerDuty | Every 5 minutes | `status = 'FAILED' AND event_type = 'LOGIN'` |
 | **Warehouse Suspended** | Warehouse state = 'SUSPENDED' | Critical | Email + Slack + PagerDuty | Every 5 minutes | `state = 'SUSPENDED'` |
 
----
 #### **2. Alert Implementation Examples**
 
 ##### **Warehouse Overloaded Alert**
@@ -1873,7 +1803,6 @@ AS
     AND start_time > DATEADD('hour', -1, CURRENT_TIMESTAMP());
 ```
 
----
 #### **3. Alert Management Best Practices**
 
 | **Best Practice** | **Description** | **Example** |
@@ -1889,7 +1818,6 @@ AS
 | **Use Alert Suppression** | Avoid duplicate alerts for the same issue | Suppress alerts for known issues |
 | **Integrate with Incident Management** | Connect alerts to incident management tools | PagerDuty, Opsgenie, etc. |
 
----
 ### **📊 Monitoring Dashboard Examples**
 
 #### **1. Workload Management Dashboard**
@@ -2059,7 +1987,6 @@ ORDER BY
     warehouse_name, avg_execution_time DESC;
 ```
 
----
 ### **⚠️ Monitoring Anti-Patterns**
 
 | **Anti-Pattern** | **Description** | **Impact** | **Solution** |
@@ -2074,7 +2001,6 @@ ORDER BY
 | **Ignoring Warnings** | Not acting on warning alerts | ❌ Issues escalate to critical | Investigate warnings before they become critical |
 | **No Documentation** | Not documenting monitoring setup | ❌ Hard to maintain, ❌ Knowledge loss | Document all monitoring configurations |
 
----
 ### **📋 Monitoring and Alerting Checklist**
 
 - [ ] **Set Up Basic Monitoring** for all production warehouses
@@ -2108,13 +2034,10 @@ ORDER BY
 - [ ] **Integrate with Incident Management** (PagerDuty, Opsgenie, etc.)
 - [ ] **Set Up Historical Data Retention** (use `ACCOUNT_USAGE` views)
 
----
 
----
 
 ## **7. Cost Optimization Best Practices**
 
----
 
 ### **💰 Cost Optimization Overview**
 
@@ -2125,7 +2048,6 @@ Snowflake's **consumption-based pricing** model means you pay for:
 
 **Cost Optimization Goal**: **Maximize performance while minimizing costs**
 
----
 ### **🎯 Cost Optimization Strategies**
 
 | **Strategy** | **Description** | **Impact** | **Implementation** | **Best For** |
@@ -2145,7 +2067,6 @@ Snowflake's **consumption-based pricing** model means you pay for:
 | **Archive Old Data** | Move old data to cheaper storage | ⭐⭐⭐ | Use time travel, fail-safe, or external archiving | Historical data |
 | **Use Spot Instances** | Use spot instances for non-critical workloads | ⭐⭐ | Not applicable in Snowflake | N/A |
 
----
 ### **📊 Cost Optimization Implementation Patterns**
 
 #### **Pattern 1: Right-Sizing Warehouses**
@@ -2189,7 +2110,6 @@ ORDER BY
 
 **Use Case:** Reduce costs by using smaller warehouses for workloads that don't need large sizes.
 
----
 #### **Pattern 2: Auto-Suspend Optimization**
 ```sql
 -- Step 1: Analyze warehouse idle times
@@ -2215,7 +2135,6 @@ ALTER WAREHOUSE always_on_wh SET AUTO_SUSPEND = NULL;  -- Disable for 24/7 workl
 
 **Use Case:** Optimize auto-suspend settings to balance cost savings and user experience.
 
----
 #### **Pattern 3: Multi-Cluster Optimization**
 ```sql
 -- Step 1: Analyze cluster usage
@@ -2245,7 +2164,6 @@ ALTER WAREHOUSE cost_sensitive_wh SET SCALING_POLICY = 'ECONOMY';
 
 **Use Case:** Optimize multi-cluster warehouse configurations to balance performance and cost.
 
----
 #### **Pattern 4: Resource Monitor Optimization**
 ```sql
 -- Step 1: Analyze credit usage by monitor
@@ -2280,7 +2198,6 @@ ALTER RESOURCE MONITOR low_usage_monitor SET NOTIFY_THRESHOLD = 70;  -- Decrease
 
 **Use Case:** Optimize resource monitor configurations to match actual usage patterns.
 
----
 #### **Pattern 5: Query Optimization**
 ```sql
 -- Step 1: Identify expensive queries
@@ -2318,7 +2235,6 @@ WHERE large_table.date > CURRENT_DATE() - 30;
 
 **Use Case:** Reduce query costs by optimizing query design and table configuration.
 
----
 #### **Pattern 6: Result Caching**
 ```sql
 -- Step 1: Enable result caching
@@ -2343,7 +2259,6 @@ ORDER BY
 
 **Use Case:** Reduce costs for repetitive queries by caching results.
 
----
 #### **Pattern 7: Clustering for Cost Savings**
 ```sql
 -- Step 1: Identify tables with high bytes scanned
@@ -2375,7 +2290,6 @@ WHERE
 
 **Use Case:** Reduce bytes scanned (and thus costs) by clustering tables on frequently filtered columns.
 
----
 #### **Pattern 8: Materialized Views for Cost Savings**
 ```sql
 -- Step 1: Identify expensive, repetitive queries
@@ -2428,7 +2342,6 @@ ORDER BY
 
 **Use Case:** Reduce costs for repetitive, expensive queries by pre-computing results.
 
----
 #### **Pattern 9: Storage Optimization**
 ```sql
 -- Step 1: Identify large tables
@@ -2467,7 +2380,6 @@ WHERE date < DATEADD('year', -2, CURRENT_DATE());
 
 **Use Case:** Reduce storage costs by compressing data and archiving old data.
 
----
 #### **Pattern 10: Serverless Optimization**
 ```sql
 -- Step 1: Identify eligible workloads for serverless
@@ -2496,7 +2408,6 @@ ORDER BY
 
 **Use Case:** Reduce costs by using serverless for eligible workloads (no warehouse costs).
 
----
 ### **🔍 Cost Optimization Monitoring Best Practices**
 
 #### **1. Daily Cost Report**
