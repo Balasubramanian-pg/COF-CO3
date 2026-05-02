@@ -156,7 +156,6 @@ CREATE OR REPLACE LISTING customer_intelligence_app
 | **Schema version tracking** | Maintain `app_metadata.version_table` in setup | Enables safe migration logic in future versions |
 | **Consumer opt-in hooks** | Use `CALL SYSTEM$APP_SETUP_PARAMETER('feature_flag', 'true')` | Allows consumers to toggle app behavior safely |
 
----
 
 ## 3. Consumer Workflow: Installation & Lifecycle
 
@@ -193,7 +192,6 @@ ORDER BY last_scored_date DESC;
 
 **Consumer Cost Reality**: Apps consume **consumer warehouse credits** unless explicitly configured for provider-managed compute. Always right-size the warehouse attached to app tasks/procedures.
 
----
 
 ## 4. Security, Governance & Data Boundaries
 
@@ -226,7 +224,6 @@ WHERE query_text ILIKE '%customer_intelligence%'
   AND object_name ILIKE '%analytics_db%'; -- Verify only granted objects touched
 ```
 
----
 
 ## 5. Monetization, Telemetry & ROI Tracking
 
@@ -275,7 +272,6 @@ GROUP BY warehouse_name;
 | **SUBSCRIPTION** | Fixed monthly fee; Snowflake handles invoicing | `PRICING_MODEL = 'SUBSCRIPTION'` | Predictable OPEX; usage tracked |
 | **CREDIT-BASED** | Pay-per-execution or per GB processed | Custom telemetry + marketplace billing API | Variable cost; aligns with ROI |
 
----
 
 ## 6. Performance Optimization & Resource Management
 
@@ -316,7 +312,6 @@ END;
 $$;
 ```
 
----
 
 ## 7. Monitoring, Troubleshooting & Cost Attribution
 
@@ -363,7 +358,6 @@ ORDER BY execution_time DESC;
 | **Schedule off-peak execution** | `ALTER APPLICATION ... SET SCHEDULE = 'USING CRON 0 2 * * *'` | 20–40% credit reduction (off-peak pricing) |
 | **Limit data scan scope** | Grant `SELECT` only on filtered views, not raw tables | 10–100x reduction in bytes scanned |
 
----
 
 ## 8. Anti-Patterns & Pitfalls
 
@@ -375,7 +369,6 @@ ORDER BY execution_time DESC;
 | **Ignoring consumer warehouse sizing** | App tasks fail with OOM or timeout errors | Default `XSMALL` for heavy UDF batches | Document compute requirements; expose `WAREHOUSE_SIZE` parameter | 30% install abandonment; poor reviews |
 | **Telemetry spam** | High cloud services credits; app throttling | Emitting per-row telemetry instead of batch | Aggregate metrics; emit at procedure/task completion | 2–3x credit waste; degraded app performance |
 
----
 
 ## 9. Decision Frameworks & Quick Reference
 
@@ -427,7 +420,6 @@ SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.APP_USAGE WHERE app_name = 'my_app';
 | `400001` | `Insufficient warehouse credits` | Consumer warehouse suspended; attach resource monitor or resume |
 | `500012` | `Telemetry payload exceeds size limit` | Batch telemetry; reduce JSON payload size; avoid nested arrays |
 
----
 
 ## Key Principles to Remember
 1. **Isolation is the product, not a feature**. Native Apps succeed because they enforce strict data boundaries. Bypass them, and you've built a liability.
