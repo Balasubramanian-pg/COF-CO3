@@ -2,9 +2,17 @@
 
 ### Table families and when they matter
 
-Snowflake’s default table type is permanent. If you do not specify `TEMPORARY` or `TRANSIENT`, the table is permanent. Temporary tables exist only for the session that created them and are not visible to other sessions. Transient tables exist until dropped, but they have a lower protection level than permanent tables because they do not carry the same recoverability guarantees after Time Travel. Snowflake explicitly recommends transient tables only for data that can be recreated externally. ([Snowflake Docs][1])
+1. Snowflake’s default table type is permanent.
+2. If you do not specify `TEMPORARY` or `TRANSIENT`, the table is permanent.
+3. Temporary tables exist only for the session that created them and are not visible to other sessions.
+4. Transient tables exist until dropped, but they have a lower protection level than permanent tables because they do not carry the same recoverability guarantees after Time Travel.
+5. Snowflake explicitly recommends transient tables only for data that can be recreated externally. ([Snowflake Docs][1])
 
-Hybrid tables are the transactional outlier in the table family. Snowflake describes them as low-latency, high-throughput tables with index-based random reads and writes, row locking, and support for unique and referential integrity constraints. Snowflake also states you cannot create hybrid tables as temporary or transient, and you cannot place them inside transient schemas or databases. ([Snowflake Docs][2])
+>[!Note]
+>Hybrid tables are the transactional outlier in the table family. Snowflake describes them as low-latency, high-throughput tables with index-based random reads and writes, row locking, and support for unique and referential integrity constraints.
+
+>[!Tip]
+>Snowflake also states you cannot create hybrid tables as temporary or transient, and you cannot place them inside transient schemas or databases. ([Snowflake Docs][2])
 
 External tables are read-only tables over files in an external stage. Snowflake stores metadata for those files inside Snowflake, but the stage itself is external. External tables can be queried and joined, but DML is not supported. Snowflake also says query performance can be slower than native tables, and materialized views can be used to improve performance over external tables. ([Snowflake Docs][3])
 
