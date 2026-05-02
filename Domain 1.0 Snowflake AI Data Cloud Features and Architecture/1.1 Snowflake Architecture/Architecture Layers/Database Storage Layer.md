@@ -161,6 +161,13 @@ Data is never directly accessed by users via file system; all reads and writes g
   - Storage in Snowflake is an integral part of the cross-region, cross-cloud architecture
 
 ## Summary
-  - The Database Storage Layer provides secure, durable, and highly elastic data persistence using cloud object storage and a proprietary micro-partition format
-  - Its immutable, columnar nature supports high-performance analytics, time travel, zero-copy cloning, and data sharing without physical data movement
-  - Decoupling storage from compute allows independent scaling, cost control, and workload isolation while maintaining a single source of truth for all data in the Snowflake ecosystem
+  - The Database Storage Layer provides
+      - Secure,
+      - Durable, and
+      - Highly elastic data persistence using cloud object storage and a **proprietary micro-partition format**
+  - Its immutable, and Columnar nature supports :
+      - High-performance analytics,
+      - Time travel,
+      - Zero-copy cloning, and
+      - Data sharing without physical data movement
+  - Decoupling storage from compute allows **independent scaling**, cost control, and **workload isolation** while maintaining a **single source of truth** for all data in the Snowflake ecosystem
