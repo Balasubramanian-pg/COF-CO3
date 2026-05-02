@@ -69,13 +69,10 @@ flowchart TD
     style Z fill:#9f9,stroke:#333
 ```
 
----
 
----
 
 ## **2. Execution Internals & Transactional Boundaries**
 
----
 
 ### **2.1 Function Classification & Execution Model**
 
@@ -89,7 +86,6 @@ flowchart TD
 | **UDFs (Java/JS/Python)** | **Sandboxed (External)**  | High (per-row overhead)       | High              | No spill (memory limits)      | Limited (per-node)   | **Non-deterministic**: Depends on UDF logic. |
 
 
----
 
 ### **2.2 Scalar Functions: Internals & Optimizations**
 
@@ -134,7 +130,6 @@ flowchart TD
 | `POSITION('x' IN col)`            | `CONTAINS(col, 'x')`        | **10x faster** (if only checking existence) | `SELECT * FROM logs WHERE CONTAINS(message, 'ERROR');`   |
 
 
----
 
 ### **2.3 Aggregate Functions: Internals & Optimizations**
 
@@ -180,7 +175,6 @@ flowchart TD
 | `SUM(CASE WHEN ... THEN 1 ELSE 0 END)` | `COUNT(CASE WHEN ... THEN 1 END)`    | **2x faster**                         | `SELECT COUNT(CASE WHEN status = 'active' THEN 1 END) FROM users;`                               |
 
 
----
 
 ### **2.4 Window Functions: Internals & Optimizations**
 
@@ -227,7 +221,6 @@ flowchart TD
 | `NTILE(100) OVER (PARTITION BY col1 ORDER BY col2)`                                                                | **Use `WIDTH_BUCKET**`                                    | **5x faster**                      | `SELECT WIDTH_BUCKET(col2, 0, 100, 100) OVER (PARTITION BY col1) FROM table;`                    |
 
 
----
 
 ### **2.5 Table Functions: Internals & Optimizations**
 
@@ -265,13 +258,10 @@ flowchart TD
 | Nested `FLATTEN`                        | **Flatten once + filter**                     | **10x faster**       | `SELECT f.value FROM my_table, TABLE(FLATTEN(json_data:items)) f WHERE f.value:type = 'A';`                    |
 
 
----
 
----
 
 ## **3. Parameter/Configuration Deep Dive**
 
----
 
 ### **3.1 Session-Level Parameters for Functions**
 
@@ -289,7 +279,6 @@ flowchart TD
 | `ENABLE_UNNEST_OPTIMIZATION` | **Optimize `FLATTEN**` for nested data.           | **2x faster** for `FLATTEN` on `VARIANT`.                    | **Default:** `TRUE`.                                                      | `TRUE`                    |
 
 
----
 
 ### **3.2 Warehouse-Level Parameters for Functions**
 
@@ -302,7 +291,6 @@ flowchart TD
 | `ABORT_DETACHED_QUERY` | **Kill queries** when session disconnects.                               | Prevents **runaway queries** from disconnected clients.                       | **Default:** `TRUE` (recommended).                    | `TRUE`                          |
 
 
----
 
 ### **3.3 Function-Specific Parameters**
 
@@ -316,13 +304,10 @@ flowchart TD
 | `AGGREGATION_MEMORY_LIMIT` | Aggregate Functions                        | **Max memory for hash aggregation** (% of warehouse memory).                    | **Default: 50%**. If exceeded → **spill-to-disk**.                                         | `50%`                  |
 
 
----
 
----
 
 ## **4. Performance & Resource Implications**
 
----
 
 ### **4.1 Memory Model by Function Type**
 
@@ -336,7 +321,6 @@ flowchart TD
 | **UDFs (Java/JS/Python)** | Sandboxed (per-row)            | Memory limit (sandbox) | N/A (fails)           | +50% (CPU overhead) | Manual retry |
 
 
----
 
 ### **4.2 CPU Intensity by Function Type**
 
@@ -350,7 +334,6 @@ flowchart TD
 | **UDFs (Java/JS/Python)** | Very High     | Sandbox overhead      | **Use built-ins** instead of UDFs.        | +50-100%          |
 
 
----
 
 ### **4.3 I/O Patterns by Function Type**
 
@@ -364,7 +347,6 @@ flowchart TD
 | **External Functions**  | HTTP calls (AWS Lambda, etc.) | **Network latency** (+100ms/call) | +50% (network + CPU) | **Batch calls** to reduce overhead.     |
 
 
----
 
 ### **4.4 Spill-to-Disk Triggers & Credit Math**
 
@@ -394,7 +376,6 @@ Spill Overhead (credits) =
 - Query Duration: 600 sec.
 - **Overhead**: `(200 / 128) * 2 * (600 / 3600) = 0.52 credits`.
 
----
 
 ### **4.5 Warehouse Sizing for Function Workloads**
 
@@ -408,13 +389,10 @@ Spill Overhead (credits) =
 | **UDF-Heavy Queries**       | `2X-LARGE`                | N/A                | `WAREHOUSE_SIZE=2X-LARGE`         | +20% (UDF overhead) |
 
 
----
 
----
 
 ## **5. Monitoring, Observability & Troubleshooting**
 
----
 
 ### **5.1 Key Monitoring Views for Functions**
 
@@ -428,11 +406,9 @@ Spill Overhead (credits) =
 | `INFORMATION_SCHEMA.TABLE_FUNCTIONS` | **Table function metadata**.                               | `FUNCTION_NAME`, `ARGUMENT_TYPES`, `RETURN_TYPE`                                             | Session-scoped |
 
 
----
 
 ### **5.2 Production-Grade Monitoring Queries**
 
----
 
 #### **5.2.1 Function-Specific Performance Monitoring**
 
@@ -493,7 +469,6 @@ ORDER BY
     TOTAL_ELAPSED_TIME DESC;
 ```
 
----
 
 #### **5.2.2 Operator-Level Profiling for Functions**
 
@@ -529,7 +504,6 @@ ORDER BY
     MEMORY_USAGE DESC;
 ```
 
----
 
 #### **5.2.3 Window Function-Specific Monitoring**
 
@@ -571,7 +545,6 @@ ORDER BY
     duration_sec DESC;
 ```
 
----
 
 #### **5.2.4 UDF Monitoring**
 
@@ -606,11 +579,9 @@ ORDER BY
     START_TIME DESC;
 ```
 
----
 
 ### **5.3 Error Categorization & Incident Runbooks**
 
----
 
 #### **5.3.1 Error Code Classification for Functions**
 
@@ -627,11 +598,9 @@ ORDER BY
 | `1049`         | **Disk Full**             | Spill-to-disk limit reached.               | Query abort.            | **Critical** | Aggregate functions, `FLATTEN`               |
 
 
----
 
 #### **5.3.2 Incident Runbooks**
 
----
 
 ##### **Runbook: Memory Limit Exceeded (`2003`) for Aggregates/Window Functions**
 
@@ -677,7 +646,6 @@ ORDER BY
   - **Set `STATEMENT_TIMEOUT_IN_SECONDS**` to kill runaway queries.
   - **Use `PARTITION_SIZE` hint** to limit window function partitions.
 
----
 
 ##### **Runbook: Slow Window Function Queries**
 
@@ -736,7 +704,6 @@ ORDER BY
   - **Cluster tables** on `PARTITION BY` keys.
   - **Monitor `QUERY_PROFILE**` for window function bottlenecks.
 
----
 
 ##### **Runbook: Slow Aggregate Queries**
 
@@ -785,7 +752,6 @@ ORDER BY
   - **Monitor `MEMORY_USAGE**` in `QUERY_PROFILE`.
   - **Set `APPROXIMATE=TRUE**` for large distinct counts.
 
----
 
 ##### **Runbook: UDF Performance Issues**
 
@@ -818,13 +784,10 @@ ORDER BY
   - **Avoid UDFs in hot paths** (use built-ins).
   - **Monitor UDF usage** in `QUERY_HISTORY`.
 
----
 
----
 
 ## **6. Advanced Production Patterns**
 
----
 
 ### **6.1 Window Function Patterns**
 
@@ -840,7 +803,6 @@ ORDER BY
 | **Time-Based Windows**  | Rolling time windows   | `SUM(amount) OVER (PARTITION BY user_id ORDER BY date RANGE BETWEEN INTERVAL 7 DAY PRECEDING AND CURRENT ROW)` | **RANGE frame** (slower).                  | +10%               |
 
 
----
 
 **Example: Running Totals with `QUALIFY**`
 
@@ -861,7 +823,6 @@ QUALIFY
     ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY date DESC) <= 100;
 ```
 
----
 
 **Example: Moving Average with `ROWS` Frame**
 
@@ -880,7 +841,6 @@ FROM
     transactions;
 ```
 
----
 
 **Example: Gap Detection with `LEAD**`
 
@@ -897,7 +857,6 @@ WHERE
     gap_days > 1; -- Find gaps > 1 day
 ```
 
----
 
 **Example: Percent of Total with `SUM OVER**`
 
@@ -913,7 +872,6 @@ GROUP BY
     region;
 ```
 
----
 
 ### **6.2 Aggregate Function Patterns**
 
@@ -928,7 +886,6 @@ GROUP BY
 | **Combine Aggregates**     | Multiple aggregates in one pass | Use `COUNT`, `SUM`, `AVG` in a single `GROUP BY`.         | **2x faster** than multiple queries. | +0%                          |
 
 
----
 
 **Example: Pre-Aggregation Table**
 
@@ -958,7 +915,6 @@ GROUP BY
     region;
 ```
 
----
 
 **Example: Rollup with `GROUPING SETS**`
 
@@ -979,7 +935,6 @@ GROUP BY
     );
 ```
 
----
 
 **Example: Array Aggregation with `ARRAY_AGG**`
 
@@ -995,7 +950,6 @@ GROUP BY
     region;
 ```
 
----
 
 **Example: Combined Aggregates**
 
@@ -1014,7 +968,6 @@ GROUP BY
     region;
 ```
 
----
 
 ### **6.3 Table Function Patterns**
 
@@ -1028,7 +981,6 @@ GROUP BY
 | **Batch FLATTEN**           | Avoid OOM on large arrays      | `SELECT f.value FROM my_table, TABLE(FLATTEN(ARRAY_SLICE(json_data:items, 1, 1000))) f;`   | **Reduces memory usage**. | +5%                |
 
 
----
 
 **Example: JSON Unnesting with `FLATTEN**`
 
@@ -1044,7 +996,6 @@ FROM
     TABLE(FLATTEN(t.order_data:items)) f;
 ```
 
----
 
 **Example: Lateral Join for Top-N per Group**
 
@@ -1074,7 +1025,6 @@ FROM
     ) p;
 ```
 
----
 
 **Example: JSON to Relational with `JSON_TABLE` UDF**
 
@@ -1105,7 +1055,6 @@ FROM
     TABLE(json_to_table(t.json_data)) j;
 ```
 
----
 
 **Example: Batch FLATTEN to Avoid OOM**
 
@@ -1134,7 +1083,6 @@ FROM
     TABLE(FLATTEN(batch_2)) f;
 ```
 
----
 
 ### **6.4 UDF Optimization Patterns**
 
@@ -1148,7 +1096,6 @@ FROM
 | **External Functions**      | Complex logic (e.g., ML)     | Use **AWS Lambda/GCP Cloud Functions**.                      | **Slower** (network latency).  | +50%               |
 
 
----
 
 **Example: SQL UDF (Fastest)**
 
@@ -1159,7 +1106,6 @@ RETURNS FLOAT
 AS (price * (1 - discount));
 ```
 
----
 
 **Example: Java UDF (Vectorized)**
 
@@ -1179,7 +1125,6 @@ $$
 $$;
 ```
 
----
 
 **Example: Batch UDF Call**
 
@@ -1200,7 +1145,6 @@ FROM
     my_table;
 ```
 
----
 
 ### **6.5 Idempotency & Retry Patterns for Functions**
 
@@ -1213,7 +1157,6 @@ FROM
 | **Fallback Logic**            | UDF failures         | Use `TRY_CAST` or `COALESCE` to handle errors.         | **Graceful degradation**.          | **Complex logic**.       |
 
 
----
 
 **Example: Deterministic UDF with Caching**
 
@@ -1233,7 +1176,6 @@ SET USE_CACHED_RESULT = TRUE;
 SELECT deterministic_hash(col) FROM my_table;
 ```
 
----
 
 **Example: Retry Logic for External Functions**
 
@@ -1259,7 +1201,6 @@ def call_external_function(query, max_retries=3):
 call_external_function("SELECT my_external_function(col) FROM my_table");
 ```
 
----
 
 **Example: Materialized UDF Results**
 
@@ -1282,13 +1223,10 @@ JOIN
     new_data n ON u.input_col = n.input_col;
 ```
 
----
 
----
 
 ## **7. Decision Matrix / Quick Reference Flowchart**
 
----
 
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffd700', 'edgeLabelBackground':'#fff'}}}%%
@@ -1327,13 +1265,10 @@ flowchart TD
     J --> S
 ```
 
----
 
----
 
 ## **8. Key Engineering Principles & Bottom Line**
 
----
 
 ### **8.1 Core Principles for Function Optimization**
 
@@ -1350,11 +1285,9 @@ flowchart TD
 | **Automatic Optimization**     | **Predicate pushdown**, **common subexpression elimination**.                  | **Reduces manual tuning**.                      |
 
 
----
 
 ### **8.2 Bottom Line for Production Engineers**
 
----
 
 #### **8.2.1 Scalar Functions**
 
@@ -1371,7 +1304,6 @@ flowchart TD
 5. **Performance Impact**:
   - **0% credit overhead** (vectorized).
 
----
 
 #### **8.2.2 Aggregate Functions**
 
@@ -1388,7 +1320,6 @@ flowchart TD
   - **+2x credits** if spill-to-disk.
   - **+5% credits** for approximate aggregates.
 
----
 
 #### **8.2.3 Window Functions**
 
@@ -1405,7 +1336,6 @@ flowchart TD
   - **+0-10% credits** (streaming).
   - **+20% credits** for `RANGE` frames.
 
----
 
 #### **8.2.4 Table Functions**
 
@@ -1418,7 +1348,6 @@ flowchart TD
 3. **Performance Impact**:
   - **+1-2x credits** if spill-to-disk.
 
----
 
 #### **8.2.5 UDFs**
 
@@ -1433,7 +1362,6 @@ flowchart TD
 5. **Performance Impact**:
   - **+50-100% credits** (sandbox overhead).
 
----
 
 ### **8.3 Performance Cheat Sheet**
 
@@ -1447,7 +1375,6 @@ flowchart TD
 | **UDF**           | Use SQL UDFs, avoid JS/Python.    | JS/Python UDFs in hot paths.       | **10-100x faster**.  | +50-100%          |
 
 
----
 
 ### **8.4 Cost Cheat Sheet**
 
@@ -1461,7 +1388,6 @@ flowchart TD
 | **UDF**                | `1 credit = 1 core-second` + **50-100% overhead**. | `SELECT my_udf(col) FROM my_table;` = **1.5 credits**.                                 |
 
 
----
 
 ### **8.5 Reliability Cheat Sheet**
 
@@ -1475,13 +1401,10 @@ flowchart TD
 | **Transaction Conflicts** | All in transactions | Use `ABORT` + retry.                            | Manual retry.        |
 
 
----
 
----
 
 ## **9. Production Checklist**
 
----
 
 ### **9.1 Scalar Functions**
 
@@ -1492,7 +1415,6 @@ flowchart TD
 - **Use `IFF`** instead of `CASE` for simple conditions.
 - **Monitor `QUERY_PROFILE`** for slow scalar functions.
 
----
 
 ### **9.2 Aggregate Functions**
 
@@ -1503,7 +1425,6 @@ flowchart TD
 - **Use `ARRAY_AGG`** instead of `LISTAGG`.
 - **Monitor `MEMORY_USAGE`** in `QUERY_PROFILE` for spills.
 
----
 
 ### **9.3 Window Functions**
 
@@ -1514,7 +1435,6 @@ flowchart TD
 - **Monitor `QUERY_PROFILE`** for window function bottlenecks.
 - **Use `PARTITION_SIZE` hint** if needed.
 
----
 
 ### **9.4 Table Functions**
 
@@ -1524,7 +1444,6 @@ flowchart TD
 - **Extract only needed fields** from `VARIANT`.
 - **Monitor `MEMORY_USAGE`** for `FLATTEN` spills.
 
----
 
 ### **9.5 UDFs**
 
@@ -1534,13 +1453,10 @@ flowchart TD
 - **Batch UDF calls** to reduce overhead.
 - **Monitor UDF usage** in `QUERY_HISTORY`.
 
----
 
----
 
 ## **10. Quick Reference Commands**
 
----
 
 ### **10.1 Scalar Functions**
 
@@ -1555,7 +1471,6 @@ flowchart TD
 | **JSON Extraction**   | `SELECT JSON_EXTRACT_PATH_TEXT(json_col, '$.user.name') FROM my_table;`                             |
 
 
----
 
 ### **10.2 Aggregate Functions**
 
@@ -1570,7 +1485,6 @@ flowchart TD
 | **Pre-Aggregation**            | `CREATE TABLE agg_table AS SELECT col1, SUM(col2) FROM my_table GROUP BY col1;` |
 
 
----
 
 ### **10.3 Window Functions**
 
@@ -1585,7 +1499,6 @@ flowchart TD
 | **Filter with QUALIFY** | `SELECT col1, ROW_NUMBER() OVER (PARTITION BY col1 ORDER BY col2) AS rn FROM my_table QUALIFY rn <= 10;`                |
 
 
----
 
 ### **10.4 Table Functions**
 
@@ -1598,7 +1511,6 @@ flowchart TD
 | **Batch FLATTEN**   | `SELECT f.value FROM my_table, TABLE(FLATTEN(ARRAY_SLICE(json_col:items, 1, 1000))) f;`    |
 
 
----
 
 ### **10.5 UDFs**
 
@@ -1611,7 +1523,6 @@ flowchart TD
 | **Monitor UDF Usage** | `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY WHERE QUERY_TEXT LIKE '%MY_UDF%';`  |
 
 
----
 
 ### **10.6 Monitoring & Troubleshooting**
 
@@ -1625,13 +1536,10 @@ flowchart TD
 | **Kill Query**    | `SELECT SYSTEM$CANCEL_QUERY('QUERY_ID');`                                                            |
 
 
----
 
----
 
 ## **11. Anti-Patterns to Avoid**
 
----
 
 ### **11.1 Scalar Functions**
 
@@ -1645,7 +1553,6 @@ flowchart TD
 | `**TO_CHAR` + `TO_DATE**`    | **5x slower** than `DATE_TRUNC`.                         | Use `DATE_TRUNC`.                           |
 
 
----
 
 ### **11.2 Aggregate Functions**
 
@@ -1659,7 +1566,6 @@ flowchart TD
 | **Multiple Aggregates in Separate Queries** | **2x slower** than single pass.       | Combine into one `GROUP BY`.           |
 
 
----
 
 ### **11.3 Window Functions**
 
@@ -1673,7 +1579,6 @@ flowchart TD
 | `**FIRST_VALUE` with `RANGE**`   | **Slower** than default frame.      | Use default frame (`ROWS UNBOUNDED PRECEDING`). |
 
 
----
 
 ### **11.4 Table Functions**
 
@@ -1687,7 +1592,6 @@ flowchart TD
 | `**JSON_TABLE` for Simple JSON** | **Overkill**.                | Use `JSON_EXTRACT_PATH_TEXT`. |
 
 
----
 
 ### **11.5 UDFs**
 
@@ -1701,9 +1605,7 @@ flowchart TD
 | **Large Inputs to UDFs**        | **Memory pressure**.               | Batch inputs (e.g., `ARRAY_AGG`). |
 
 
----
 
----
 
 ## **12. Further Reading**
 
