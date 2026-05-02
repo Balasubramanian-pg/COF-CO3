@@ -13,8 +13,8 @@ We Will narrow down on Database storage layer in this section
 
 ## Core Storage Unit: Micro-Partitions
   - All table data is physically stored as **immutable micro-partitions** in cloud object storage
-  - >[!Note]
-    >A micro-partition is a compressed, columnar file that typically contains 50–500 MB of uncompressed data (compressed size much smaller)
+>[!Note]
+>A micro-partition is a compressed, columnar file that typically contains 50–500 MB of uncompressed data (compressed size much smaller)
   - Each micro-partition stores a subset of a table’s rows across all columns (no row/column chasm; it’s a hybrid columnar structure)
   - Micro-partitions are automatically created when data is inserted or loaded; they are never modified in-place
   - Contains self-contained metadata: MIN/MAX value ranges for each column, number of distinct values, null counts, which is stored in the Cloud Services metadata store and used for very fast partition pruning
