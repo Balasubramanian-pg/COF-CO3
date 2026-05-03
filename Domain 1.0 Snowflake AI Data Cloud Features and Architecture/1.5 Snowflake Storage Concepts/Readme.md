@@ -157,6 +157,8 @@ flowchart TD
 
 ## View Types Summary
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/a039661a-b9f7-4ba3-858d-f513e39fc1ba" />
+
 | Type | What It Holds | When Compute Happens | Storage Cost | Best For |
 |------|--------------|---------------------|--------------|----------|
 | Standard | Saved query definition | At query time | None | Logic reuse light transforms ad hoc reports |
