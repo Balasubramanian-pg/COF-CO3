@@ -24,8 +24,14 @@ A session is established when a client connects and is bound to:
 
 >[!Tip]
 >**Context** <br>
->Context in Snowflake refers to the current execution environment settings that determine how SQL statements behave. It includes the current role, warehouse, database, and schema. Context is scoped to a session but can be changed multiple times within that session using USE commands. Context determines object name resolution and privileges for every statement executed.
-Context resolution is hierarchical and stateful. Every SQL statement executes against the current session context unless explicitly overridden.
+>Context in Snowflake refers to the current execution environment settings that determine how SQL statements behave. <br>
+> 1. It includes the current role, warehouse, database, and schema.
+> 2. Context is scoped to a session but can be changed multiple times within that session using USE commands.
+> 3. Context determines object name resolution and privileges for every statement executed.
+
+>[!Note]
+>Context resolution is hierarchical and stateful. <br>
+>Every SQL statement executes against the current session context unless explicitly overridden.
 
 ```sql
 SELECT
