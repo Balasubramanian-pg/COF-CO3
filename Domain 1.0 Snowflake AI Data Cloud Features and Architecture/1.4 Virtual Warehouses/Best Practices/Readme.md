@@ -1,6 +1,8 @@
 # Virtual Warehouse Best Practices
 This document covers the additional best practices which we did not cover in the previous [document]([url](https://github.com/Balasubramanian-pg/COF-CO3/blob/main/Domain%201.0%20Snowflake%20AI%20Data%20Cloud%20Features%20and%20Architecture/1.4%20Virtual%20Warehouses/Readme.md))
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/de24a2a5-fda7-41b3-b76b-685960655134" />
+
 Let us first start from understanding the bigger picture.
 
 ```mermaid
