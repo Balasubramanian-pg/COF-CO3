@@ -1,4 +1,4 @@
-# Additional Best Practices for Warehouse Scaling and Configuration
+# Deterministic Warehouse Scaling and Configuration Practices
 
 ```mermaid
 graph TD
