@@ -83,6 +83,8 @@ Use a **Stored Procedure** when you need to orchestrate actions, especially DDL/
 
 ### Null handling and arguments
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/6ee3ee45-4df9-482e-9e6a-5e294910ddb1" />
+
 1. Stored procedures have explicit null-handling behavior in their DDL.
 2. Snowflake documents `CALLED ON NULL INPUT` and `RETURNS NULL ON NULL INPUT`, with `CALLED ON NULL INPUT` as the default.
 3. Snowflake Scripting procedures also support `IN` and `OUT` arguments, with output values passed back through variables rather than as multiple return values. ([Snowflake Docs][6])
