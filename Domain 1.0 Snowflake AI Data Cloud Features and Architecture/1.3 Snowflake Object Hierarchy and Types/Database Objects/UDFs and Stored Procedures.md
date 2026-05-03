@@ -4,6 +4,7 @@ User-defined functions and stored procedures occupy different layers in Snowflak
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/d299f8cc-53e4-4d04-89ca-722f06b8190b" />
 
+
 >[!Note]
 >A UDF is the expression-level object
 
