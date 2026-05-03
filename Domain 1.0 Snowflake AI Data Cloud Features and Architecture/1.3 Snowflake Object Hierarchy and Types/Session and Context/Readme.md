@@ -79,6 +79,7 @@ SELECT CURRENT_SESSION(), CURRENT_ROLE(), CURRENT_WAREHOUSE();
 ```
 
 ### Parameter hierarchy and precedence
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/aff4fad5-0b3c-48dc-840e-426e877903d3" />
 
 Snowflake parameters exist at multiple scopes:
 
@@ -105,7 +106,7 @@ This is critical for timeout, query limits, and execution controls.
 ALTER SESSION SET STATEMENT_TIMEOUT_IN_SECONDS = 300;
 ```
 
-Failure mode: mismatched parameter scopes cause non-deterministic behavior across environments.
+Failure mode: _mismatched parameter scopes_ cause non-deterministic behavior across environments.
 
 ### Session variables
 
