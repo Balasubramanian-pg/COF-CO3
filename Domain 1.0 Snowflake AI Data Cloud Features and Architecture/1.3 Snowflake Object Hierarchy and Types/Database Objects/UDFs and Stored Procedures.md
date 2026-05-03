@@ -2,7 +2,11 @@
 
 User-defined functions and stored procedures occupy different layers in Snowflake’s object model. 
 
-A UDF is the expression-level object: it evaluates to a scalar or tabular result and can be used where a general SQL expression is valid. A stored procedure is the orchestration object: it supports branching, looping, multi-statement logic, and can execute DDL and DML. Snowflake treats them as different invocation models, not interchangeable wrappers. ([Snowflake Docs][1])
+A UDF is the expression-level object
+
+1. it evaluates to a scalar or tabular result and can be used where a general SQL expression is valid.
+2. A stored procedure is the _orchestration object_: it supports branching, looping, multi-statement logic, and can execute DDL and DML.
+3. Snowflake treats them as different invocation models, not interchangeable wrappers. ([Snowflake Docs][1])
 
 ### UDFs
 
@@ -40,6 +44,27 @@ BEGIN
 END;
 $$;
 ```
+### **UDF vs Stored Procedure: Key Differences**
+
+| Aspect | **User-Defined Function (UDF)** | **Stored Procedure** |
+| --- | --- | --- |
+| **Primary Purpose** | Extend SQL with custom calculations/transformations | Encapsulate multi-step business logic and workflows |
+| **Invocation** | Used in SQL expressions: `SELECT my_udf(col) FROM table` | Called explicitly: `CALL my_proc(arg1, arg2)` |
+| **Return Value** | Must return: Scalar value OR Table for UDTFs | Returns single value, usually VARCHAR status message |
+| **SQL Usage Context** | Can be used in `SELECT`, `WHERE`, `JOIN`, `GROUP BY` | Cannot be used directly in queries; standalone call only |
+| **Side Effects** | No side effects allowed. Cannot run DML/DDL | Allowed. Can `INSERT`, `UPDATE`, `CREATE`, `DROP`, etc |
+| **Transaction Control** | Not allowed. No `COMMIT`/`ROLLBACK` | Allowed. Can explicitly manage transactions |
+| **Dynamic SQL** | Not supported | Supported. Can build and execute SQL strings |
+| **Error Handling** | Limited. Error aborts statement | Full support via `EXCEPTION` blocks in SQL Scripting |
+| **Execution Rights** | Always owner’s rights | Caller’s rights by default. `EXECUTE AS OWNER` optional |
+| **State** | Stateless per row for scalar, per partition for UDTF | Can maintain state across multiple SQL statements |
+| **Types** | Scalar UDF, Table UDF/UDTF, Aggregate, Window | No sub-types. All are procedural |
+| **Recursion** | Not allowed | Allowed with nesting depth limits |
+| **Typical Use Case** | `clean_email(email_col)`, `haversine_dist(lat1,lon1,lat2,lon2)` | `load_staging_to_prod()`, `clone_db_with_grants()`, `loop_and_merge()` |
+
+**Rule of thumb to remember:**  
+Use a **UDF** when you need to compute a value inside a query.  
+Use a **Stored Procedure** when you need to orchestrate actions, especially DDL/DML or multi-step logic.
 
 ### Null handling and arguments
 
