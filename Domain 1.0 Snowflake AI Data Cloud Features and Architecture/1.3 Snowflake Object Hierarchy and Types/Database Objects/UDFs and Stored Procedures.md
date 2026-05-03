@@ -31,9 +31,15 @@ Stored procedures are designed for procedural code.
 1. Snowflake documents that they support _branching, looping, and other programmatic constructs_, 
 2. and they are commonly used to automate multiple database operations or dynamically create and execute database operations. They can also run with owner’s rights or caller’s rights, which makes them the boundary object for controlled privilege delegation. ([Snowflake Docs][3])
 
-A stored procedure does not behave like a scalar expression in SQL. Snowflake explicitly says you cannot use a stored procedure directly in an expression the way you would use a function. The normal invocation is `CALL`, although a procedure that returns tabular data can also be called in the `FROM` clause, and Snowflake Scripting can capture returned values inside a block. ([Snowflake Docs][4])
+>[!Tip]
+>A stored procedure does not behave like a scalar expression in SQL. 
 
-Snowflake also supports anonymous stored procedures via `WITH ... CALL ...`, and those do not require a role with `CREATE PROCEDURE` schema privileges. For SQL stored procedures, Snowflake Scripting is the body format, and Snowflake notes a recommended source size ceiling of about 100 KB for the procedure body. ([Snowflake Docs][5])
+Snowflake explicitly says you cannot use a stored procedure directly in an expression the way you would use a function. 
+1. The normal invocation is `CALL`, although a procedure that returns tabular data can also be called in the `FROM` clause,
+2. And Snowflake Scripting can capture returned values inside a block. ([Snowflake Docs][4])
+
+Snowflake also supports _anonymous stored procedures_ via `WITH ... CALL ...`, and those do not require a role with `CREATE PROCEDURE` schema privileges. 
+- For SQL stored procedures, Snowflake Scripting is the body format, and Snowflake notes a recommended source size ceiling of about 100 KB for the procedure body. ([Snowflake Docs][5])
 
 ```sql
 CREATE OR REPLACE PROCEDURE ops.refresh_dim()
