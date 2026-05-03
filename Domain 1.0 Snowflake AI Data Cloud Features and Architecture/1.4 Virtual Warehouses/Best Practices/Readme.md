@@ -1,4 +1,7 @@
-# Additional Virtual Warehouse Best Practices
+# Virtual Warehouse Best Practices
+This document covers the additional best practices which we did not cover in the previous document. 
+
+Let us first start from understanding the bigger picture.
 
 ```mermaid
 graph TD
