@@ -1,5 +1,7 @@
 # View Types in Snowflake
 
+## 3 types of Views 
+
 ### **Standard View**  
 *A virtual table defined by a query.*  
 - **What it is**: A saved SQL query that runs *every time* you access it.  
@@ -82,6 +84,7 @@ flowchart TD
   C --> F[Check policy complexity. If heavy, expect read latency]
 ```
 
+## First Principle Understanding of Differences
 | First Principle | What it means for you |
 |-----------------|----------------------|
 | A view is a lens not a vault | It shapes how you see data but does not store the data itself |
@@ -90,6 +93,7 @@ flowchart TD
 | Security adds friction | Hiding logic and filtering rows protects data but slows execution. You trade speed for control |
 | Views layer complexity | Each view wraps another query. Too many layers hide cost and make debugging difficult |
 
+## Common Challenges 
 | Common Trap | What happens | How to think differently |
 |-------------|--------------|--------------------------|
 | Using standard views to hide slow joins | Every user pays the same heavy cost repeatedly. Credits vanish | If the same result is read often, compute it once. Store the answer. Use a materialized view |
@@ -118,7 +122,7 @@ flowchart TD
   G --> I
   H --> I
 ```
-
+## Bottomg Line
 - You are likely treating views as a way to avoid writing new tables. This is a delay tactic not a solution
 - A view does not optimize your query. It only delays when the optimization matters
 - If your dashboard runs the same heavy aggregation five hundred times a day, you are choosing to pay five hundred times
