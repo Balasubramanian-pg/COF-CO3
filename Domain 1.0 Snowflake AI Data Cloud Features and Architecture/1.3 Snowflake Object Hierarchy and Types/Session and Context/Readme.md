@@ -147,6 +147,8 @@ Failure mode:
 
 ### Context functions
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/beadd300-a7c0-41b1-93c3-6dab21c1cc3b" />
+
 Context functions expose runtime execution state.
 
 Common ones:
