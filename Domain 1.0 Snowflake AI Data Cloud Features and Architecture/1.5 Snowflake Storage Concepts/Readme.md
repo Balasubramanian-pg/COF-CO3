@@ -191,6 +191,37 @@ flowchart TD
 | Is the underlying query heavy with joins or aggregations | Materialize to avoid repeated cost | Standard View keeps logic simple |
 | Do you need always current data | Standard or Secure View | Materialized View may have lag |
 
+For better comprehension, you may use this mermaid diagram
+```mermaid
+flowchart TD
+    Start((View Selection Guide))
+    Start --> Q1
+    Start --> Q2
+    Start --> Q3
+    Start --> Q4
+    Start --> Q5
+
+    Q1{Will many people read<br>the same result often?}
+    Q1 -->|Yes| Y1[Consider Materialized View]
+    Q1 -->|No| N1[Standard View likely sufficient]
+
+    Q2{Does the source data<br>change slowly?}
+    Q2 -->|Yes| Y2[Materialized View can help]
+    Q2 -->|No| N2[Standard View avoids staleness risk]
+
+    Q3{Do you need to hide table structure<br>or filter rows by user?}
+    Q3 -->|Yes| Y3[Secure View adds protection]
+    Q3 -->|No| N3[Standard or Materialized without security]
+
+    Q4{Is the underlying query heavy<br>with joins or aggregations?}
+    Q4 -->|Yes| Y4[Materialize to avoid repeated cost]
+    Q4 -->|No| N4[Standard View keeps logic simple]
+
+    Q5{Do you need<br>always current data?}
+    Q5 -->|Yes| Y5[Standard or Secure View]
+    Q5 -->|No| N5[Materialized View may have lag]
+```
+
 ## Stages for File Management
 
 | Stage Type | Location | Best For | Access Pattern |
