@@ -20,7 +20,7 @@ graph TD
   Secure --> Hide[Logic hidden from user]
   Secure --> ReadCost2[Compute at read time plus policy check]
 ```
-
+## Distinctions between 3 types of Views
 | Property | Standard View | Materialized View | Secure View |
 |---|---|---|---|
 | What it holds | A saved query definition | A physical copy of query results | A saved query with access rules |
@@ -31,6 +31,7 @@ graph TD
 | Best use case | Simple logic reuse, ad hoc reports | Heavy dashboards, repeated slow queries | Sharing sensitive data, masking rows |
 | Where it breaks | Heavy joins run slowly on every call | Fast changing data causes refresh waste | Complex masking rules slow down reads |
 
+## Caveat Emptors
 - You are likely treating views as a way to avoid writing code. They are not shortcuts. They are contracts about when you pay for work.
 >[!Note]
 >A standard view pushes all the work to the moment of reading. You save space but spend compute repeatedly. If ten people run the same heavy report, you pay ten times for the same math.
@@ -63,7 +64,7 @@ flowchart TD
   Materialized --> Check3[Track refresh credits versus read savings]
   Standard2 --> Check4[Verify if a physical table serves better]
 ```
-
+## Production Practices
 - Do not materialize a view because you read it once a week. The storage and refresh credits will outweigh any saved compute time.
 - Do not use a standard view for a dashboard that loads fifty times a day. You are burning credits on repeated work that could be done once.
 - Do not build a secure view with complex case statements and joins just to mask data. Row access policies and proper roles often handle the same problem with less query overhead.
