@@ -72,6 +72,8 @@ flowchart LR
 
 ### Compression and Columnar Format
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/b30c789f-e715-44d3-9c30-1ab945266577" />
+
 | Feature | How It Works | Benefit |
 |---------|-------------|---------|
 | Columnar format | Each column stored separately | Read only columns you need |
