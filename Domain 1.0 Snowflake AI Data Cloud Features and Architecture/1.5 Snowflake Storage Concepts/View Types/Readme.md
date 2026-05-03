@@ -24,7 +24,7 @@
 - **Best for**: Compliance, multi-tenant isolation, or exposing only approved slices of data.  
 - **Mental model**: A *filtered lens*—the data doesn't change, but what each user *sees* is controlled by policy.
 
-### The real distinction isn't technical—it's about *what you're optimizing for*:  
+### The real distinction isn't technical, it's about *what you're optimizing for*:  
 - **Standard**: Correctness + simplicity  
 - **Materialized**: Read performance + scalability  
 - **Secure**: Governance + least-privilege access  
