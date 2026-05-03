@@ -110,6 +110,8 @@ Failure mode: _mismatched parameter scopes_ cause non-deterministic behavior acr
 
 ### Session variables
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/a75ca431-af52-4dc3-9119-d19a2cdcc82f" />
+
 Session variables are runtime key-value bindings.
 
 Constraints:
