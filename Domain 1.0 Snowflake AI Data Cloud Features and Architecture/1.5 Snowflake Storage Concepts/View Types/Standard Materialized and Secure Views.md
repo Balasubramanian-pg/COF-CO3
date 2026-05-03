@@ -73,4 +73,12 @@ flowchart TD
 - Review your views every quarter. Remove the ones that no longer serve a purpose. Archive the ones that hide too much complexity. Keep only what earns its keep.
 - Remember that a view is a promise, not a shortcut. It promises a certain shape of data at a certain time. Make sure the promise matches what your users actually need, not what is easiest to write.
 
-Think of views like different ways to serve water from a well. A standard view draws a bucket every time someone is thirsty. It is always fresh, but you tire your arm quickly. A materialized view fills a tank once a day. You save effort during the day, but the water may grow stale if the source shifts. A secure view puts a filter on the spout. It controls who drinks and what they taste, but it slows the flow. Choose the method that matches your thirst, your patience, and your need for safety. Do not build a tank when a bucket will do. Do not use a filter when everyone is trusted. Match the tool to the truth of the situation.
+## Key Takeaway
+1. Think of views like different ways to serve water from a well.
+2. A standard view draws a bucket every time someone is thirsty. It is always fresh, but you tire your arm quickly.
+3. A materialized view fills a tank once a day. You save effort during the day, but the water may grow stale if the source shifts.
+4. A secure view puts a filter on the spout. It controls who drinks and what they taste, but it slows the flow.
+5. Choose the method that matches your thirst, your patience, and your need for safety.
+6. Do not build a tank when a bucket will do.
+7. Do not use a filter when everyone is trusted.
+8. Match the tool to the truth of the situation.
