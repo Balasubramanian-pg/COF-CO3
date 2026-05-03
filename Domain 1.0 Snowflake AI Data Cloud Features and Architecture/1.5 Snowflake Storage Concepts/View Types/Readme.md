@@ -1,5 +1,41 @@
 # View Types in Snowflake
 
+### **Standard View**  
+*A virtual table defined by a query.*  
+- **What it is**: A saved SQL query that runs *every time* you access it.  
+- **Data freshness**: Always current—pulls live from base tables.  
+- **Cost**: Zero storage, but pays compute cost on every read.  
+- **Best for**: Abstraction (hiding complex joins), consistent filtering, or simplifying access patterns.  
+- **Mental model**: A *live window* into your data—what you see is exactly what's there, right now.
+
+### **Materialized View**  
+*A physical snapshot of a query's result.*  
+- **What it is**: The query runs *once* (or on a schedule), and results are stored on disk.  
+- **Data freshness**: Stale until refreshed—trade immediacy for speed.  
+- **Cost**: Uses storage + requires refresh strategy, but reads are fast and cheap.  
+- **Best for**: Heavy aggregations, reporting dashboards, or high-traffic derived datasets.  
+- **Mental model**: A *photocopy* of your data—fast to hand out, but you decide when to make a new copy.
+
+### **Secure View**  
+*A view that enforces access policy at query time.*  
+- **What it is**: A view (standard or materialized) with embedded security logic—row filters, column masking, or structure hiding.  
+- **Data freshness**: Depends on underlying type (standard = live, materialized = refreshed).  
+- **Cost**: Adds evaluation overhead per query, but centralizes governance.  
+- **Best for**: Compliance, multi-tenant isolation, or exposing only approved slices of data.  
+- **Mental model**: A *filtered lens*—the data doesn't change, but what each user *sees* is controlled by policy.
+
+### The real distinction isn't technical—it's about *what you're optimizing for*:  
+- **Standard**: Correctness + simplicity  
+- **Materialized**: Read performance + scalability  
+- **Secure**: Governance + least-privilege access  
+
+### Caveats You Must be Aware of  
+- Materialized views *lie* if you forget to refresh them.  
+- Secure views *fail silently* if misconfigured—test with low-privilege roles.  
+- Standard views *scale poorly* if the underlying query is heavy and called often.  
+
+If you're choosing between them, ask: *"What breaks first if I pick wrong—performance, freshness, or security?"* That usually points to the right anchor.
+
 ```mermaid
 graph TD
   V[Views] --> S[Standard View]
