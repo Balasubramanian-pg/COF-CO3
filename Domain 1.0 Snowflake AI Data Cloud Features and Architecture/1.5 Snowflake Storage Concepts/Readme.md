@@ -1,5 +1,7 @@
 # Snowflake Storage Concepts Overview
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/309f0daa-c915-4076-b733-378f18a267c8" />
+
 ```mermaid
 graph TD
   Storage[Storage in Snowflake] --> Fund[Fundamentals]
