@@ -74,6 +74,9 @@ flowchart TD
 - Remember that a view is a promise, not a shortcut. It promises a certain shape of data at a certain time. Make sure the promise matches what your users actually need, not what is easiest to write.
 
 ## Key Takeaway
+
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/1c2b7e21-a141-4991-ba76-fd834dd08418" />
+
 1. Think of views like different ways to serve water from a well.
 2. A standard view draws a bucket every time someone is thirsty. It is always fresh, but you tire your arm quickly.
 3. A materialized view fills a tank once a day. You save effort during the day, but the water may grow stale if the source shifts.
