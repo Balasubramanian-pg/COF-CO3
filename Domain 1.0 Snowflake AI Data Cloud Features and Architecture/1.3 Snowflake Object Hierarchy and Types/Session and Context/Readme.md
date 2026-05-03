@@ -43,6 +43,40 @@ SELECT
   CURRENT_WAREHOUSE();
 ```
 
+### **Session vs Context: Key Differences**
+
+| Aspect | **Session** | **Context** |
+| --- | --- | --- |
+| **Definition** | Active authenticated connection to Snowflake | Set of environment parameters active within a session |
+| **Scope** | Connection-level. Exists from login to logout/timeout | Statement-level. Can change multiple times per session |
+| **Lifetime** | Created at login, destroyed at disconnect | Persists until explicitly changed with `USE` commands |
+| **Uniqueness** | Identified by `SESSION_ID`. One per client connection | Not uniquely identified. Comprised of 4 components |
+| **Components** | Auth token, client app, timeout settings, transaction state, parameters | `CURRENT_ROLE()`, `CURRENT_WAREHOUSE()`, `CURRENT_DATABASE()`, `CURRENT_SCHEMA()` |
+| **Changed By** | New login, `ALTER SESSION`, timeout, logout | `USE ROLE`, `USE WAREHOUSE`, `USE DATABASE`, `USE SCHEMA` |
+| **Affects** | Connection validity, timeouts, parameter defaults, transaction boundaries | Object resolution, privilege checks, compute used |
+| **Visibility** | `SHOW SESSIONS`, `SYSTEM$CURRENT_SESSION()` | `SELECT CURRENT_ROLE()`, `CURRENT_DATABASE()`, etc |
+| **Multiple Per User** | Yes. One user can have many concurrent sessions | No. One context per session, but values change over time |
+| **Transaction State** | Tracked at session level. Uncommitted work rolls back on session end | Not tracked. Transactions use the session’s context at start time |
+| **Typical Use Case** | Monitoring active users, killing long-running queries, setting session params | Fully qualifying object names, switching roles for different tasks |
+
+**Rule of thumb to remember:**  
+**Session** = “Who’s connected and how long”.  
+**Context** = “What DB/schema/role/warehouse am I using right now”.
+
+**Quick Example:**
+```sql
+-- This creates/changes SESSION-level settings
+ALTER SESSION SET QUERY_TAG = 'daily_load';
+
+-- These change CONTEXT within the session  
+USE ROLE data_engineer;
+USE WAREHOUSE compute_wh;
+USE DATABASE sales_db;
+USE SCHEMA raw_data;
+
+SELECT CURRENT_SESSION(), CURRENT_ROLE(), CURRENT_WAREHOUSE(); 
+-- Returns: 1234567890, DATA_ENGINEER, COMPUTE_WH
+```
 
 ### Parameter hierarchy and precedence
 
