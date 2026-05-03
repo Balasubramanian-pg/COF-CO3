@@ -244,6 +244,8 @@ graph TD
 
 ## Common Anti Patterns to Avoid
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/9e11b589-7461-4438-b43f-271965494660" />
+
 | Anti Pattern | What Happens | Better Approach |
 |--------------|--------------|-----------------|
 | One warehouse for everything | Dev queries block prod reports, cost attribution impossible | Separate warehouses by workload type |
@@ -255,16 +257,14 @@ graph TD
 
 ## Bottom Line
 
-<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/9e11b589-7461-4438-b43f-271965494660" />
-
-- Separate workloads into separate warehouses. One size and policy cannot fit all patterns
-- Tag everything. Without tags, you cannot attribute cost or optimize effectively
+- Separate workloads into _separate warehouses_. One size and policy cannot fit all patterns
+- **Tag everything**. Without tags, you cannot attribute cost or optimize effectively
 - Start small and measure. Increase size or clusters only when data shows you need to
-- Automate guardrails. Resource monitors and timeouts prevent surprises before they happen
-- Document decisions. Future you and your teammates need context for why settings exist
-- Review regularly. Workloads evolve, and your warehouse config should evolve with them
-- Control access by role. Make it easy to grant and revoke access as teams change
-- Test changes in non prod first. Warehouse changes can impact cost and performance immediately
+- **Automate guardrails**. Resource monitors and timeouts prevent surprises before they happen
+- **Document decisions**. Future you and your teammates need context for why settings exist
+- **Review regularly**. Workloads evolve, and your warehouse config should evolve with them
+- **Control access by role**. Make it easy to grant and revoke access as teams change
+- _Test changes in non prod first_. Warehouse changes can impact cost and performance immediately
 
 Think of warehouse management like managing a fleet of vehicles:
 - Name each vehicle by its job, not its engine size
