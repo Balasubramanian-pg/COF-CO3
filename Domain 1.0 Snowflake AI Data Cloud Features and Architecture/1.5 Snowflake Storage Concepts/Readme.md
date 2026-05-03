@@ -263,6 +263,8 @@ flowchart LR
 
 ### Cost Control Practices
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/f97741bf-1bde-4ff1-b547-868cd311368f" />
+
 | Practice | How To Implement | Expected Impact |
 |----------|-----------------|-----------------|
 | Drop or truncate unused tables | Identify with ACCOUNT_USAGE views | Immediate storage savings |
