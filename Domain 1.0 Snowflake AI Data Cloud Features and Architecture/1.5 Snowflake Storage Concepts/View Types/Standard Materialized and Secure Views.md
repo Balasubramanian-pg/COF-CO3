@@ -42,6 +42,7 @@ Views do not fix slow queries. They only change when the slowness happens. If yo
 - A secure view adds a gatekeeper. It hides the structure of your tables and applies rules before returning rows. It does not speed anything up. It trades a small amount of query speed for control and safety.
 >[!Caution]
 > Freshness and cost sit on opposite ends of a scale. You cannot have instant answers, zero storage, and low compute at the same time. Pick two. Accept the third as a compromise.
+
 >[!Caution]
 > Nesting views inside other views creates invisible debt. Each layer adds parsing time and hides where the real work happens. A single clear query beats a chain of hidden ones.
 
