@@ -3,12 +3,12 @@
 User-defined functions and stored procedures occupy different layers in Snowflake’s object model. 
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/d299f8cc-53e4-4d04-89ca-722f06b8190b" />
-
+A UDF in Snowflake is a reusable database object that accepts zero or more input arguments, executes user-provided logic, and returns a single scalar value or a tabular result set
 
 >[!Note]
 >A UDF is the expression-level object
 
-1. it evaluates to a scalar or tabular result and can be used where a general SQL expression is valid.
+1. It evaluates to a scalar or tabular result and can be used where a general SQL expression is valid.
 2. A stored procedure is the _orchestration object_: it supports branching, looping, multi-statement logic, and can execute DDL and DML.
 3. Snowflake treats them as different invocation models, not interchangeable wrappers. ([Snowflake Docs][1])
 
