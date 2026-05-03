@@ -255,6 +255,8 @@ graph TD
 
 ## Bottom Line
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/9e11b589-7461-4438-b43f-271965494660" />
+
 - Separate workloads into separate warehouses. One size and policy cannot fit all patterns
 - Tag everything. Without tags, you cannot attribute cost or optimize effectively
 - Start small and measure. Increase size or clusters only when data shows you need to
