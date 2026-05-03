@@ -32,10 +32,15 @@ graph TD
 | Where it breaks | Heavy joins run slowly on every call | Fast changing data causes refresh waste | Complex masking rules slow down reads |
 
 - You are likely treating views as a way to avoid writing code. They are not shortcuts. They are contracts about when you pay for work.
-- A standard view pushes all the work to the moment of reading. You save space but spend compute repeatedly. If ten people run the same heavy report, you pay ten times for the same math.
-- A materialized view pulls the work forward. You compute once, store the answer, and serve it quickly. You trade storage and background compute for fast reads. If the source data shifts faster than your refresh cycle, you are serving old truths as if they were new.
+>[!Note]
+>A standard view pushes all the work to the moment of reading. You save space but spend compute repeatedly. If ten people run the same heavy report, you pay ten times for the same math.
+
+Views do not fix slow queries. They only change when the slowness happens. If your base query is poorly written, materializing it just caches a slow result. Securing it just hides a slow result behind a policy.
+
+>[!Tip]
+>A materialized view pulls the work forward. You compute once, store the answer, and serve it quickly. You trade storage and background compute for fast reads. If the source data shifts faster than your refresh cycle, you are serving old truths as if they were new.
 - A secure view adds a gatekeeper. It hides the structure of your tables and applies rules before returning rows. It does not speed anything up. It trades a small amount of query speed for control and safety.
-- Views do not fix slow queries. They only change when the slowness happens. If your base query is poorly written, materializing it just caches a slow result. Securing it just hides a slow result behind a policy.
+
 - Freshness and cost sit on opposite ends of a scale. You cannot have instant answers, zero storage, and low compute at the same time. Pick two. Accept the third as a compromise.
 - Nesting views inside other views creates invisible debt. Each layer adds parsing time and hides where the real work happens. A single clear query beats a chain of hidden ones.
 
