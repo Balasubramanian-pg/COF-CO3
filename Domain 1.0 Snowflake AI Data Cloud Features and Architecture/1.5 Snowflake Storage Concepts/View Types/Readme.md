@@ -54,6 +54,7 @@ graph TD
   Sec --> Timing[Runs when called with policy check]
   Sec --> Cost[Low storage, compute on read plus overhead]
 ```
+You may use this table to remember the distinction much easier
 
 | Property | Standard View | Materialized View | Secure View |
 |----------|---------------|-------------------|-------------|
