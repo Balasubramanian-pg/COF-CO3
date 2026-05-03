@@ -29,6 +29,8 @@ A session is established when a client connects and is bound to:
 > 2. Context is scoped to a session but can be changed multiple times within that session using USE commands.
 > 3. Context determines object name resolution and privileges for every statement executed.
 
+Key property: context is **late-bound at execution time**, not at object creation time (except for stored definitions like views).
+
 >[!Note]
 >Context resolution is hierarchical and stateful. <br>
 >Every SQL statement executes against the current session context unless explicitly overridden.
@@ -41,7 +43,6 @@ SELECT
   CURRENT_WAREHOUSE();
 ```
 
-Key property: context is **late-bound at execution time**, not at object creation time (except for stored definitions like views).
 
 ### Parameter hierarchy and precedence
 
