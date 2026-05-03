@@ -31,6 +31,8 @@ $$;
 
 ### Stored procedures
 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/8cc452c6-627b-4bc5-8bdc-adad3ddaf528" />
+
 Stored procedures are designed for procedural code. 
 1. Snowflake documents that they support _branching, looping, and other programmatic constructs_, 
 2. and they are commonly used to automate multiple database operations or dynamically create and execute database operations. They can also run with owner’s rights or caller’s rights, which makes them the boundary object for controlled privilege delegation. ([Snowflake Docs][3])
