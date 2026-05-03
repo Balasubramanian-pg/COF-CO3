@@ -44,6 +44,8 @@ flowchart LR
   D --> E[Monitor credit usage and wait times]
   E --> F[Adjust if cost or latency is off]
 ```
+Now that we are clear with Workload types and recommended settings, it is very critical to understand the auto suspend costs that accumulate over time that can determine how you structure your workflow
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/b6ea6eec-3053-4ccf-ba89-41d32ee082fc" />
 
 ## Cost Math for Auto Suspend
 
