@@ -1,5 +1,7 @@
 # View Types in Snowflake
 
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/e241aa71-46ae-4564-8100-1297a80bd1ae" />
+
 ## 3 types of Views 
 
 ### **Standard View**  
