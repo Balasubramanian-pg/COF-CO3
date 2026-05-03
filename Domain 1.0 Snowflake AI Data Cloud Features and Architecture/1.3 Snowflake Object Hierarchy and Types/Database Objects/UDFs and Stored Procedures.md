@@ -10,9 +10,10 @@ A UDF is the expression-level object
 
 ### UDFs
 
-A `CREATE FUNCTION` object creates a UDF, and Snowflake documents that it can return either scalar results or tabular results. UDF handlers can be written in SQL, JavaScript, Python, Java, or Scala, and depending on the language the handler can be inlined in the DDL or referenced from staged or precompiled code. That makes UDFs the right fit for reusable computation, policy logic, and query-time transformations. ([Snowflake Docs][1])
-
-For scalar SQL UDFs, Snowflake supports the `MEMOIZABLE` keyword. Snowflake’s docs describe memoizable functions as a way to cache deterministic scalar SQL UDF results, which is especially relevant when the same expression is repeatedly invoked in policies or repetitive query paths. ([Snowflake Docs][2])
+A `CREATE FUNCTION` object creates a UDF, and Snowflake documents that it can return either scalar results or tabular results. 
+1. UDF handlers can be written in SQL, JavaScript, Python, Java, or Scala, and depending on the language the handler can be inlined in the DDL or referenced from staged or precompiled code. 
+2. That makes UDFs the right fit for reusable computation, policy logic, and query-time transformations. ([Snowflake Docs][1])
+3. For scalar SQL UDFs, Snowflake supports the `MEMOIZABLE` keyword. Snowflake’s docs describe memoizable functions as a way to cache deterministic scalar SQL UDF results, which is especially relevant when the same expression is repeatedly invoked in policies or repetitive query paths. ([Snowflake Docs][2])
 
 ```sql
 CREATE OR REPLACE FUNCTION util.norm_email(v VARCHAR)
