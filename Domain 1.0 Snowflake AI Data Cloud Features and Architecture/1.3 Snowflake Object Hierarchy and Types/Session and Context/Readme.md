@@ -7,7 +7,7 @@ This layer controls parameter resolution, role/database/schema/warehouse context
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/b6047774-bc12-437c-acfc-de2b83897c8a" />
 
 >[!Warning]
->Session
+>**Session** <br>
 >A Session in Snowflake represents an active connection between a client and Snowflake, established after successful authentication. It maintains connection-level state for the duration of the connection, including authentication tokens, client info, parameter settings, and transaction state. A session is terminated by explicit logout, timeout, or connection loss. Each session is identified by a unique SESSION_ID.
 ### Session lifecycle and context resolution
 
