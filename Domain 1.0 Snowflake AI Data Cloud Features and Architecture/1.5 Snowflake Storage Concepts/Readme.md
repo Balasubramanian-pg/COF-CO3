@@ -243,6 +243,7 @@ flowchart LR
   Copy2 --> Snowflake
 ```
 
+## Staging Commands 
 | Command | Purpose | Example |
 |---------|---------|---------|
 | PUT | Upload file from local to internal stage | PUT file data.csv @my_stage |
