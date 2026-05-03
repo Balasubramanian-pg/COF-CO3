@@ -83,11 +83,15 @@ Use a **Stored Procedure** when you need to orchestrate actions, especially DDL/
 
 ### Null handling and arguments
 
-Stored procedures have explicit null-handling behavior in their DDL. Snowflake documents `CALLED ON NULL INPUT` and `RETURNS NULL ON NULL INPUT`, with `CALLED ON NULL INPUT` as the default. Snowflake Scripting procedures also support `IN` and `OUT` arguments, with output values passed back through variables rather than as multiple return values. ([Snowflake Docs][6])
+1. Stored procedures have explicit null-handling behavior in their DDL.
+2. Snowflake documents `CALLED ON NULL INPUT` and `RETURNS NULL ON NULL INPUT`, with `CALLED ON NULL INPUT` as the default.
+3. Snowflake Scripting procedures also support `IN` and `OUT` arguments, with output values passed back through variables rather than as multiple return values. ([Snowflake Docs][6])
 
 ### Practical decision rule
 
-Use a UDF when the logic must behave like a function inside a query and return a value inline. Use a stored procedure when the logic needs multiple statements, procedural flow, control over execution order, or controlled privilege delegation. That is the cleanest separation Snowflake’s own docs draw between the two objects. ([Snowflake Docs][4])
+1. Use a UDF when the logic must _behave like a function inside a query_ and return a value inline.
+2. Use a stored procedure when the _logic needs multiple statements, procedural flow, control over execution order_, or controlled privilege delegation.
+3. That is the cleanest separation Snowflake’s own docs draw between the two objects. ([Snowflake Docs][4])
 
 ### Production pattern
 
