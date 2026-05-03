@@ -1,5 +1,7 @@
 # Standard Materialized and Secure Views
 
+This document is pretty much a replica of the folder's readme.md so you can skip this if you want. However there are minor changes which might help you comprehend the difference a bit deeper than the other document. 
+
 ```mermaid
 graph TD
   Query[User asks for data] --> Standard[Standard View]
