@@ -122,7 +122,7 @@ flowchart TD
   G --> I
   H --> I
 ```
-## Bottomg Line
+## Bottom Line
 - You are likely treating views as a way to avoid writing new tables. This is a delay tactic not a solution
 - A view does not optimize your query. It only delays when the optimization matters
 - If your dashboard runs the same heavy aggregation five hundred times a day, you are choosing to pay five hundred times
